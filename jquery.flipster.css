@@ -3,12 +3,12 @@
 	display: none;
 }
 
-.flipster > div {
+.flipster {
 	overflow: hidden;
 	width: 100%;
 }
 
-.flipster > div > ul {
+.flipster > ul {
 	padding-top: 2.5%;
 	-webkit-transform: translate3d(0,0,0); -moz-transform: translate3d(0,0,0); -ms-transform: translate3d(0,0,0); transform: translate3d(0,0,0);
 	-webkit-transition: all 333ms; -moz-transition: all 333ms; transition: all 333ms;

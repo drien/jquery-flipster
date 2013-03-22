@@ -13,7 +13,6 @@ $('.sweet-ass-coverflow-slider').flipster();
 ````
 ````html
 <div class="sweet-ass-coverflow-slider">
-  <div>
     <ul>
     
       <li>
@@ -25,7 +24,6 @@ $('.sweet-ass-coverflow-slider').flipster();
       </li>
       
     </ul>
-  </div>
 </div>
 ````
 There are no parameters for now.
