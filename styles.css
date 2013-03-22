@@ -1,0 +1,64 @@
+.flipster {
+	overflow: hidden;
+	display: none;
+}
+
+.flipster > div {
+	overflow: hidden;
+	width: 100%;
+}
+
+.flipster > div > ul {
+	padding-top: 2.5%;
+	-webkit-transform: translate3d(0,0,0); -moz-transform: translate3d(0,0,0); -ms-transform: translate3d(0,0,0); transform: translate3d(0,0,0);
+	-webkit-transition: all 333ms; -moz-transition: all 333ms; transition: all 333ms;
+	position: relative;
+	height: 400px;
+}
+
+.flipster li {
+	display: block;
+	-webkit-transition: all 333ms ease-in-out; -moz-transition: all 333ms ease-in-out; transition: all 333ms ease-in-out;
+	-webkit-perspective: 800px; -moz-perspective: 800px; perspective: 800px;
+	position: absolute;
+	width: 20%;
+}
+
+.flipster li img {
+	width: 100%;
+	display: block;
+}
+
+.flipster li > div {
+	-webkit-transition: all 500ms; -ms-transition: all 500ms; transition: all 500ms;
+	background-color: #000000;
+	-webkit-box-shadow: 0px 0px 5% #000000;
+	-moz-box-shadow: 0px 0px 5% #000000;
+	-ms-box-shadow: 0px 0px 5% #000000;
+	box-shadow: 0px 0px 15px #000000;
+	-webkit-box-reflect: below 1px -webkit-gradient( linear, left bottom, left top, color-stop(0.10, rgba(255,255,255,0.3)), color-stop(0.50, transparent));
+	width: 100%;
+}
+
+.no-transition {
+	-webkit-transition: all 0ms !important;
+	-moz-transition: all 0ms !important;
+	transition: all 0ms !important;
+}
+
+.flipster .flipster-left > div {
+	-webkit-transform: rotateY(60deg); -moz-transform: rotateY(60deg); -ms-transform: rotateY(60deg); transform: rotateY(60deg);
+}
+
+.flipster .flipster-right > div{
+	-webkit-transform: rotateY(-60deg); -moz-transform: rotateY(-60deg); transform: rotateY(-60deg); -ms-transform: rotateY(-60deg);
+}
+
+.flipster .flipster-current>div {
+	-webkit-transform: rotateY(0deg) translate3d(0, 0, 150px); -moz-transform: rotateY(0deg) translate3d(0, 0, 150px); -ms-transform: rotateY(0deg) translate3d(0, 0, 150px); transform: rotateY(0deg) translate3d(0, 0, 150px); 
+}
+
+/* Old browser compatibility classes */
+.flipster .compatibility .flipster-current > div {
+	width: 120%;
+}
