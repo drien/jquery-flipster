@@ -5,17 +5,18 @@
     this.hide();
 
     //DOM references that will be reused throughout
+    var flipOuter = this;
     var flipInner = this.find("ul");
-    var flipOuter = $(".flipster");
     var flipItems = this.find("li");
 
     //values important for keeping track of state 
     var _current = 0;
     var _startTouchX = 0;
-    var compatibility = false;
-    var isIE = false;
     var _actionThrottle = 0;
     var _throttleTimeout;
+    var isIE = false;
+    var compatibility = false;
+
 
     $(window).load(init);
 
@@ -47,7 +48,7 @@
         // Attach event bindings.
         $(window).resize(center);
 
-        $(window).on("keydown", function(e) {
+        $(window).on("keydown.flipster", function(e) {
             e.preventDefault();
             _actionThrottle++;
             if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
@@ -61,11 +62,11 @@
             }
         });
 
-        $(window).on("keyup", function(e){
+        $(window).on("keyup.flipster", function(e){
             _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
         });
 
-        flipInner.on("mousewheel", function(e){ //TODO test mousewheel functionality on click-wheel style mouse (not apple trackpad)
+        flipInner.on("mousewheel.flipster", function(e){ //TODO test mousewheel functionality on click-wheel style mouse (not apple trackpad)
             _throttleTimeout = window.setTimeout(removeThrottle, 500); //throttling should expire if scrolling pauses for a moment.
             _actionThrottle++;
             if (_actionThrottle % 4 !==0 && _actionThrottle !== 1) return; //throttling like with held-down keys
@@ -78,11 +79,11 @@
             }
         });
 
-        flipInner.on("touchstart", function(e) {
+        flipInner.on("touchstart.flipster", function(e) {
             _startTouchX = e.originalEvent.targetTouches[0].screenX;
         });
 
-        flipInner.on("touchmove", function(e) {
+        flipInner.on("touchmove.flipster", function(e) {
             e.preventDefault();
             var nowX = e.originalEvent.targetTouches[0].screenX;
             var touchDiff = nowX-_startTouchX;
@@ -95,16 +96,12 @@
             }
         });
 
-        flipInner.on("touchend", function(e) {
+        flipInner.on("touchend.flipster", function(e) {
             _startTouchX = 0;
         });
 
         //bindings to jump the carousel to any image you click on the left or right.
-        flipInner.on("click", ".flipster-left", function(e){
-            e.preventDefault();
-            jump(flipItems.index(this));
-        });
-        flipInner.on("click", ".flipster-right", function(e){
+        flipInner.on("click.flipster", ".flipster-left, .flipster-right", function(e){
             e.preventDefault();
             jump(flipItems.index(this));
         });
@@ -127,7 +124,7 @@
     }
 
     function center() {
-            var start = new Date();
+            //var start = new Date();
             var spacer = 0;
             var totalLeft = 0;
 
@@ -156,7 +153,7 @@
 
         flipInner.css("left", -1*(totalLeft)+"px");
 
-        var end = new Date();
+        //var end = new Date();
         //console.log("Recalculated in: "+(end.valueOf()-start.valueOf())+"ms"); //keep track of performance.
 
     }
@@ -164,6 +161,8 @@
     function removeThrottle() {
         _actionThrottle = 0;
     }
+
+    return this; //maintain chainability with other jQuery calls.
 
   };
 })( jQuery );

@@ -1,11 +1,7 @@
 .flipster {
 	overflow: hidden;
-	display: none;
-}
-
-.flipster {
-	overflow: hidden;
 	width: 100%;
+	display: none;
 }
 
 .flipster > ul {
@@ -13,7 +9,7 @@
 	-webkit-transform: translate3d(0,0,0); -moz-transform: translate3d(0,0,0); -ms-transform: translate3d(0,0,0); transform: translate3d(0,0,0);
 	-webkit-transition: all 333ms; -moz-transition: all 333ms; transition: all 333ms;
 	position: relative;
-	height: 400px;
+	height: 1000px;
 }
 
 .flipster li {
@@ -22,6 +18,7 @@
 	-webkit-perspective: 800px; -moz-perspective: 800px; perspective: 800px;
 	position: absolute;
 	width: 20%;
+	opacity: 0.99; /* fix for strange clipping behavior on rotated elements in chrome. don't know why this works */
 }
 
 .flipster li img {
