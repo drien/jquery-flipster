@@ -31,7 +31,7 @@ There are no parameters for now.
 Version History
 ---------------
 
-0 - March 22 2013 - LIFE ON THE BLEEDING EDGE BABY
+0.0.0 - March 22 2013 - LIFE ON THE BLEEDING EDGE BABY
 
 
 License
