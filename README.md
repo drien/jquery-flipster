@@ -42,11 +42,11 @@ $('.sweet-ass-coverflow-slider').flipster();
     </ul>
 </div>
 ````
-There are no parameters for now.
+There are no parameters for now. The slider can be operated with arrow keys, clicks, side to side scrolling or by touch on mobile devices. Wrapping the image elements in anchor tags also works to enable linking out from the current element.
 
-The slider can be operated with arrow keys, clicks, side to side scrolling or by touch on mobile devices.
-
-Anchor elements wrapped around the image elements can also be used.
+Contributing
+---------------
+If you can make this better, don't be shy! I'll be happy to merge pull requests as long as they keep the project lightweight, simple to set up and free of dependencies beyond jQuery.
 
 Version History
 ---------------
