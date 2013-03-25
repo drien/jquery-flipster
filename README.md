@@ -44,6 +44,10 @@ $('.sweet-ass-coverflow-slider').flipster();
 ````
 There are no parameters for now.
 
+The slider can be operated with arrow keys, clicks, side to side scrolling or by touch on mobile devices.
+
+Anchor elements wrapped around the image elements can also be used.
+
 Version History
 ---------------
 
