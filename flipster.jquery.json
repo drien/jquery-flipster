@@ -10,13 +10,13 @@
     "version": "0.1.0",
     "author": {
         "name": "Adrien Delessert",
-        "url": "https://a.drien.com",
+        "url": "http://a.drien.com",
         "email":"a@drien.com"
     },
     "maintainers": [
        {
         "name": "Adrien Delessert",
-        "url": "https://a.drien.com",
+        "url": "http://a.drien.com",
         "email":"a@drien.com"
         }
     ],
