@@ -5,6 +5,22 @@ jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the f
 
 At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL LIFE???'. I would be if I were you. So your project needs some sweet, sweet coverflow loving. You've come to the right place.
 
+Browsers tested in:
+- Fully Functional:
+    - Chrome (latest)
+    - Safari & Mobile Safari (latest)
+- Mostly Functional (no box reflections):
+    - Firefox (latest)
+    - IE 10
+- Limited Functionality:
+    - IE 7, 8 & 9 - no 3D transforms, 'compatibility mode'
+
+Untested in:
+- Android browsers
+- Opera
+- IE <= 6
+
+
 Usage
 ---------------
 Include the JS after jQuery, and the CSS wherever you like, then:
@@ -30,6 +46,8 @@ There are no parameters for now.
 
 Version History
 ---------------
+
+0.1.0 - March 25 2013 - Improvements in fallbacks for old version of IE and basic fixes to make it actually work.
 
 0.0.0 - March 22 2013 - LIFE ON THE BLEEDING EDGE BABY
 
