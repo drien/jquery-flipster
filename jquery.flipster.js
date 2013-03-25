@@ -31,7 +31,6 @@
                 compatibility = true;
                 flipOuter.addClass("compatibility");
             }
-            alert(compatibility);
         //find the middle element of the slideshow
         if (!flipItems.length % 2) { 
             _current = flipItems.length/2 + 1;
