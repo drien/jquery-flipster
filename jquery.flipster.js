@@ -23,14 +23,15 @@
     function init() {
 
         //Browsers that don't support CSS3 transforms get compatibility:
-            var isIE = '\v'=='v'; //IE <= 8
+            var isIEmax8 = ('\v'=='v'); //IE <= 8
             var checkIE = document.createElement("b");
             checkIE.innerHTML = "<!--[if IE 9]><i></i><![endif]-->"; //IE 9
-            var isIE = checkIE.getElementsByTagName("i").length == 1;
-            if (isIE) {
+            var isIE9 = checkIE.getElementsByTagName("i").length == 1;
+            if (isIEmax8 || isIE9) {
+                compatibility = true;
                 flipOuter.addClass("compatibility");
             }
-
+            alert(compatibility);
         //find the middle element of the slideshow
         if (!flipItems.length % 2) { 
             _current = flipItems.length/2 + 1;
@@ -123,6 +124,8 @@
         center();
     }
 
+    var sideSpacing = 0.57;
+
     function center() {
             //var start = new Date();
             var spacer = 0;
@@ -131,19 +134,17 @@
             for (var i = 0; i < flipItems.length; i++) {
 
                 var thisItem = $(flipItems[i]);
-                var thisWidth = thisItem[0].clientWidth/1.75;
+                var thisWidth = thisItem[0].clientWidth*sideSpacing;
 
                 thisItem.removeClass("flipster-left flipster-right flipster-current");
 
                 if (i < _current) {
                     thisItem.addClass("flipster-left").css("z-index", i).css("left", i*thisWidth+"px");
-                    totalLeft = i*thisWidth;
                 }
                 else if (i === _current) {
                     spacer = thisWidth/1.2;
                     thisItem.addClass("flipster-current").css("z-index", 500).css("left", i*thisWidth+spacer+"px");
-                    totalLeft = totalLeft-spacer-$(".flipster-current")[0].clientWidth/2;
-
+                    totalLeft = ((i-1)*thisWidth)-spacer-$(".flipster-current")[0].clientWidth/2;
                     spacer = (thisWidth/1.2)*2;
                 }
                 else {
@@ -151,8 +152,13 @@
                 }
             }
 
-        flipInner.css("left", -1*(totalLeft)+"px");
-
+        var newLeftPos = -1*(totalLeft)+"px";
+        if (compatibility) {
+            flipInner.animate({"left":newLeftPos}, 333);
+        }
+        else {
+            flipInner.css("left", newLeftPos);
+        }
         //var end = new Date();
         //console.log("Recalculated in: "+(end.valueOf()-start.valueOf())+"ms"); //keep track of performance.
 
