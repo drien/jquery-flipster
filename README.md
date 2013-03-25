@@ -51,6 +51,8 @@ Anchor elements wrapped around the image elements can also be used.
 Version History
 ---------------
 
+0.1.3 - March 25 2013 - Strong men also cry, strong men also cry.
+
 0.1.0 - March 25 2013 - Improvements in fallbacks for old version of IE and basic fixes to make it actually work.
 
 0.0.0 - March 22 2013 - LIFE ON THE BLEEDING EDGE BABY
