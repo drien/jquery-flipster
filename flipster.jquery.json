@@ -1,0 +1,35 @@
+{
+    "name": "flipster",
+    "title": "jQuery.Flipster",
+    "description": "jQuery plugin for creating responsive 'cover flow' style image carousels.",
+    "keywords": [
+        "coverflow",
+        "slider",
+        "carousel"
+    ],
+    "version": "0.1.0",
+    "author": {
+        "name": "Adrien Delessert",
+        "url": "https://a.drien.com",
+        "email":"a@drien.com"
+    },
+    "maintainers": [
+       {
+        "name": "Adrien Delessert",
+        "url": "https://a.drien.com",
+        "email":"a@drien.com"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "WTFPL",
+            "url": "http://www.wtfpl.net/"
+        }
+    ],
+    "bugs": "https://github.com/drien/jquery-flipster/issues",
+    "homepage": "https://github.com/drien/jquery-flipster",
+    "docs": "https://github.com/drien/jquery-flipster",
+    "dependencies": {
+        "jquery": ">=1.8"
+    }
+}
