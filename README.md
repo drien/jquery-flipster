@@ -3,7 +3,9 @@ jQuery.Flipster
 
 jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect. It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. It degrades (vaguely) gracefully, falling back to being just as flat and boring as the browsers that don't support 3D transforms. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.
 
-At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL LIFE???'. I would be if I were you. So your project needs some sweet, sweet coverflow loving. You've come to the right place.
+At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL MY LIFE???'. I would be if I were you. So your project needs some sweet, sweet coverflow loving. You've come to the right place.
+
+Live demo: http://a.drien.com/jquery-flipster/
 
 Browsers tested in:
 - Fully Functional:
