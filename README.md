@@ -34,11 +34,15 @@ $('.sweet-ass-coverflow-slider').flipster();
     <ul>
     
       <li>
-        <img src="">
+        <div>
+            <img src="">
+        </div>
       </li>
       
       <li>
-        <img src="">
+        <div>
+            <img src="">
+        </div>
       </li>
       
     </ul>
