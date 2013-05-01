@@ -29,11 +29,7 @@
 .flipster li > div {
 	-webkit-transition: all 500ms; -ms-transition: all 500ms; transition: all 500ms;
 	background-color: #000000;
-	-webkit-box-shadow: 0px 0px 5% #000000;
-	-moz-box-shadow: 0px 0px 5% #000000;
-	-ms-box-shadow: 0px 0px 5% #000000;
-	box-shadow: 0px 0px 15px #000000;
-	-webkit-box-reflect: below 1px -webkit-gradient( linear, left bottom, left top, color-stop(0.10, rgba(255,255,255,0.3)), color-stop(0.50, transparent));
+	-webkit-box-reflect: below 1px -webkit-gradient( linear, left bottom, left top, color-stop(0.05, rgba(255,255,255,0.12)), color-stop(0.2, transparent));
 	width: 100%;
 }
 
