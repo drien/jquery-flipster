@@ -54,6 +54,8 @@ Contributing
 ---------------
 If you can make this better, don't be shy! I'll be happy to merge pull requests as long as they keep the project lightweight, simple to set up and free of dependencies beyond jQuery.
 
+Also, if you run into a problem or have an idea, feel free to make an issue on the github project and I'll get on it when I can!
+
 Version History
 ---------------
 
