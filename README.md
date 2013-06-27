@@ -29,6 +29,7 @@ Include the JS after jQuery, and the CSS wherever you like, then:
 ````javascript
 $('.sweet-ass-coverflow-slider').flipster();
 ````
+
 ````html
 <div class="sweet-ass-coverflow-slider">
     <ul>
@@ -59,11 +60,20 @@ Also, if you run into a problem or have an idea, feel free to make an issue on t
 Version History
 ---------------
 
-0.1.3 - March 25 2013 - Strong men also cry, strong men also cry.
+- 0.2.0 - June 27 2013
 
-0.1.0 - March 25 2013 - Improvements in fallbacks for old version of IE and basic fixes to make it actually work.
+    - Added automatic height adjustment for the container element, which used to just overflow.
+    - A few minor code improvements.
+    - Added minified versions of the js and css files.
 
-0.0.0 - March 22 2013 - LIFE ON THE BLEEDING EDGE BABY
+- 0.1.3 - March 25 2013 
+    - Strong men also cry, strong men also cry.
+
+- 0.1.0 - March 25 2013
+    - Improvements in fallbacks for old version of IE and basic fixes to make it actually work.
+
+- 0.0.0 - March 22 2013
+    - LIFE ON THE BLEEDING EDGE BABY
 
 
 License
