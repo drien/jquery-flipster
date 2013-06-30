@@ -20,26 +20,97 @@
         var config = { //One small step for providing more configurability in the future.
             sideSpacing: 0.57 //Proportion of the middle item that we should leave on either side as padding.
         };
+        
+        function newHeight() {
+            //Adjust the height of the container <ul> element to contain but not clip the contents.
+            var centerHeight = parseInt($(".flipster-current")[0].clientHeight, 10);
+            //Account for reflection
+            var adjustedHeight = centerHeight + (centerHeight / 3);
+            flipInner.height(adjustedHeight + "px");
+        }
     
-        $(window).load(init);
+        function center() {
+            //var start = new Date();
+            var spacer = 0;
+            var totalLeft = 0;
+
+            for (var i = 0; i < flipItems.length; i++) {
+
+                var thisItem = $(flipItems[i]);
+                var thisWidth = thisItem[0].clientWidth*config.sideSpacing;
+
+                thisItem.removeClass("flipster-left flipster-right flipster-current");
+
+                if (i < _current) {
+                    thisItem.addClass("flipster-left").css("z-index", i).css("left", i*thisWidth+"px");
+                    continue;
+                }
+                else if (i === _current) {
+                    spacer = thisWidth/1.2;
+                    thisItem.addClass("flipster-current").css("z-index", 5000).css("left", i*thisWidth+spacer+"px");
+                    totalLeft = ((i-1)*thisWidth)-spacer-$(".flipster-current")[0].clientWidth/2;
+                    spacer = (thisWidth/1.2)*2;
+                    continue;
+                }
+                thisItem.addClass("flipster-right").css("z-index", flipItems.length-i).css("left", i*thisWidth+spacer+"px");
+            }
     
+            var newLeftPos = -1*(totalLeft)+"px";
+            if (compatibility) {
+                var leftItems = $(".flipster-left");
+                var rightItems = $(".flipster-right");
+                $(".flipster-current").css("zoom", "1.0");
+                for (var i = 0; i < leftItems.length; i++) {
+                    $(leftItems[i]).css("zoom", (100-((leftItems.length-i)*5)+"%"));
+                }
+                for (var i = 0; i < rightItems.length; i++) {
+                    $(rightItems[i]).css("zoom", (100-((i+1)*5)+"%"));
+                }
+    
+                flipInner.animate({"left":newLeftPos}, 333);
+            }
+            else {
+                flipInner.css("left", newLeftPos);
+            }
+            //var end = new Date();
+            //console.log("Recalculated in: "+(end.valueOf()-start.valueOf())+"ms"); //keep track of performance.
+    
+        }
+        
+        function jump(to) {
+            if (to === "left" && _current > 0) {
+                _current--;
+            } else if (to === "right" && _current < flipItems.length - 1) {
+                _current++;
+            }
+            
+            if (typeof to === 'number') {
+                _current = to;
+            }
+    
+            center();
+        }
+    
+        function removeThrottle() {
+            _actionThrottle = 0;
+        }
+        
         function init() {
     
             //Browsers that don't support CSS3 transforms get compatibility:
-                var isIEmax8 = ('\v'=='v'); //IE <= 8
-                var checkIE = document.createElement("b");
-                checkIE.innerHTML = "<!--[if IE 9]><i></i><![endif]-->"; //IE 9
-                var isIE9 = checkIE.getElementsByTagName("i").length == 1;
-                if (isIEmax8 || isIE9) {
-                    compatibility = true;
-                    flipOuter.addClass("compatibility");
-                }
-            //find the middle element of the slideshow
-            if (!flipItems.length % 2) { 
-                _current = flipItems.length/2 + 1;
+            var isIEmax8 = ('\v' == 'v'); //IE <= 8
+            var checkIE = document.createElement("b");
+            checkIE.innerHTML = "<!--[if IE 9]><i></i><![endif]-->"; //IE 9
+            var isIE9 = checkIE.getElementsByTagName("i").length === 1;
+            if (isIEmax8 || isIE9) {
+                compatibility = true;
+                flipOuter.addClass("compatibility");
             }
-            else {
-                _current = Math.floor(flipItems.length/2);
+            //find the middle element of the slideshow
+            if (!flipItems.length % 2) {
+                _current = flipItems.length / 2 + 1;
+            } else {
+                _current = Math.floor(flipItems.length / 2);
             }
             
             //initialize containers
@@ -115,80 +186,7 @@
     
         }
         
-        function newHeight() {
-            //Adjust the height of the container <ul> element to contain but not clip the contents.
-            var centerHeight = parseInt($(".flipster-current")[0].clientHeight, 10);
-            //Account for reflection
-            var adjustedHeight = centerHeight + (centerHeight/3);
-            flipInner.height(adjustedHeight+"px");
-        };
-    
-        function jump(to) {
-            if (to === "left" && _current > 0) {
-                _current--;
-            }
-            else if (to === "right" && _current < flipItems.length-1) {
-                _current++;
-            }
-            
-            if (typeof to === 'number') {
-                _current = to;
-            }
-    
-            center();
-        }
-    
-        function center() {
-                //var start = new Date();
-                var spacer = 0;
-                var totalLeft = 0;
-    
-                for (var i = 0; i < flipItems.length; i++) {
-    
-                    var thisItem = $(flipItems[i]);
-                    var thisWidth = thisItem[0].clientWidth*config.sideSpacing;
-    
-                    thisItem.removeClass("flipster-left flipster-right flipster-current");
-    
-                    if (i < _current) {
-                        thisItem.addClass("flipster-left").css("z-index", i).css("left", i*thisWidth+"px");
-                        continue;
-                    }
-                    else if (i === _current) {
-                        spacer = thisWidth/1.2;
-                        thisItem.addClass("flipster-current").css("z-index", 5000).css("left", i*thisWidth+spacer+"px");
-                        totalLeft = ((i-1)*thisWidth)-spacer-$(".flipster-current")[0].clientWidth/2;
-                        spacer = (thisWidth/1.2)*2;
-                        continue;
-                    }
-                    thisItem.addClass("flipster-right").css("z-index", flipItems.length-i).css("left", i*thisWidth+spacer+"px");
-                }
-    
-            var newLeftPos = -1*(totalLeft)+"px";
-            if (compatibility) {
-                var leftItems = $(".flipster-left");
-                var rightItems = $(".flipster-right");
-                $(".flipster-current").css("zoom", "1.0");
-                for (var i = 0; i < leftItems.length; i++) {
-                    $(leftItems[i]).css("zoom", (100-((leftItems.length-i)*5)+"%"));
-                }
-                for (var i = 0; i < rightItems.length; i++) {
-                    $(rightItems[i]).css("zoom", (100-((i+1)*5)+"%"));
-                }
-    
-                flipInner.animate({"left":newLeftPos}, 333);
-            }
-            else {
-                flipInner.css("left", newLeftPos);
-            }
-            //var end = new Date();
-            //console.log("Recalculated in: "+(end.valueOf()-start.valueOf())+"ms"); //keep track of performance.
-    
-        }
-    
-        function removeThrottle() {
-            _actionThrottle = 0;
-        }
+        $(window).load(init);
     
         return this; //maintain chainability with other jQuery calls.
   };
