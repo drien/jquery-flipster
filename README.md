@@ -59,9 +59,10 @@ Also, if you run into a problem or have an idea, feel free to make an issue on t
 
 Version History
 ---------------
+- 0.2.1 - July 11 2013
+    - Fixed bug where all keyboard input was being suppressed.
 
 - 0.2.0 - June 27 2013
-
     - Added automatic height adjustment for the container element, which used to just overflow.
     - A few minor code improvements.
     - Added minified versions of the js and css files.
