@@ -127,7 +127,6 @@
             });
     
             $(window).on("keydown.flipster", function(e) {
-                e.preventDefault();
                 _actionThrottle++;
                 if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
                 
