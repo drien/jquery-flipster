@@ -56,15 +56,16 @@
             });
     
             $(window).on("keydown.flipster", function(e) {
-                e.preventDefault();
                 _actionThrottle++;
                 if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
                 
                 var code = e.which;
                 if (code == 37 && _current > 0) {
+                    e.preventDefault();
                     jump('left');
                 }
                 else if (code == 39 && _current < flipItems.length-1) {
+                    e.preventDefault();
                     jump('right');
                 }
             });
