@@ -8,7 +8,7 @@ At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL
 
 The slider can be operated with arrow keys, clicks, side to side scrolling or by touch on mobile devices. Wrapping the image elements in anchor tags also works to enable linking out from the current element.
 
-Live demo: http://a.drien.com/jquery-flipster/
+Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 
 **Tested in:**
 - [x] Chrome (latest)
@@ -180,8 +180,8 @@ To Do
 ---------------
 - [x] Coverflow Style
 - [x] Carousel Style
+- [x] Better Demos
 - [ ] Compatibility Testing (IE8/9...)
-- [ ] Better Demos
 - [ ] Flat style
 - [ ] Option for number of items to display while in Carousel view
 
@@ -195,6 +195,9 @@ Also, if you run into a problem or have an idea, feel free to make an issue on t
 
 Version History
 ---------------
+- 0.3.1 - July 18 2013
+		- Better demos ( See http://brokensquare.com/Code/jquery-flipster/demo/ )
+
 - 0.3.0 - July 17 2013
     - @shshaw forked from @drien's [jQuery.Flipster](https://github.com/drien/jquery-flipster)
     - Added new Carousel style! Shows 5 items at a time in a looping carousel

@@ -16,8 +16,7 @@
 </head>
 <body>
 <header id="Main-Header">
-	<a href="index.html" class="Button Small Float-Right">Return to Overview</a>
-	<h1>Flipster Demo: Basic setup</h1>
+	<h1>Flipster Demos </h1>
 </header>
 <div id="Main-Content">
 	<div class="Container">
@@ -25,26 +24,35 @@
 		<div class="flipster">
 		  <ul>
 		  	<li>
-		  		<img src="img/Sport-1.jpeg">
+		  		<a href="demo.html" class="Button Block">
+		  			<h1>All Features</h1>
+		  			<p>Showcase of all available features in both the Coverflow and Carousel styles</p>
+		  		</a>
 		  	</li>
-		  	<li>
-		  		<img src="img/Sport-2.jpeg">
-		  	</li>
-		  	<li>
-		  		<img src="img/Sport-3.jpeg">
-		  	</li>
-		  	<li>
-		  		<img src="img/Sport-4.jpeg">
-		  	</li>
-		  	<li>
-		  		<img src="img/Sport-7.jpeg">
-		  	</li>
-		  	<li>
-		  		<img src="img/Sport-5.jpeg">
-		  	</li>
-		  	<li>
-		  		<img src="img/Sport-6.jpeg">
-		  	</li>
+	  		<li>
+	  			<a href="demo2.html" class="Button Block">
+		  			<h1>Basic Setup</h1>
+		  			<p>The bare minimum code needed to implement Flipster</p>
+	  			</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo3.html" class="Button Block">
+		  			<h1>Carousel</h1>
+		  			<p>Roundabout carousel style!</p>
+		  		</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo4.html" class="Button Block">
+		  			<h1>Coverflow with Tab Navigation</h1>
+		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
+	  			</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo5.html" class="Button Block">
+		  			<h1>Carousel with Tab Navigation</h1>
+		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
+		  		</a>
+	  		</li>
 		  </ul>
 		</div>
 <!-- End Flipster List -->
@@ -57,7 +65,7 @@
 <script>
 <!--
 
-	$(function(){ $(".flipster").flipster(); });
+	$(function(){ $(".flipster").flipster({ style: 'carousel', start: 0 }); });
 
 -->
 </script>

@@ -188,6 +188,51 @@ body {
 .Text-Center {
   text-align: center;
 }
+.Float-Left {
+  float: left;
+  margin-right: 20px;
+}
+.Float-Right {
+  float: right;
+  margin-left: 20px;
+}
+.Button {
+  display: inline-block;
+  padding: 20px;
+  margin: 0;
+  background-color: #da0d25;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: #7a0715;
+  text-shadow: none;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 0;
+  -ms-transition: color 300ms ease, background-color 300ms ease;
+  -webkit-transition: color 300ms ease, background-color 300ms ease;
+  -moz-transition: color 300ms ease, background-color 300ms ease;
+  -o-transition: color 300ms ease, background-color 300ms ease;
+  transition: color 300ms ease, background-color 300ms ease;
+}
+.Button:hover,
+.Button:focus {
+  color: #7a0715;
+  background: #f22840;
+}
+.Button.Small {
+  padding: 5px 10px;
+  font-size: small;
+}
+.Button.Block {
+  padding: 20px 40px;
+  width: 300px;
+  height: 200px;
+}
+.Button h1 {
+  font-size: 2em;
+  line-height: 1.25em;
+  color: #FFF;
+}
 /* Custom Flipster Styles */
 .flipster {
   padding-bottom: 50px;
