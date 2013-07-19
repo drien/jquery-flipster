@@ -13,21 +13,21 @@ Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 **Tested in:**
 - [x] Chrome (latest)
 - [x] Safari & Mobile Safari (latest)
-- [x] Firefox (latest) _(no mousewheel)_
-- [x] IE 10
+- [x] Firefox (latest) _(no mousewheel, no box reflections)_
+- [x] IE 10 _(no mousewheel, no box reflections)_
 
 **Latest Version Untested in:**
 - [ ] IE 8 & 9 _(no 3D transforms, 'compatibility mode')_
+- [ ] IE <= 7
 - [ ] Android browsers
 - [ ] Opera
-- [ ] IE <= 7
 
 
 Basic Usage
 ---------------
 Include the CSS (ideally in the header)
 ````html
-<link rel="stylesheet" href="css/flipper.css">
+<link rel="stylesheet" href="css/flipster.css">
 ````
 
 Set up your image list like so:
@@ -44,7 +44,7 @@ Include the Javascript after jQuery (ideally at the bottom of the page before th
 ````html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="/js/jquery-1.10.2.min.js"><\/script>')</script>
-<script src="/js/jquery.flipper.js"></script>
+<script src="/js/jquery.flipster.js"></script>
 ````
 
 Initialize the script:
