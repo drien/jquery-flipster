@@ -7,8 +7,10 @@
     <meta name="description" content="Jquery-flipster : Responsive, CSS3, touch-enabled jQuery Coverflow plugin." />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="src/css/jquery.flipster.css">
+    <link rel="stylesheet" href="demo/css/demo.css">
 
-    <title>Jquery-flipster</title>
+    <title>Jquery.Flipster</title>
   </head>
 
   <body>
@@ -18,7 +20,7 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/shshaw/jquery-flipster">View on GitHub</a>
 
-          <h1 id="project_title">Jquery-flipster</h1>
+          <h1 id="project_title">Jquery.Flipster</h1>
           <h2 id="project_tagline">Responsive, CSS3, touch-enabled jQuery Coverflow plugin.</h2>
 
             <section id="downloads">
@@ -31,7 +33,50 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <p><em>Originally forked from <a href="https://github.com/drien/jquery-flipster">jQuery.Flipster</a> by <a href="https://github.com/drien" class="user-mention">@drien</a></em></p>
+      
+<h2>
+<a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h2>
+<!-- Flipster List -->	
+		<div class="flipster">
+		  <ul>
+		  	<li>
+		  		<a href="demo/demo.html" class="Button Block">
+		  			<h1>All Features</h1>
+		  			<p>Showcase of all available features in both the Coverflow and Carousel styles</p>
+		  		</a>
+		  	</li>
+	  		<li>
+	  			<a href="demo/demo2.html" class="Button Block">
+		  			<h1>Basic Setup</h1>
+		  			<p>The bare minimum code needed to implement Flipster</p>
+	  			</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo/demo3.html" class="Button Block">
+		  			<h1>Carousel</h1>
+		  			<p>Roundabout carousel style!</p>
+		  		</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo/demo4.html" class="Button Block">
+		  			<h1>Coverflow with Tab Navigation</h1>
+		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
+	  			</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo/demo5.html" class="Button Block">
+		  			<h1>Carousel with Tab Navigation</h1>
+		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
+		  		</a>
+	  		</li>
+		  </ul>
+		</div>
+<!-- End Flipster List -->      
+     
+           
+<h2>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2> 
+<p><em>Originally forked from <a href="https://github.com/drien/jquery-flipster">jQuery.Flipster</a> by <a href="https://github.com/drien" class="user-mention">@drien</a></em></p>
 
 <p>jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect and now features a 'carousel' effect! It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. It degrades (vaguely) gracefully, falling back to being just as flat and boring as the browsers that don't support 3D transforms. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.</p>
 
@@ -320,21 +365,30 @@
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Jquery-flipster maintained by <a href="https://github.com/shshaw">shshaw</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">Jquery.Flipster maintained by <a href="https://github.com/shshaw">shshaw</a></p>
       </footer>
     </div>
 
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-6412794-4");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="src/js/jquery.flipster.js"></script>
+<script>
+<!--
+
+	$(function(){ $(".flipster").flipster({ style: 'carousel', start: 0 }); });
+
+-->
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6412794-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
 
 
   </body>

@@ -237,6 +237,354 @@ body {
 .flipster {
   padding-bottom: 50px;
 }
+.flipster-test .flip-items {
+  -ms-transition: all 400ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  position: relative;
+  padding-top: 2%;
+  padding-bottom: 5%;
+}
+.flipster-test .flip-item {
+  display: block;
+  -ms-transition: all 200ms ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -o-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  perspective: 600px;
+  position: absolute;
+  width: 30%;
+}
+.flipster-test .flip-content {
+  background: #000000;
+  -ms-transition: all 400ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  -webkit-box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
+}
+.flipster-test .flip-past .flip-content {
+  -webkit-transform: rotateY(50deg) scale(0.5) translateX(20%);
+  -moz-transform: rotateY(50deg) scale(0.5) translateX(20%);
+  -o-transform: rotateY(50deg) scale(0.5) translateX(20%);
+  -ms-transform: rotateY(50deg) scale(0.5) translateX(20%);
+  transform: rotateY(50deg) scale(0.5) translateX(20%);
+  -webkit-opacity: 50;
+  -moz-opacity: 50;
+  opacity: 50;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.flipster-test .flip-future .flip-content {
+  -webkit-transform: rotateY(-50deg) scale(0.5) translateX(-20%);
+  -moz-transform: rotateY(-50deg) scale(0.5) translateX(-20%);
+  -o-transform: rotateY(-50deg) scale(0.5) translateX(-20%);
+  -ms-transform: rotateY(-50deg) scale(0.5) translateX(-20%);
+  transform: rotateY(-50deg) scale(0.5) translateX(-20%);
+  -webkit-opacity: 50;
+  -moz-opacity: 50;
+  opacity: 50;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.flipster-test .flip-prev .flip-content {
+  -webkit-transform: scale(0.7) rotateY(50deg);
+  -moz-transform: scale(0.7) rotateY(50deg);
+  -o-transform: scale(0.7) rotateY(50deg);
+  -ms-transform: scale(0.7) rotateY(50deg);
+  transform: scale(0.7) rotateY(50deg);
+  -webkit-opacity: 75;
+  -moz-opacity: 75;
+  opacity: 75;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  -webkit-transition-delay: 100ms;
+  -moz-transition-delay: 100ms;
+  -o-transition-delay: 100ms;
+  transition-delay: 100ms;
+}
+.flipster-test .flip-next .flip-content {
+  -webkit-transform: scale(0.7) rotateY(-50deg);
+  -moz-transform: scale(0.7) rotateY(-50deg);
+  -o-transform: scale(0.7) rotateY(-50deg);
+  -ms-transform: scale(0.7) rotateY(-50deg);
+  transform: scale(0.7) rotateY(-50deg);
+  -webkit-opacity: 75;
+  -moz-opacity: 75;
+  opacity: 75;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  -webkit-transition-delay: 100ms;
+  -moz-transition-delay: 100ms;
+  -o-transition-delay: 100ms;
+  transition-delay: 100ms;
+}
+.flipster-test .flip-current .flip-content {
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
+  transform: rotateY(0deg);
+}
+.flipster-test .flip-hidden {
+  visibility: hidden;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-transition-delay: 200ms;
+  -moz-transition-delay: 200ms;
+  -o-transition-delay: 200ms;
+  transition-delay: 200ms;
+}
+.flipster-test .flip-hidden.flip-past .flip-content {
+  -webkit-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  -moz-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  -o-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  -ms-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  transform: rotateY(-25deg) scale(0.25) translateX(300%);
+}
+.flipster-test .flip-hidden.flip-future .flip-content {
+  -webkit-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  -moz-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  -o-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  -ms-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  transform: rotateY(25deg) scale(0.25) translateX(-300%);
+}
+.flipster-carousel2 .flip-items {
+  -ms-transition: all 400ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  position: relative;
+  padding-top: 2%;
+  padding-bottom: 5%;
+}
+.flipster-carousel2 .flip-item {
+  display: block;
+  -ms-transition: all 200ms ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -o-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  perspective: 600px;
+  position: absolute;
+  width: 30%;
+}
+.flipster-carousel2 .flip-content {
+  background: #000000;
+  -ms-transition: all 400ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  -webkit-box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
+}
+.flipster-carousel2 .flip-past .flip-content {
+  -webkit-transform: rotateY(50deg) scale(0.5);
+  -moz-transform: rotateY(50deg) scale(0.5);
+  -o-transform: rotateY(50deg) scale(0.5);
+  -ms-transform: rotateY(50deg) scale(0.5);
+  transform: rotateY(50deg) scale(0.5);
+  -webkit-opacity: 50;
+  -moz-opacity: 50;
+  opacity: 50;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.flipster-carousel2 .flip-future .flip-content {
+  -webkit-transform: rotateY(-50deg) scale(0.5);
+  -moz-transform: rotateY(-50deg) scale(0.5);
+  -o-transform: rotateY(-50deg) scale(0.5);
+  -ms-transform: rotateY(-50deg) scale(0.5);
+  transform: rotateY(-50deg) scale(0.5);
+  -webkit-opacity: 50;
+  -moz-opacity: 50;
+  opacity: 50;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.flipster-carousel2 .flip-prev .flip-content {
+  -webkit-transform: scale(0.7) rotateY(50deg);
+  -moz-transform: scale(0.7) rotateY(50deg);
+  -o-transform: scale(0.7) rotateY(50deg);
+  -ms-transform: scale(0.7) rotateY(50deg);
+  transform: scale(0.7) rotateY(50deg);
+  -webkit-opacity: 75;
+  -moz-opacity: 75;
+  opacity: 75;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  -webkit-transition-delay: 100ms;
+  -moz-transition-delay: 100ms;
+  -o-transition-delay: 100ms;
+  transition-delay: 100ms;
+}
+.flipster-carousel2 .flip-next .flip-content {
+  -webkit-transform: scale(0.7) rotateY(-50deg);
+  -moz-transform: scale(0.7) rotateY(-50deg);
+  -o-transform: scale(0.7) rotateY(-50deg);
+  -ms-transform: scale(0.7) rotateY(-50deg);
+  transform: scale(0.7) rotateY(-50deg);
+  -webkit-opacity: 75;
+  -moz-opacity: 75;
+  opacity: 75;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  -webkit-transition-delay: 100ms;
+  -moz-transition-delay: 100ms;
+  -o-transition-delay: 100ms;
+  transition-delay: 100ms;
+}
+.flipster-carousel2 .flip-current .flip-content {
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
+  transform: rotateY(0deg);
+}
+.flipster-carousel2 .flip-hidden {
+  visibility: hidden;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-transition-delay: 200ms;
+  -moz-transition-delay: 200ms;
+  -o-transition-delay: 200ms;
+  transition-delay: 200ms;
+}
+.flipster-carousel2 .flip-hidden.flip-past .flip-content {
+  -webkit-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  -moz-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  -o-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  -ms-transform: rotateY(-25deg) scale(0.25) translateX(300%);
+  transform: rotateY(-25deg) scale(0.25) translateX(300%);
+}
+.flipster-carousel2 .flip-hidden.flip-future .flip-content {
+  -webkit-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  -moz-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  -o-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  -ms-transform: rotateY(25deg) scale(0.25) translateX(-300%);
+  transform: rotateY(25deg) scale(0.25) translateX(-300%);
+}
+.flipster-flat .flip-items {
+  -ms-transition: all 400ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  position: relative;
+  padding-top: 2%;
+  padding-bottom: 5%;
+}
+.flipster-flat .flip-item {
+  display: block;
+  -ms-transition: all 200ms ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -o-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  perspective: 800px;
+  position: absolute;
+  width: 30%;
+}
+.flipster-flat .flip-content {
+  -ms-transition: all 400ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  -webkit-box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
+}
+.flipster-flat .flip-past {
+  -webkit-opacity: 50;
+  -moz-opacity: 50;
+  opacity: 50;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -webkit-transform: scale(0.4);
+  -moz-transform: scale(0.4);
+  -o-transform: scale(0.4);
+  -ms-transform: scale(0.4);
+  transform: scale(0.4);
+}
+.flipster-flat .flip-future {
+  -webkit-opacity: 50;
+  -moz-opacity: 50;
+  opacity: 50;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -webkit-transform: scale(0.4);
+  -moz-transform: scale(0.4);
+  -o-transform: scale(0.4);
+  -ms-transform: scale(0.4);
+  transform: scale(0.4);
+}
+.flipster-flat .flip-prev {
+  -webkit-opacity: 75;
+  -moz-opacity: 75;
+  opacity: 75;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  -webkit-transform: scale(0.6);
+  -moz-transform: scale(0.6);
+  -o-transform: scale(0.6);
+  -ms-transform: scale(0.6);
+  transform: scale(0.6);
+}
+.flipster-flat .flip-next {
+  -webkit-opacity: 75;
+  -moz-opacity: 75;
+  opacity: 75;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  -webkit-transform: scale(0.6);
+  -moz-transform: scale(0.6);
+  -o-transform: scale(0.6);
+  -ms-transform: scale(0.6);
+  transform: scale(0.6);
+}
+.flipster-flat .flip-current {
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
+  transform: rotateY(0deg);
+}
+.flipster-flat .flip-hidden {
+  visibility: hidden;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
 .pull-right {
   float: right;
 }
