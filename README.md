@@ -1,6 +1,5 @@
 jQuery.Flipster
 ===============
-_Originally forked from [jQuery.Flipster](https://github.com/drien/jquery-flipster) by @drien_
 
 jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect and now features a 'carousel' effect! It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. It degrades (vaguely) gracefully, falling back to being just as flat and boring as the browsers that don't support 3D transforms. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.
 
@@ -192,11 +191,12 @@ If you can make this better, don't be shy! I'll be happy to merge pull requests 
 
 Also, if you run into a problem or have an idea, feel free to make an issue on the github project and I'll get on it when I can!
 
+Special thanks to @shshaw for major additions in version 0.3!
 
 Version History
 ---------------
 - 0.3.1 - July 18 2013
-		- Better demos ( See http://brokensquare.com/Code/jquery-flipster/demo/ )
+    - Better demos ( See http://brokensquare.com/Code/jquery-flipster/demo/ )
 
 - 0.3.0 - July 17 2013
     - @shshaw forked from @drien's [jQuery.Flipster](https://github.com/drien/jquery-flipster)
