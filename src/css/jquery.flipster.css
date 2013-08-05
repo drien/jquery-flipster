@@ -44,7 +44,7 @@
 }
 .flip-item img {
   display: block;
-  max-width: 100%;
+  width: 100%;
 }
 /* @end */
 /* @group Coverflow Style */
@@ -74,7 +74,7 @@
   -moz-perspective: 800px;
   perspective: 800px;
   position: absolute;
-  width: 35%;
+  width: 30%;
 }
 .flipster-coverflow .flip-content {
   -webkit-transition: all 350ms ease-in-out;
@@ -104,6 +104,12 @@
   -o-transform: rotateY(0deg);
   -ms-transform: rotateY(0deg);
   transform: rotateY(0deg);
+}
+.flipster-coverflow .flip-hidden {
+  visibility: hidden;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
 }
 /* @end */
 /* @group Flip Items */
