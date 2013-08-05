@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Jquery-flipster : Responsive, CSS3, touch-enabled jQuery Coverflow plugin." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="src/css/jquery.flipster.css">
+    <link rel="stylesheet" href="demo/css/demo.css">
+
+    <title>Jquery.Flipster</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/shshaw/jquery-flipster">View on GitHub</a>
+
+          <h1 id="project_title">Jquery.Flipster</h1>
+          <h2 id="project_tagline">Responsive, CSS3, touch-enabled jQuery Coverflow plugin.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/shshaw/jquery-flipster/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/shshaw/jquery-flipster/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+      
+<h2>
+<a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h2>
+<!-- Flipster List -->	
+		<div class="flipster">
+		  <ul>
+		  	<li>
+		  		<a href="demo/demo.html" class="Button Block">
+		  			<h1>All Features</h1>
+		  			<p>Showcase of all available features in both the Coverflow and Carousel styles</p>
+		  		</a>
+		  	</li>
+	  		<li>
+	  			<a href="demo/demo2.html" class="Button Block">
+		  			<h1>Basic Setup</h1>
+		  			<p>The bare minimum code needed to implement Flipster</p>
+	  			</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo/demo3.html" class="Button Block">
+		  			<h1>Carousel</h1>
+		  			<p>Roundabout carousel style!</p>
+		  		</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo/demo4.html" class="Button Block">
+		  			<h1>Coverflow with Tab Navigation</h1>
+		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
+	  			</a>
+	  		</li>
+	  		<li>
+	  			<a href="demo/demo5.html" class="Button Block">
+		  			<h1>Carousel with Tab Navigation</h1>
+		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
+		  		</a>
+	  		</li>
+		  </ul>
+		</div>
+<!-- End Flipster List -->      
+     
+           
+<h2>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2> 
+<p><em>Originally forked from <a href="https://github.com/drien/jquery-flipster">jQuery.Flipster</a> by <a href="https://github.com/drien" class="user-mention">@drien</a></em></p>
+
+<p>jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect and now features a 'carousel' effect! It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. It degrades (vaguely) gracefully, falling back to being just as flat and boring as the browsers that don't support 3D transforms. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.</p>
+
+<p>At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL MY LIFE???'. I would be if I were you. So your project needs some sweet, sweet coverflow loving. You've come to the right place.</p>
+
+<p>The slider can be operated with arrow keys, clicks, side to side scrolling or by touch on mobile devices. Wrapping the image elements in anchor tags also works to enable linking out from the current element.</p>
+
+<p>Live demo: <a href="http://brokensquare.com/Code/jquery-flipster/demo/">http://brokensquare.com/Code/jquery-flipster/demo/</a></p>
+
+<p><strong>Tested in:</strong></p>
+
+<ul>
+<li>[x] Chrome (latest)</li>
+<li>[x] Safari &amp; Mobile Safari (latest)</li>
+<li>[x] Firefox (latest) <em>(no mousewheel, no box reflections)</em>
+</li>
+<li>[x] IE 10 <em>(no mousewheel, no box reflections)</em>
+</li>
+</ul><p><strong>Latest Version Untested in:</strong></p>
+
+<ul>
+<li>[ ] IE 8 &amp; 9 <em>(no 3D transforms, 'compatibility mode')</em>
+</li>
+<li>[ ] IE &lt;= 7</li>
+<li>[ ] Android browsers</li>
+<li>[ ] Opera</li>
+</ul><h2>
+<a name="basic-usage" class="anchor" href="#basic-usage"><span class="octicon octicon-link"></span></a>Basic Usage</h2>
+
+<p>Include the CSS (ideally in the header)</p>
+
+<div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"css/flipster.css"</span><span class="nt">&gt;</span>
+</pre></div>
+
+<p>Set up your image list like so:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"flipster"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="na">alt=</span><span class="s">""</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+        ...
+    <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>Include the Javascript after jQuery (ideally at the bottom of the page before the <code>&lt;/body&gt;</code> tag</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span><span class="nb">window</span><span class="p">.</span><span class="nx">jQuery</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;script src="/js/jquery-1.10.2.min.js"&gt;&lt;\/script&gt;'</span><span class="p">)</span><span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/js/jquery.flipster.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>Initialize the script:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'.flipster'</span><span class="p">).</span><span class="nx">flipster</span><span class="p">();</span> <span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<ul>
+<li>
+<code>itemContainer</code> Container for the items to flipsterfy. <em>Default is 'ul'</em>
+</li>
+<li>
+<code>itemSelector</code> Children of itemContainer to flipsterfy. <em>Default is 'li'</em>
+</li>
+<li>
+<code>style</code> Switch between 'coverflow' or 'carousel' display styles <em>Default is 'coverflow'</em>
+</li>
+<li>
+<code>start</code> Set to a number to have Flipster start centered on that item, or set to <em>'center'</em> to start in the middle</li>
+<li>
+<code>enableKeyboard</code> If true, the left and right arrow keys will navigate through the list. <em>Default is 'true'</em>
+</li>
+<li>
+<code>enableMousewheel</code> If true, the mousewheel will scroll through the list. <em>Default is 'true'</em>
+</li>
+<li>
+<code>enableTouch</code> If true, touch swipes will scroll through the list. <em>Default is 'true'</em>
+</li>
+<li>
+<code>enableNav</code> If true, Flipster will insert an unordered list of the items' categories and titles to allow for direct navigation and give you a visual walk through of the items. <em>Default is 'false'</em>
+</li>
+<li>
+<code>enableNavButtons</code> If true, Flipster will insert "Previous" and "Next" links to go left or right in the list. <em>Default is 'false'</em>
+</li>
+</ul><h2>
+<a name="callbacks" class="anchor" href="#callbacks"><span class="octicon octicon-link"></span></a>Callbacks</h2>
+
+<ul>
+<li>
+<code>onItemSwitch</code> Called whenever an item is switched</li>
+</ul><h2>
+<a name="advanced-usage" class="anchor" href="#advanced-usage"><span class="octicon octicon-link"></span></a>Advanced Usage</h2>
+
+<h3>
+<a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<p>If you want to change options, add the parameters when initializing the script. Default values are shown below</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> 
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'.flipster'</span><span class="p">).</span><span class="nx">flipster</span><span class="p">({</span>
+        <span class="nx">itemContainer</span><span class="o">:</span>          <span class="s1">'ul'</span><span class="p">,</span> <span class="c1">// Container for the flippin' items.</span>
+        <span class="nx">itemSelector</span><span class="o">:</span>               <span class="s1">'li'</span><span class="p">,</span> <span class="c1">// Selector for children of itemContainer to flip</span>
+        <span class="nx">style</span><span class="o">:</span>                          <span class="s1">'coverflow'</span><span class="p">,</span> <span class="c1">// Switch between 'coverflow' or 'carousel' display styles</span>
+        <span class="nx">start</span><span class="o">:</span>                          <span class="s1">'center'</span><span class="p">,</span> <span class="c1">// Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.</span>
+
+        <span class="nx">enableKeyboard</span><span class="o">:</span>         <span class="kc">true</span><span class="p">,</span> <span class="c1">// Enable left/right arrow navigation</span>
+        <span class="nx">enableMousewheel</span><span class="o">:</span>       <span class="kc">true</span><span class="p">,</span> <span class="c1">// Enable scrollwheel navigation (up = left, down = right)</span>
+        <span class="nx">enableTouch</span><span class="o">:</span>                <span class="kc">true</span><span class="p">,</span> <span class="c1">// Enable swipe navigation for touch devices</span>
+
+        <span class="nx">enableNav</span><span class="o">:</span>                  <span class="kc">false</span><span class="p">,</span> <span class="c1">// If true, flipster will insert an unordered list of the slides</span>
+        <span class="nx">enableNavButtons</span><span class="o">:</span>       <span class="kc">false</span><span class="p">,</span> <span class="c1">// If true, flipster will insert Previous / Next buttons</span>
+
+        <span class="nx">onItemSwitch</span><span class="o">:</span>               <span class="kd">function</span><span class="p">(){},</span> <span class="c1">// Callback function when items are switches</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="navigation" class="anchor" href="#navigation"><span class="octicon octicon-link"></span></a>Navigation</h3>
+
+<p>Flipster can build an unordered list of links to the slides, which can come in handy for some implementations. Include the <code>id</code> and <code>title</code> attribute on each item and set <code>enableNav: true</code> in the Javascript parameters.</p>
+
+<p>An item list like:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"flipster"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"flip-items"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"Item-1"</span> <span class="na">title=</span><span class="s">"Item 1 Title"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="na">alt=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"Item-2"</span> <span class="na">title=</span><span class="s">"Item 2 Title"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        ...
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>will output:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"flipster-nav"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-item no-category"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#Item-1"</span> <span class="na">class=</span><span class="s">"flip-nav-item-link"</span><span class="nt">&gt;</span>Item 1 Title<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-item no-category"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#Item-2"</span> <span class="na">class=</span><span class="s">"flip-nav-item-link"</span><span class="nt">&gt;</span>Item 2 Title<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>...
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+
+<p>in the container.</p>
+
+<h4>
+<a name="categories" class="anchor" href="#categories"><span class="octicon octicon-link"></span></a>Categories</h4>
+
+<p>The navigation list can also group items into categories. Include the <code>data-flip-category</code> along with the <code>id</code> and <code>title</code> attributes with <code>enableNav: true</code> in the Javascript parameters.</p>
+
+<p>An item list like:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"flipster"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"flip-items"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"Item-1"</span> <span class="na">title=</span><span class="s">"Item 1 Title"</span> <span class="na">data-flip-category=</span><span class="s">"Category 1"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="na">alt=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"Item-2"</span> <span class="na">title=</span><span class="s">"Item 2 Title"</span> <span class="na">data-flip-category=</span><span class="s">"Category 1"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"Item-3"</span> <span class="na">title=</span><span class="s">"Item 3 Title"</span> <span class="na">data-flip-category=</span><span class="s">"Category 2"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"Item-4"</span> <span class="na">title=</span><span class="s">"Item 4 Title"</span> <span class="na">data-flip-category=</span><span class="s">"Category 2"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"Item-5"</span> <span class="na">title=</span><span class="s">"Item 5 Title"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>will output:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"flipster-nav"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-category"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"flip-nav-category-link"</span> <span class="na">data-flip-category=</span><span class="s">"Category 1"</span><span class="nt">&gt;</span>Category 1<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"flip-nav-items"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-item"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#Item-1"</span> <span class="na">class=</span><span class="s">"flip-nav-item-link"</span><span class="nt">&gt;</span>Item 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+            <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-item"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#Item-2"</span> <span class="na">class=</span><span class="s">"flip-nav-item-link"</span><span class="nt">&gt;</span>Item 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-category"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"flip-nav-category-link"</span> <span class="na">data-flip-category=</span><span class="s">"Category 2"</span><span class="nt">&gt;</span>Category 2<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"flip-nav-items"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-item"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#Item-3"</span> <span class="na">class=</span><span class="s">"flip-nav-item-link"</span><span class="nt">&gt;</span>Item 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+            <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-item"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#Item-4"</span> <span class="na">class=</span><span class="s">"flip-nav-item-link"</span><span class="nt">&gt;</span>Item 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"flip-nav-item no-category"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#Item-5"</span> <span class="na">class=</span><span class="s">"flip-nav-item-link"</span><span class="nt">&gt;</span>Item 5 Title<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+
+<p>in the container.</p>
+
+<h2>
+<a name="to-do" class="anchor" href="#to-do"><span class="octicon octicon-link"></span></a>To Do</h2>
+
+<ul>
+<li>[x] Coverflow Style</li>
+<li>[x] Carousel Style</li>
+<li>[x] Better Demos</li>
+<li>[ ] Compatibility Testing (IE8/9...)</li>
+<li>[ ] Flat style</li>
+<li>[ ] Option for number of items to display while in Carousel view</li>
+</ul><h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>If you can make this better, don't be shy! I'll be happy to merge pull requests as long as they keep the project lightweight, simple to set up and free of dependencies beyond jQuery.</p>
+
+<p>Also, if you run into a problem or have an idea, feel free to make an issue on the github project and I'll get on it when I can!</p>
+
+<h2>
+<a name="version-history" class="anchor" href="#version-history"><span class="octicon octicon-link"></span></a>Version History</h2>
+
+<ul>
+<li><p>0.3.1 - July 18 2013
+    - Better demos ( See <a href="http://brokensquare.com/Code/jquery-flipster/demo/">http://brokensquare.com/Code/jquery-flipster/demo/</a> )</p></li>
+<li>
+<p>0.3.0 - July 17 2013</p>
+
+<ul>
+<li>
+<a href="https://github.com/shshaw" class="user-mention">@shshaw</a> forked from <a href="https://github.com/drien" class="user-mention">@drien</a>'s <a href="https://github.com/drien/jquery-flipster">jQuery.Flipster</a>
+</li>
+<li>Added new Carousel style! Shows 5 items at a time in a looping carousel</li>
+<li>Added <code>itemContainer</code>, <code>itemSelector</code>, <code>style</code>, and <code>start</code> options for basic configuration</li>
+<li>Added <code>enableKeyboard</code>, <code>enableMousewheel</code>, and <code>enableTouch</code> options to enable/disable features</li>
+<li>Added <code>enableNav</code> and <code>enableNavButtons</code> options to insert controls into the container</li>
+<li>Added <code>onItemSwitch</code> callback</li>
+</ul>
+</li>
+<li>
+<p>0.2.1 - July 11 2013</p>
+
+<ul>
+<li>Fixed bug where all keyboard input was being suppressed.</li>
+</ul>
+</li>
+<li>
+<p>0.2.0 - June 27 2013</p>
+
+<ul>
+<li>Added automatic height adjustment for the container element, which used to just overflow.</li>
+<li>A few minor code improvements.</li>
+<li>Added minified versions of the js and css files.</li>
+</ul>
+</li>
+<li>
+<p>0.1.3 - March 25 2013 </p>
+
+<ul>
+<li>Strong men also cry, strong men also cry.</li>
+</ul>
+</li>
+<li>
+<p>0.1.0 - March 25 2013</p>
+
+<ul>
+<li>Improvements in fallbacks for old version of IE and basic fixes to make it actually work.</li>
+</ul>
+</li>
+<li>
+<p>0.0.0 - March 22 2013</p>
+
+<ul>
+<li>LIFE ON THE BLEEDING EDGE BABY</li>
+</ul>
+</li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>© 2013 Adrien Delessert</p>
+
+<p>Licensed for use under the WTFPL. <a href="http://www.wtfpl.net/">http://www.wtfpl.net/</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Jquery.Flipster maintained by <a href="https://github.com/shshaw">shshaw</a></p>
+      </footer>
+    </div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="src/js/jquery.flipster.js"></script>
+<script>
+<!--
+
+	$(function(){ $(".flipster").flipster({ style: 'carousel', start: 0 }); });
+
+-->
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6412794-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+
+  </body>
+</html>
