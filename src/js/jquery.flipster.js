@@ -163,6 +163,8 @@ $.fn.flipster = function(options) {
 				var currentWidth = currentItem.outerWidth();
 				var currentLeft = (_flipItems.index(currentItem)*currentWidth)/2 +spacer/2;
 				
+				_flipItems.removeClass("flip-hidden");
+				
 				for (i = 0; i < _flipItems.length; i++) {
 					var thisItem = $(_flipItems[i]);
 					var thisWidth = thisItem.outerWidth();
@@ -241,7 +243,7 @@ $.fn.flipster = function(options) {
 /* Untested Compatibility */
 				
 			// Basic setup
-			_flipster.addClass("flipster flipster-active flipster-"+settings.style).css("visiblity","hidden");
+			_flipster.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
 			_flipItemsOuter = _flipster.find(settings.itemContainer).addClass("flip-items");
 			_flipItems = _flipItemsOuter.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
 			
@@ -282,7 +284,7 @@ $.fn.flipster = function(options) {
 			
 			
 			// Necessary to start flipster invisible and then fadeIn so height/width can be set accurately after page load
-			_flipster.hide().css("visiblity","visible").fadeIn(400,function(){ center(); });
+			_flipster.hide().css("visibility","visible").fadeIn(400,function(){ center(); });
 			
 			
 			// Attach event bindings.
