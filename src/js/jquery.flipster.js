@@ -15,6 +15,9 @@ $.fn.flipster = function(options) {
 		enableNavButtons:		false, // If true, flipster will insert Previous / Next buttons
 		
 		onItemSwitch:				function(){}, // Callback function when items are switches
+        onCurrentItemClick:         function(){}, // Callback function when current item is clicked.
+        onCurrentItemMouseEnter:    function(){}, // Callback function when mouse enters current item area.
+        onCurrentItemMouseLeave:    function(){} // Callback function when mouse leaves current item area.		
 	};
 	var settings = $.extend({}, defaults, options);
 	var win = $(window);
@@ -297,8 +300,22 @@ $.fn.flipster = function(options) {
 			
 			// Attach event bindings.
 			win.resize(function(){ resize(); center(); });
-			
-			
+
+            // Calls click action handler for current item.
+            _flipItems.on('click', function () {
+                if ($(this).hasClass("flip-current"))
+                    settings.onCurrentItemClick.call(this);
+            });
+
+            // Calls mouseEnter and mouseLeave handler for current item.
+            _flipItems.hover(function () {
+                if ($(this).hasClass("flip-current"))
+                    settings.onCurrentItemMouseEnter.call(this);
+            }, function () {
+                if ($(this).hasClass("flip-current"))
+                    settings.onCurrentItemMouseLeave.call(this);
+            });
+
 			// Navigate directly to an item by clicking
 			_flipItems.on("click", function(e) {
 				if ( !$(this).hasClass("flip-current") ) { e.preventDefault(); }
