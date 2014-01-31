@@ -15,6 +15,7 @@ $.fn.flipster = function(options) {
 		enableNavButtons:		false, // If true, flipster will insert Previous / Next buttons
 		
 		onItemSwitch:				function(){}, // Callback function when items are switches
+		disableRotation: false
 	};
 	var settings = $.extend({}, defaults, options);
 	var win = $(window);
@@ -36,21 +37,13 @@ $.fn.flipster = function(options) {
 		function removeThrottle() {
 			_actionThrottle = 0;
 		}
-
-        function resize() {
-            _flipItemsOuter.height(calculateBiggestFlipItemHeight());
-            _flipster.css("height","auto");
-            if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
-        }
-
-        function calculateBiggestFlipItemHeight() {
-            var biggestHeight = 0;
-            _flipItems.each(function() {
-                if ($(this).height() > biggestHeight) biggestHeight = $(this).height();
-            });
-            return biggestHeight;
-        }
-
+			
+		function resize() {
+			_flipItemsOuter.css("height",_flipItems.height());
+			_flipster.css("height","auto");
+			if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
+		}
+		
 		function buildNav() {
 			if ( settings.enableNav && _flipItems.length > 1 ) {
 				var navCategories = [],
@@ -252,6 +245,8 @@ $.fn.flipster = function(options) {
 				
 			// Basic setup
 			_flipster.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
+			if (settings.disableRotation)
+			  _flipster.addClass('no-rotate');
 			_flipItemsOuter = _flipster.find(settings.itemContainer).addClass("flip-items");
 			_flipItems = _flipItemsOuter.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
 			
