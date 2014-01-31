@@ -37,13 +37,21 @@ $.fn.flipster = function(options) {
 		function removeThrottle() {
 			_actionThrottle = 0;
 		}
-			
-		function resize() {
-			_flipItemsOuter.css("height",_flipItems.height());
-			_flipster.css("height","auto");
-			if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
-		}
-		
+
+        function resize() {
+            _flipItemsOuter.height(calculateBiggestFlipItemHeight());
+            _flipster.css("height","auto");
+            if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
+        }
+
+        function calculateBiggestFlipItemHeight() {
+            var biggestHeight = 0;
+            _flipItems.each(function() {
+                if ($(this).height() > biggestHeight) biggestHeight = $(this).height();
+            });
+            return biggestHeight;
+        }
+
 		function buildNav() {
 			if ( settings.enableNav && _flipItems.length > 1 ) {
 				var navCategories = [],
