@@ -101,6 +101,23 @@
   -ms-transform: rotateY(-55deg) scale(0.75);
   transform: rotateY(-55deg) scale(0.75);
 }
+
+.flipster-coverflow.no-rotate .flip-past .flip-content {
+  -webkit-transform: scale(0.75);
+  -moz-transform: scale(0.75);
+  -o-transform:scale(0.75);
+  -ms-transform:scale(0.75);
+  transform: scale(0.75);
+}
+.flipster-coverflow.no-rotate .flip-future .flip-content {
+  -webkit-transform: scale(0.75);
+  -moz-transform: scale(0.75);
+  -o-transform: scale(0.75);
+  -ms-transform: scale(0.75);
+  transform: scale(0.75);
+}
+
+
 .flipster-coverflow .flip-current .flip-content {
   -webkit-transform: rotateY(0deg);
   -moz-transform: rotateY(0deg);
@@ -152,6 +169,13 @@
   -ms-transform: translateX(-80%) translateZ(0) rotateY(80deg) scale(0.65);
   transform: translateX(-80%) translateZ(0) rotateY(80deg) scale(0.65);
 }
+.flipster-carousel.no-rotate .flip-past {
+  -webkit-transform: translateX(-80%) translateZ(0)  scale(0.65);
+  -moz-transform: translateX(-80%) translateZ(0)  scale(0.65);
+  -o-transform: translateX(-80%) translateZ(0)  scale(0.65);
+  -ms-transform: translateX(-80%) translateZ(0) scale(0.65);
+  transform: translateX(-80%) translateZ(0) scale(0.65);
+}
 .no-csstransforms3d .flipster-carousel .flip-past {
   -webkit-transform: translateX(-56%) scale(0.5);
   -moz-transform: translateX(-56%) scale(0.5);
@@ -172,6 +196,15 @@
   -ms-transform: translateX(80%) translateZ(0) rotateY(-80deg) scale(0.65);
   transform: translateX(80%) translateZ(0) rotateY(-80deg) scale(0.65);
 }
+
+.flipster-carousel.no-rotate .flip-future {
+  -webkit-transform: translateX(80%) translateZ(0) scale(0.65);
+  -moz-transform: translateX(80%) translateZ(0) scale(0.65);
+  -o-transform: translateX(80%) translateZ(0) scale(0.65);
+  -ms-transform: translateX(80%) translateZ(0) scale(0.65);
+  transform: translateX(80%) translateZ(0) scale(0.65);
+}
+
 .no-csstransforms3d .flipster-carousel .flip-future {
   -webkit-transform: translateX(56%) scale(0.5);
   -moz-transform: translateX(56%) scale(0.5);
@@ -191,6 +224,13 @@
   -o-transform: translateX(-60%) translateZ(0) rotateY(80deg) scale(0.8);
   -ms-transform: translateX(-60%) translateZ(0) rotateY(80deg) scale(0.8);
   transform: translateX(-60%) translateZ(0) rotateY(80deg) scale(0.8);
+}
+.flipster-carousel.no-rotate .flip-prev {
+  -webkit-transform: translateX(-60%) translateZ(0) scale(0.8);
+  -moz-transform: translateX(-60%) translateZ(0) scale(0.8);
+  -o-transform: translateX(-60%) translateZ(0) scale(0.8);
+  -ms-transform: translateX(-60%) translateZ(0) scale(0.8);
+  transform: translateX(-60%) translateZ(0) scale(0.8);
 }
 .no-csstransforms3d .flipster-carousel .flip-prev {
   -webkit-transform: translateX(-24%) scale(0.75);
@@ -212,6 +252,14 @@
   -ms-transform: translateX(60%) translateZ(0) rotateY(-80deg) scale(0.8);
   transform: translateX(60%) translateZ(0) rotateY(-80deg) scale(0.8);
 }
+.flipster-carousel.no-rotate .flip-next {
+  -webkit-transform: translateX(60%) translateZ(0)  scale(0.8);
+  -moz-transform: translateX(60%) translateZ(0) scale(0.8);
+  -o-transform: translateX(60%) translateZ(0) scale(0.8);
+  -ms-transform: translateX(60%) translateZ(0) scale(0.8);
+  transform: translateX(60%) translateZ(0) scale(0.8);
+}
+
 .no-csstransforms3d .flipster-carousel .flip-next {
   -webkit-transform: translateX(24%) scale(0.75);
   -moz-transform: translateX(24%) scale(0.75);
@@ -282,3 +330,4 @@
   transition-duration: 0ms !important;
 }
 /* @end */
+

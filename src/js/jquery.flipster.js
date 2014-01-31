@@ -15,6 +15,7 @@ $.fn.flipster = function(options) {
 		enableNavButtons:		false, // If true, flipster will insert Previous / Next buttons
 		
 		onItemSwitch:				function(){}, // Callback function when items are switches
+		disableRotation: false
 	};
 	var settings = $.extend({}, defaults, options);
 	var win = $(window);
@@ -252,6 +253,8 @@ $.fn.flipster = function(options) {
 				
 			// Basic setup
 			_flipster.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
+			if (settings.disableRotation)
+			  _flipster.addClass('no-rotate');
 			_flipItemsOuter = _flipster.find(settings.itemContainer).addClass("flip-items");
 			_flipItems = _flipItemsOuter.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
 			
