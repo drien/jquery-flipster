@@ -96,6 +96,15 @@ $(function(){
 });
 ````
 
+### Methods
+
+Once an element is initialized with the coverflow, you can call the `jump` method to move it left or right:
+
+````javascript
+$('#flipster').flipster(); //initialize the carousel
+$('#flipster').flipster('jump', 'left');
+````
+
 ### Navigation ###
 
 Flipster can build an unordered list of links to the slides, which can come in handy for some implementations. Include the `id` and `title` attribute on each item and set `enableNav: true` in the Javascript parameters.
@@ -195,6 +204,10 @@ Special thanks to @shshaw for major additions in version 0.3!
 
 Version History
 ---------------
+- 0.3.2 - February 4 2014
+    - Added public access for `jump` method and functionality for exposing other methods. (Thanks @JoeWagner!)
+    - A number of bug fixes.
+
 - 0.3.1 - July 18 2013
     - Better demos ( See http://brokensquare.com/Code/jquery-flipster/demo/ )
 
