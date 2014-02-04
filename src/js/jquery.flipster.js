@@ -1,28 +1,42 @@
 (function($) {
 $.fn.flipster = function(options) {
-	
-	var defaults = {
-		itemContainer:			'ul', // Container for the flippin' items.
-		itemSelector:				'li', // Selector for children of itemContainer to flip
-		style:							'coverflow', // Switch between 'coverflow' or 'carousel' display styles
-		start:							'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
-		
-		enableKeyboard:			true, // Enable left/right arrow navigation
-		enableMousewheel:		true, // Enable scrollwheel navigation (up = left, down = right)
-		enableTouch:				true, // Enable swipe navigation for touch devices
-		
-		enableNav:					false, // If true, flipster will insert an unordered list of the slides
-		enableNavButtons:		false, // If true, flipster will insert Previous / Next buttons
-		
-		onItemSwitch:				function(){}, // Callback function when items are switches
-		disableRotation: false
-	};
-	var settings = $.extend({}, defaults, options);
-	var win = $(window);
+	var isMethodCall = typeof options === 'string' ? true : false;
+
+	if (isMethodCall) {
+		var method = options;
+		var args = Array.prototype.slice.call(arguments, 1);
+	} else {
+		var defaults = {
+			itemContainer:			'ul', // Container for the flippin' items.
+			itemSelector:				'li', // Selector for children of itemContainer to flip
+			style:							'coverflow', // Switch between 'coverflow' or 'carousel' display styles
+			start:							'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
+			
+			enableKeyboard:			true, // Enable left/right arrow navigation
+			enableMousewheel:		true, // Enable scrollwheel navigation (up = left, down = right)
+			enableTouch:				true, // Enable swipe navigation for touch devices
+			
+			enableNav:					false, // If true, flipster will insert an unordered list of the slides
+			enableNavButtons:		false, // If true, flipster will insert Previous / Next buttons
+			
+			onItemSwitch:				function(){}, // Callback function when items are switches
+			disableRotation: false
+		};
+		var settings = $.extend({}, defaults, options);
+
+		var win = $(window);
+	}
 	
 	return this.each(function(){
 		
 		var _flipster = $(this);
+		var methods;
+
+		if (isMethodCall) {
+			methods = _flipster.data('methods');
+			return methods[method].apply(this, args);
+		}
+
 		var	_flipItemsOuter;
 		var	_flipItems;
 		var	_flipNav;
@@ -33,7 +47,13 @@ $.fn.flipster = function(options) {
 		var _actionThrottle = 0;
 		var _throttleTimeout;
 		var compatibility;
-		
+
+		// public methods
+		methods = {
+			jump: jump
+		};
+		_flipster.data('methods', methods);
+
 		function removeThrottle() {
 			_actionThrottle = 0;
 		}
