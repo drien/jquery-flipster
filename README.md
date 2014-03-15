@@ -57,7 +57,7 @@ Options
 - `itemContainer` Container for the items to flipsterfy. _Default is 'ul'_
 - `itemSelector` Children of itemContainer to flipsterfy. _Default is 'li'_
 - `style` Switch between 'coverflow' or 'carousel' display styles _Default is 'coverflow'_
-- `start` Set to a number to have Flipster start centered on that item, or set to _'center'_ to start in the middle
+- `start` Set to a number to have Flipster start centered on that item, or set to _'center'_ to start in the middle, _'left'_ to start on the left and _'right'_ to start on the right side
 - `enableKeyboard` If true, the left and right arrow keys will navigate through the list. _Default is 'true'_
 - `enableMousewheel` If true, the mousewheel will scroll through the list. _Default is 'true'_
 - `enableTouch` If true, touch swipes will scroll through the list. _Default is 'true'_
@@ -82,7 +82,7 @@ $(function(){
 		itemContainer:			'ul', // Container for the flippin' items.
 		itemSelector:				'li', // Selector for children of itemContainer to flip
 		style:							'coverflow', // Switch between 'coverflow' or 'carousel' display styles
-		start:							'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
+		start:							'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with, 'left' to start from the left side, 'right' to start from the right
 		
 		enableKeyboard:			true, // Enable left/right arrow navigation
 		enableMousewheel:		true, // Enable scrollwheel navigation (up = left, down = right)
