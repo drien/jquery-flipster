@@ -50,7 +50,8 @@ $.fn.flipster = function(options) {
 
 		// public methods
 		methods = {
-			jump: jump
+			jump: jump,
+			destroy: destroy
 		};
 		_flipster.data('methods', methods);
 
@@ -392,6 +393,52 @@ $.fn.flipster = function(options) {
 				});
 			}
 		}
+		
+		function destroy() {
+	      		// Basic setup
+		      _flipster.removeClass("flipster flipster-active flipster-"+settings.style);
+		      
+		      
+		      if (settings.disableRotation)
+		        _flipster.removeClass('no-rotate');
+		      
+		      _flipItemsOuter = _flipster.find(settings.itemContainer).removeClass("flip-items");
+		      _flipItems = _flipItemsOuter.find(settings.itemSelector).removeClass("flip-item flip-hidden");
+		      
+		      //Browsers that don't support CSS3 transforms get compatibility:
+		      var isIEmax8 = ('\v' === 'v'); //IE <= 8
+		      var checkIE = document.createElement("b");
+		      checkIE.innerHTML = "<!--[if IE 9]><i></i><![endif]-->"; //IE 9
+		      var isIE9 = checkIE.getElementsByTagName("i").length === 1;
+		      if (isIEmax8 || isIE9) {
+		        compatibility = true;
+		        _flipItemsOuter.removeClass("compatibility");
+		      }
+		      
+		      _flipItems.each(function() {
+		        $(this).html($(this).find('.flip-content').html());
+		      });
+		      // Remove navigation if enabled.
+		      _flipster.find('.flipster-nav').remove();
+		      _flipster.find(".flipto-prev, .flipto-next").remove();
+		
+		      _center = 0;     
+		      
+		      // Remove all inline style
+		      _flipItemsOuter.removeAttr('style');
+		     
+		      
+		      // Navigate directly to an item by clicking
+		      _flipItems.off("click");
+		      win.off("keydown.flipster");
+		      win.off("keyup.flipster");
+		      _flipster
+		        .off("mousewheel.flipster")
+		        .off("touchstart.flipster")
+		        .off("touchmove.flipster")
+		        .off("touchend.flipster");
+		}
+		
 		
 		
 		// Initialize if flipster is not already active.
