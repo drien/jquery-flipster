@@ -60,6 +60,9 @@ $.fn.flipster = function(options) {
 		}
 
         function resize() {
+            // Reset the size before resizing again to fix image got too small
+            // from double resizing
+       	    _flipItemsOuter.width('auto').height('auto');
             _flipItemsOuter.height(calculateBiggestFlipItemHeight());
             _flipster.css("height","auto");
             if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
@@ -395,48 +398,26 @@ $.fn.flipster = function(options) {
 		}
 		
 		function destroy() {
-	      		// Basic setup
-		      _flipster.removeClass("flipster flipster-active flipster-"+settings.style);
-		      
-		      
-		      if (settings.disableRotation)
-		        _flipster.removeClass('no-rotate');
-		      
-		      _flipItemsOuter = _flipster.find(settings.itemContainer).removeClass("flip-items");
-		      _flipItems = _flipItemsOuter.find(settings.itemSelector).removeClass("flip-item flip-hidden");
-		      
-		      //Browsers that don't support CSS3 transforms get compatibility:
-		      var isIEmax8 = ('\v' === 'v'); //IE <= 8
-		      var checkIE = document.createElement("b");
-		      checkIE.innerHTML = "<!--[if IE 9]><i></i><![endif]-->"; //IE 9
-		      var isIE9 = checkIE.getElementsByTagName("i").length === 1;
-		      if (isIEmax8 || isIE9) {
-		        compatibility = true;
-		        _flipItemsOuter.removeClass("compatibility");
-		      }
-		      
+
+	   	      // Unwrap the content first to avoid
+	   	      // double wrapping when reinitialized
 		      _flipItems.each(function() {
-		        $(this).html($(this).find('.flip-content').html());
+		        $(this).find('.flip-content > *').unwrap();
 		      });
-		      // Remove navigation if enabled.
-		      _flipster.find('.flipster-nav').remove();
-		      _flipster.find(".flipto-prev, .flipto-next").remove();
-		
-		      _center = 0;     
-		      
-		      // Remove all inline style
-		      _flipItemsOuter.removeAttr('style');
-		     
-		      
-		      // Navigate directly to an item by clicking
-		      _flipItems.off("click");
+		    
 		      win.off("keydown.flipster");
 		      win.off("keyup.flipster");
 		      _flipster
-		        .off("mousewheel.flipster")
-		        .off("touchstart.flipster")
-		        .off("touchmove.flipster")
-		        .off("touchend.flipster");
+		          .removeClass("flipster flipster-active flipster-"+settings.style+" no-rotate")
+		          .off("click.flipster mousewheel.flipster touchstart.flipster touchmove.flipster touchend.flipster")
+		          .find(".flipster-nav, .flipto-prev, .flipto-next").remove();
+		      _flipItemsOuter
+		          .removeAttr('style')
+		          .removeClass("flip-items compatibility");
+		      _flipItems
+		          .off('click')
+		          .removeAttr('style')
+		          .removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
 		}
 		
 		
