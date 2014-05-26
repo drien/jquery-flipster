@@ -145,7 +145,7 @@ $.fn.flipster = function(options) {
 		function buildNavButtons() {
 			if ( settings.enableNavButtons && _flipItems.length > 1 ) {
 				_flipster.find(".flipto-prev, .flipto-next").remove();
-				_flipster.append("<a href='#' class='flipto-prev'>"+settings.prevText+"</a> <a href='#' class='flipto-next'"+settings.nextText+"</a>");
+				_flipster.append("<a href='#' class='flipto-prev'>"+settings.prevText+"</a> <a href='#' class='flipto-next'>"+settings.nextText+"</a>");
 				
 				_flipster.children('.flipto-prev').on("click", function(e) {
 					jump("left");
