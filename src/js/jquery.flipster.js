@@ -22,10 +22,8 @@ $.fn.flipster = function(options) {
 			onItemSwitch:				function(){}, // Callback function when items are switches
 			disableRotation: false,
 
-            prevText: "Previous",   //Change Default Previous navigation button text
-            nextText: "Next",       //change Default Next navigation button text
-
-            navPosition: "before"   //[before|after] Change navigation position, fallbacks to before.
+            prevText: "Previous",       // Changes the text for the Previous button
+            nextText: "next"            // Changes the text for the Next button
 		};
 		var settings = $.extend({}, defaults, options);
 
@@ -112,11 +110,8 @@ $.fn.flipster = function(options) {
 				}
 				for ( var navIndex in navList ) { navDisplay += navList[navIndex]; }
 				navDisplay += '</ul>';
-
-                if(settings.navPosition.toLowerCase() == "after")
-                    _flipNav = $(navDisplay).appendTo(_flipster);
-                else
-				    _flipNav = $(navDisplay).prependTo(_flipster);
+				
+				_flipNav = $(navDisplay).prependTo(_flipster);
 				_flipNavItems = _flipNav.find("a").on("click",function(e){
 					var target;
 					if ( $(this).hasClass("flip-nav-category-link") ) {
