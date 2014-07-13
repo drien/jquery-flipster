@@ -23,7 +23,6 @@ $.fn.flipster = function(options) {
 			disableRotation: false
 		};
 		var settings = $.extend({}, defaults, options);
-
 		var win = $(window);
 	}
 	
@@ -59,22 +58,20 @@ $.fn.flipster = function(options) {
 			_actionThrottle = 0;
 		}
 
-        function resize() {
-            // Reset the size before resizing again to fix image got too small
-            // from double resizing
-       	    _flipItemsOuter.width('auto').height('auto');
-            _flipItemsOuter.height(calculateBiggestFlipItemHeight());
-            _flipster.css("height","auto");
-            if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
-        }
+    function resize() {
+        _flipItemsOuter.width('auto').height('auto');
+        _flipItemsOuter.height(calculateBiggestFlipItemHeight());
+        _flipster.css("height","auto");
+        if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
+    }
 
-        function calculateBiggestFlipItemHeight() {
-            var biggestHeight = 0;
-            _flipItems.each(function() {
-                if ($(this).height() > biggestHeight) biggestHeight = $(this).height();
-            });
-            return biggestHeight;
-        }
+    function calculateBiggestFlipItemHeight() {
+        var biggestHeight = 0;
+        _flipItems.each(function() {
+            if ($(this).height() > biggestHeight) biggestHeight = $(this).height();
+        });
+        return biggestHeight;
+    }
 
 		function buildNav() {
 			if ( settings.enableNav && _flipItems.length > 1 ) {
@@ -86,7 +83,7 @@ $.fn.flipster = function(options) {
 					var category = $(this).data("flip-category"),
 						itemId = $(this).attr("id"),
 						itemTitle = $(this).attr("title");
-						
+
 					if ( typeof category !== 'undefined' ) {
 						if ( $.inArray(category,navCategories) < 0 ) {
 							navCategories.push(category);
@@ -94,9 +91,11 @@ $.fn.flipster = function(options) {
 						}
 					}
 					
-					if ( $.inArray(itemId,navItems) < 0 ) {
-						navItems.push(itemId);
-						link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
+					if ( $.inArray(itemId,navItems) < 0 && typeof itemTitle !== 'undefined') {
+					  
+					  navItems.push(itemId);
+					  link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
+					  
 						if ( typeof category !== 'undefined' ) {
 							navList[category] = navList[category] + '<li class="flip-nav-item">' + link;
 						} else {
@@ -139,6 +138,7 @@ $.fn.flipster = function(options) {
 		}
 		
 		function buildNavButtons() {
+
 			if ( settings.enableNavButtons && _flipItems.length > 1 ) {
 				_flipster.find(".flipto-prev, .flipto-next").remove();
 				_flipster.append("<a href='#' class='flipto-prev'>Previous</a> <a href='#' class='flipto-next'>Next</a>");
@@ -226,17 +226,8 @@ $.fn.flipster = function(options) {
 				totalLeft = (currentLeft + (currentWidth/2)) - (totalWidth/2);
 				var newLeftPos = -1*(totalLeft)+"px";
 /* Untested Compatibility */
-				if (compatibility) {
-					var leftItems = $(".flip-past");
-					var rightItems = $(".flip-future");
-					$(".flip-current").css("zoom", "1.0");
-					for (i = 0; i < leftItems.length; i++) {
-						$(leftItems[i]).css("zoom", (100-((leftItems.length-i)*5)+"%"));
-					}
-					for (i = 0; i < rightItems.length; i++) {
-						$(rightItems[i]).css("zoom", (100-((i+1)*5)+"%"));
-					}
 
+				if (compatibility) {
 					_flipItemsOuter.animate({"left":newLeftPos}, 333);
 				}
 				else {
@@ -397,33 +388,32 @@ $.fn.flipster = function(options) {
 			}
 		}
 		
-		function destroy() {
-
-	   	      // Unwrap the content first to avoid
-	   	      // double wrapping when reinitialized
-		      _flipItems.each(function() {
-		        $(this).find('.flip-content > *').unwrap();
-		      });
-		    
-		      win.off("keydown.flipster");
-		      win.off("keyup.flipster");
-		      _flipster
-		          .removeClass("flipster flipster-active flipster-"+settings.style+" no-rotate")
-		          .off("click.flipster mousewheel.flipster touchstart.flipster touchmove.flipster touchend.flipster")
-		          .find(".flipster-nav, .flipto-prev, .flipto-next").remove();
-		      _flipItemsOuter
-		          .removeAttr('style')
-		          .removeClass("flip-items compatibility");
-		      _flipItems
-		          .off('click')
-		          .removeAttr('style')
-		          .removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
-		}
 		
+		function destroy() {
+     
+      _flipItems.each(function() {
+        $(this).find('.flip-content > *').unwrap();
+      });
+    
+      win.off("keydown.flipster");
+      win.off("keyup.flipster");
+      _flipster
+          .removeClass("flipster flipster-active flipster-"+settings.style+" no-rotate")
+          .off("click.flipster mousewheel.flipster touchstart.flipster touchmove.flipster touchend.flipster")
+          .find(".flipster-nav, .flipto-prev, .flipto-next").remove();
+      _flipItemsOuter
+          .removeAttr('style')
+          .removeClass("flip-items compatibility");
+      _flipItems
+          .off('click')
+          .removeAttr('style')
+          .removeClass("flip-prev flip-next flip-current flip-past flip-hidden flip-future no-transition");
+      
+      _flipster.addClass('flipster');
+		}
 		
 		
 		// Initialize if flipster is not already active.
 		if ( !_flipster.hasClass("flipster-active") ) { init(); }
 	});
 };
-})( jQuery );
