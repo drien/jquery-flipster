@@ -5,35 +5,36 @@ $.fn.flipster = function(options) {
     if (isMethodCall) {
         var method = options;
         var args = Array.prototype.slice.call(arguments, 1);
-    } else {
+    }
+    else {
         var defaults = {
-            itemContainer:          'ul', // Container for the flippin' items.
-            itemSelector:               'li', // Selector for children of itemContainer to flip
-            style:                          'coverflow', // Switch between 'coverflow' or 'carousel' display styles
-            start:                          'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
+            itemContainer:  'ul', // Container for the flippin' items.
+            itemSelector:   'li', // Selector for children of itemContainer to flip
+            style:          'coverflow', // Switch between 'coverflow' or 'carousel' display styles
+            start:          'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
             
-            enableKeyboard:         true, // Enable left/right arrow navigation
-            enableMousewheel:       true, // Enable scrollwheel navigation (up = left, down = right)
-            enableTouch:                true, // Enable swipe navigation for touch devices
+            enableKeyboard:   true, // Enable left/right arrow navigation
+            enableMousewheel: true, // Enable scrollwheel navigation (up = left, down = right)
+            enableTouch:      true, // Enable swipe navigation for touch devices
             
-            enableNav:                  false, // If true, flipster will insert an unordered list of the slides
-            enableNavButtons:       false, // If true, flipster will insert Previous / Next buttons
+            enableNav:        false, // If true, flipster will insert an unordered list of the slides
+            enableNavButtons: false, // If true, flipster will insert Previous / Next buttons
             
-            onItemSwitch:               function(){}, // Callback function when items are switches
-            disableRotation: false,
+            onItemSwitch:     $.noop, // Callback function when items are switches
+            disableRotation:  false,
 
-            navPosition: "before",       // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
+            navPosition:      'before', // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
 
-            prevText: "Previous",       // Changes the text for the Previous button
-            nextText: "next"            // Changes the text for the Next button
+            prevText:         'Previous',       // Changes the text for the Previous button
+            nextText:         'next'            // Changes the text for the Next button
         };
         var settings = $.extend({}, defaults, options);
 
         var win = $(window);
     }
-    
+
     return this.each(function(){
-        
+
         var _flipster = $(this);
         var methods;
 
@@ -82,35 +83,38 @@ $.fn.flipster = function(options) {
                 var navCategories = [],
                     navItems = [],
                     navList = [];
-                
+
                 _flipItems.each(function(){
                     var category = $(this).data("flip-category"),
                         itemId = $(this).attr("id"),
                         itemTitle = $(this).attr("title");
-                        
+
                     if ( typeof category !== 'undefined' ) {
                         if ( $.inArray(category,navCategories) < 0 ) {
                             navCategories.push(category);
                             navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a>\n<ul class="flip-nav-items">\n';
                         }
                     }
-                    
+
                     if ( $.inArray(itemId,navItems) < 0 ) {
                         navItems.push(itemId);
                         link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
                         if ( typeof category !== 'undefined' ) {
                             navList[category] = navList[category] + '<li class="flip-nav-item">' + link;
-                        } else {
+                        }
+                        else {
                             navList[itemId] = '<li class="flip-nav-item no-category">' + link;
                         }
                     }
                 });
-                
+
                 navDisplay = '<ul class="flipster-nav">\n';
-                for ( var catIndex in navCategories ) {
+                for (var catIndex in navCategories) {
                     navList[navCategories[catIndex]] = navList[navCategories[catIndex]] + "</ul>\n</li>\n";
                 }
-                for ( var navIndex in navList ) { navDisplay += navList[navIndex]; }
+                for (var navIndex in navList) {
+                    navDisplay += navList[navIndex];
+                }
                 navDisplay += '</ul>';
 
                 if(settings.navPosition.toLowerCase() != "after") {
@@ -134,7 +138,7 @@ $.fn.flipster = function(options) {
                 });
             }
         }
-        
+
         function updateNav() {
             if ( settings.enableNav && _flipItems.length > 1 ) {
                 currentItem = $(_flipItems[_current]);
@@ -143,7 +147,7 @@ $.fn.flipster = function(options) {
                 _flipNavItems.filter("[data-flip-category='"+currentItem.data("flip-category")+"']").parent().addClass("flip-nav-current");
             }
         }
-        
+
         function buildNavButtons() {
             if ( settings.enableNavButtons && _flipItems.length > 1 ) {
                 _flipster.find(".flipto-prev, .flipto-next").remove();
@@ -160,21 +164,21 @@ $.fn.flipster = function(options) {
                 });
             }
         }
-        
+
         function center() {
             var currentItem = $(_flipItems[_current]).addClass("flip-current");
             
             _flipItems.removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
-        
+
             if ( settings.style === 'carousel' ) {
                 
                 _flipItems.addClass("flip-hidden");
-            
+
                 var nextItem = $(_flipItems[_current+1]),
                     futureItem = $(_flipItems[_current+2]),
                     prevItem = $(_flipItems[_current-1]),
                     pastItem = $(_flipItems[_current-2]);
-                
+
                 if ( _current === 0 ) {
                     prevItem = _flipItems.last();
                     pastItem = prevItem.prev();
@@ -189,25 +193,26 @@ $.fn.flipster = function(options) {
                     nextItem = _flipItems.first();
                     futureItem = $(_flipItems[1]);
                 }
-                    
+
                 futureItem.removeClass("flip-hidden").addClass("flip-future");
                 pastItem.removeClass("flip-hidden").addClass("flip-past");
                 nextItem.removeClass("flip-hidden").addClass("flip-next");
                 prevItem.removeClass("flip-hidden").addClass("flip-prev");
-                    
-            } else {
+
+            }
+            else {
                 var spacer = currentItem.outerWidth()/2;
                 var totalLeft = 0;
                 var totalWidth = _flipItemsOuter.width();
                 var currentWidth = currentItem.outerWidth();
                 var currentLeft = (_flipItems.index(currentItem)*currentWidth)/2 +spacer/2;
-                
+
                 _flipItems.removeClass("flip-hidden");
-                
+
                 for (i = 0; i < _flipItems.length; i++) {
                     var thisItem = $(_flipItems[i]);
                     var thisWidth = thisItem.outerWidth();
-                    
+
                     if (i < _current) {
                         thisItem.addClass("flip-past")
                             .css({
@@ -223,15 +228,15 @@ $.fn.flipster = function(options) {
                             });
                     }
                 }
-                
+
                 currentItem.css({
                     "z-index" : _flipItems.length+1,
                     "left" : currentLeft +"px"
                 });
-                
+
                 totalLeft = (currentLeft + (currentWidth/2)) - (totalWidth/2);
                 var newLeftPos = -1*(totalLeft)+"px";
-/* Untested Compatibility */
+                /* Untested Compatibility */
                 if (compatibility) {
                     var leftItems = $(".flip-past");
                     var rightItems = $(".flip-future");
@@ -249,11 +254,11 @@ $.fn.flipster = function(options) {
                     _flipItemsOuter.css("left", newLeftPos);
                 }
             }
-                
+
             currentItem
                 .addClass("flip-current")
                 .removeClass("flip-prev flip-next flip-past flip-future flip-hidden");
-            
+
             resize();
             updateNav();
             settings.onItemSwitch.call(this);
@@ -277,17 +282,15 @@ $.fn.flipster = function(options) {
                 center();
             }
         }
-    
+
         function init() {
-/* Untested Compatibility */
-                
             // Basic setup
             _flipster.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
             if (settings.disableRotation)
               _flipster.addClass('no-rotate');
             _flipItemsOuter = _flipster.find(settings.itemContainer).addClass("flip-items");
             _flipItems = _flipItemsOuter.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
-            
+
             //Browsers that don't support CSS3 transforms get compatibility:
             var isIEmax8 = ('\v' === 'v'); //IE <= 8
             var checkIE = document.createElement("b");
@@ -297,15 +300,13 @@ $.fn.flipster = function(options) {
                 compatibility = true;
                 _flipItemsOuter.addClass("compatibility");
             }
-            
-    
+
             // Insert navigation if enabled.
             buildNav();
             buildNavButtons();
-            
-            
+
             // Set the starting item
-            if ( settings.start && _flipItems.length > 1 ) {
+            if (settings.start && _flipItems.length > 1) {
                 // Find the middle item if start = center
                 if ( settings.start === 'center' ) {
                     if (!_flipItems.length % 2) {
@@ -318,29 +319,25 @@ $.fn.flipster = function(options) {
                     _current = settings.start;
                 }
             }
-            
-            
+
+
             // initialize containers
             resize();
-            
-            
+
             // Necessary to start flipster invisible and then fadeIn so height/width can be set accurately after page load
             _flipster.hide().css("visibility","visible").fadeIn(400,function(){ center(); });
-            
-            
+
             // Attach event bindings.
             win.resize(function(){ resize(); center(); });
-            
-            
+
             // Navigate directly to an item by clicking
             _flipItems.on("click", function(e) {
                 if ( !$(this).hasClass("flip-current") ) { e.preventDefault(); }
                 jump(_flipItems.index(this));
             });
-            
-            
+
             // Keyboard Navigation
-            if ( settings.enableKeyboard && _flipItems.length > 1 ) {
+            if (settings.enableKeyboard && _flipItems.length > 1) {
                 win.on("keydown.flipster", function(e) {
                     _actionThrottle++;
                     if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
@@ -360,10 +357,9 @@ $.fn.flipster = function(options) {
                     _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
                 });
             }
-            
-            
+
             // Mousewheel Navigation
-            if ( settings.enableMousewheel && _flipItems.length > 1 ) { // TODO: Fix scrollwheel on Firefox
+            if (settings.enableMousewheel && _flipItems.length > 1) { // TODO: Fix scrollwheel on Firefox
                 _flipster.on("mousewheel.flipster", function(e){
                     _throttleTimeout = window.setTimeout(removeThrottle, 500); //throttling should expire if scrolling pauses for a moment.
                     _actionThrottle++;
@@ -376,14 +372,13 @@ $.fn.flipster = function(options) {
                     e.preventDefault();
                 });
             }
-            
-            
+
             // Touch Navigation
             if ( settings.enableTouch && _flipItems.length > 1 ) {
                 _flipster.on("touchstart.flipster", function(e) {
                     _startTouchX = e.originalEvent.targetTouches[0].screenX;
                 });
-        
+
                 _flipster.on("touchmove.flipster", function(e) {
                     e.preventDefault();
                     var nowX = e.originalEvent.targetTouches[0].screenX;
@@ -396,16 +391,15 @@ $.fn.flipster = function(options) {
                         _startTouchX = nowX;
                     }
                 });
-        
+
                 _flipster.on("touchend.flipster", function(e) {
                     _startTouchX = 0;
                 });
             }
         }
-        
-        
+
         // Initialize if flipster is not already active.
         if ( !_flipster.hasClass("flipster-active") ) { init(); }
     });
 };
-})( jQuery );
+})(jQuery);
