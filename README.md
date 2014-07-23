@@ -198,12 +198,19 @@ Contributing
 ---------------
 If you can make this better, don't be shy! I'll be happy to merge pull requests as long as they keep the project lightweight, simple to set up and free of dependencies beyond jQuery.
 
+If you do choose to contribute, please run `grunt` to generate minified files for distribution before making a pull request!
+
 Also, if you run into a problem or have an idea, feel free to make an issue on the github project and I'll get on it when I can!
 
 Special thanks to @shshaw for major additions in version 0.3!
 
 Version History
 ---------------
+- 0.3.4 - July 23 2014
+    - Some additional options available
+    - Cleaned up code and normalized whitespace
+    - Added Grunt support for minifying css and js for distribution
+
 - 0.3.2 - February 4 2014
     - Added public access for `jump` method and functionality for exposing other methods. (Thanks @JoeWagner!)
     - A number of bug fixes.
@@ -240,6 +247,6 @@ Version History
 License
 ---------------
 
-&copy; 2013 Adrien Delessert
+&copy; 2013-2014 Adrien Delessert
 
 Licensed for use under the WTFPL. http://www.wtfpl.net/
