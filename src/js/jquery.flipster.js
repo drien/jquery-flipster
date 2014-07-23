@@ -20,7 +20,12 @@ $.fn.flipster = function(options) {
 			enableNavButtons:		false, // If true, flipster will insert Previous / Next buttons
 			
 			onItemSwitch:				function(){}, // Callback function when items are switches
-			disableRotation: false
+			disableRotation: false,
+
+            navPosition: "before",       // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
+
+            prevText: "Previous",       // Changes the text for the Previous button
+            nextText: "next"            // Changes the text for the Next button
 		};
 		var settings = $.extend({}, defaults, options);
 
@@ -107,8 +112,13 @@ $.fn.flipster = function(options) {
 				}
 				for ( var navIndex in navList ) { navDisplay += navList[navIndex]; }
 				navDisplay += '</ul>';
-				
-				_flipNav = $(navDisplay).prependTo(_flipster);
+
+                if(settings.navPosition.toLowerCase() != "after") {
+                    _flipNav = $(navDisplay).prependTo(_flipster);
+                } else {
+                    _flipNav = $(navDisplay).appendTo(_flipster);
+                }
+
 				_flipNavItems = _flipNav.find("a").on("click",function(e){
 					var target;
 					if ( $(this).hasClass("flip-nav-category-link") ) {
@@ -137,7 +147,7 @@ $.fn.flipster = function(options) {
 		function buildNavButtons() {
 			if ( settings.enableNavButtons && _flipItems.length > 1 ) {
 				_flipster.find(".flipto-prev, .flipto-next").remove();
-				_flipster.append("<a href='#' class='flipto-prev'>Previous</a> <a href='#' class='flipto-next'>Next</a>");
+				_flipster.append("<a href='#' class='flipto-prev'>"+settings.prevText+"</a> <a href='#' class='flipto-next'>"+settings.nextText+"</a>");
 				
 				_flipster.children('.flipto-prev').on("click", function(e) {
 					jump("left");
