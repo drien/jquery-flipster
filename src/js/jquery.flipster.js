@@ -1,3 +1,4 @@
+/* global window, document, jQuery */
 (function($) {
 $.fn.flipster = function(options) {
     var isMethodCall = typeof options === 'string' ? true : false;
@@ -8,10 +9,10 @@ $.fn.flipster = function(options) {
     }
     else {
         var defaults = {
-            itemContainer:  'ul', // Container for the flippin' items.
-            itemSelector:   'li', // Selector for children of itemContainer to flip
-            style:          'coverflow', // Switch between 'coverflow' or 'carousel' display styles
-            start:          'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
+            itemContainer:    'ul', // Container for the flippin' items.
+            itemSelector:     'li', // Selector for children of itemContainer to flip
+            style:            'coverflow', // Switch between 'coverflow' or 'carousel' display styles
+            start:            'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
             
             enableKeyboard:   true, // Enable left/right arrow navigation
             enableMousewheel: true, // Enable scrollwheel navigation (up = left, down = right)
@@ -98,7 +99,7 @@ $.fn.flipster = function(options) {
 
                     if ( $.inArray(itemId,navItems) < 0 ) {
                         navItems.push(itemId);
-                        link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
+                        var link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
                         if ( typeof category !== 'undefined' ) {
                             navList[category] = navList[category] + '<li class="flip-nav-item">' + link;
                         }
@@ -108,7 +109,7 @@ $.fn.flipster = function(options) {
                     }
                 });
 
-                navDisplay = '<ul class="flipster-nav">\n';
+                var navDisplay = '<ul class="flipster-nav">\n';
                 for (var catIndex in navCategories) {
                     navList[navCategories[catIndex]] = navList[navCategories[catIndex]] + "</ul>\n</li>\n";
                 }
@@ -141,7 +142,7 @@ $.fn.flipster = function(options) {
 
         function updateNav() {
             if ( settings.enableNav && _flipItems.length > 1 ) {
-                currentItem = $(_flipItems[_current]);
+                var currentItem = $(_flipItems[_current]);
                 _flipNav.find(".flip-nav-current").removeClass("flip-nav-current");
                 _flipNavItems.filter("[href='#"+currentItem.attr("id")+"']").addClass("flip-nav-current");
                 _flipNavItems.filter("[data-flip-category='"+currentItem.data("flip-category")+"']").parent().addClass("flip-nav-current");
@@ -209,7 +210,7 @@ $.fn.flipster = function(options) {
 
                 _flipItems.removeClass("flip-hidden");
 
-                for (i = 0; i < _flipItems.length; i++) {
+                for (var i = 0; i < _flipItems.length; i++) {
                     var thisItem = $(_flipItems[i]);
                     var thisWidth = thisItem.outerWidth();
 
