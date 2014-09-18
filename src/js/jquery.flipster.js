@@ -6,8 +6,7 @@ $.fn.flipster = function(options) {
     if (isMethodCall) {
         var method = options;
         var args = Array.prototype.slice.call(arguments, 1);
-    }
-    else {
+    } else {
         var defaults = {
             itemContainer:    'ul', // Container for the flippin' items.
             itemSelector:     'li', // Selector for children of itemContainer to flip
@@ -18,16 +17,15 @@ $.fn.flipster = function(options) {
             enableMousewheel: true, // Enable scrollwheel navigation (up = left, down = right)
             enableTouch:      true, // Enable swipe navigation for touch devices
             
-            enableNav:        false, // If true, flipster will insert an unordered list of the slides
-            enableNavButtons: false, // If true, flipster will insert Previous / Next buttons
-            
-            onItemSwitch:     $.noop, // Callback function when items are switches
+            onItemSwitch:     $.noop, // Callback function when items are switched
             disableRotation:  false,
 
+            enableNav:        false, // If true, flipster will insert an unordered list of the slides
             navPosition:      'before', // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
 
+            enableNavButtons: false, // If true, flipster will insert Previous / Next buttons
             prevText:         'Previous',       // Changes the text for the Previous button
-            nextText:         'next'            // Changes the text for the Next button
+            nextText:         'Next'            // Changes the text for the Next button
         };
         var settings = $.extend({}, defaults, options);
 
@@ -312,8 +310,7 @@ $.fn.flipster = function(options) {
                 if ( settings.start === 'center' ) {
                     if (!_flipItems.length % 2) {
                         _current = _flipItems.length/2 + 1;
-                    }
-                    else {
+                    } else {
                         _current = Math.floor(_flipItems.length/2);
                     }
                 } else {
@@ -347,8 +344,7 @@ $.fn.flipster = function(options) {
                     if (code === 37 ) {
                         e.preventDefault();
                         jump('left');
-                    }
-                    else if (code === 39 ) {
+                    } else if (code === 39 ) {
                         e.preventDefault();
                         jump('right');
                     }
