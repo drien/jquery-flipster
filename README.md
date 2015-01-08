@@ -80,19 +80,19 @@ If you want to change options, add the parameters when initializing the script. 
 ````javascript
 $(function(){ 
 	$('.flipster').flipster({
-		itemContainer:			'ul', // Container for the flippin' items.
-		itemSelector:				'li', // Selector for children of itemContainer to flip
-		style:							'coverflow', // Switch between 'coverflow' or 'carousel' display styles
-		start:							'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
+		itemContainer:		'ul', // Container for the flippin' items.
+		itemSelector:		'li', // Selector for children of itemContainer to flip
+		style:				'coverflow', // Switch between 'coverflow' or 'carousel' display styles
+		start:				'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
 		
-		enableKeyboard:			true, // Enable left/right arrow navigation
-		enableMousewheel:		true, // Enable scrollwheel navigation (up = left, down = right)
-		enableTouch:				true, // Enable swipe navigation for touch devices
+		enableKeyboard:		true, // Enable left/right arrow navigation
+		enableMousewheel:	true, // Enable scrollwheel navigation (up = left, down = right)
+		enableTouch:		true, // Enable swipe navigation for touch devices
 		
-		enableNav:					false, // If true, flipster will insert an unordered list of the slides
-		enableNavButtons:		false, // If true, flipster will insert Previous / Next buttons
+		enableNav:			false, // If true, flipster will insert an unordered list of the slides
+		enableNavButtons:	false, // If true, flipster will insert Previous / Next buttons
 		
-		onItemSwitch:				function(){}, // Callback function when items are switches
+		onItemSwitch:		function(){}, // Callback function when items are switches
 	}
 });
 ````
@@ -248,6 +248,6 @@ Version History
 License
 ---------------
 
-&copy; 2013-2014 Adrien Delessert
+&copy; 2013-2015 Adrien Delessert
 
 Licensed for use under the WTFPL. http://www.wtfpl.net/
