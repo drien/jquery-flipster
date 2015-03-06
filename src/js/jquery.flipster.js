@@ -326,7 +326,10 @@ $.fn.flipster = function(options) {
             _flipster.hide().css("visibility","visible").fadeIn(400,function(){ center(); });
 
             // Attach event bindings.
-            win.resize(function(){ resize(); center(); });
+            win.on("resize.flipster", function() { 
+                resize(); 
+                center(); 
+            });
 
             // Navigate directly to an item by clicking
             _flipItems.on("click", function(e) {
