@@ -21,12 +21,18 @@ module.exports = function(grunt) {
           'dist/jquery.flipster.min.css': ['src/css/jquery.flipster.css']
         }
       }
+    },
+    autoprefixer: {
+        dist: {
+            src: 'dist/jquery.flipster.min.css'
+        }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-autoprefixer');
 
-  grunt.registerTask('default', ['uglify', 'cssmin']);
+  grunt.registerTask('default', ['uglify', 'cssmin', 'autoprefixer']);
 
 };
