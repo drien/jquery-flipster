@@ -35,7 +35,7 @@ $.fn.flipster = function(options) {
         var win = $(window);
     }
 
-    return this.each(function(){
+    return this.each(function() {
 
         var _flipster = $(this);
         var methods;
@@ -83,64 +83,65 @@ $.fn.flipster = function(options) {
         }
 
         function buildNav() {
-            if ( settings.enableNav && _flipItems.length > 1 ) {
-                var navCategories = [],
-                    navItems = [],
-                    navList = [];
-
-                _flipItems.each(function(){
-                    var category = $(this).data("flip-category"),
-                        itemId = $(this).attr("id"),
-                        itemTitle = $(this).attr("title");
-
-                    if ( typeof category !== 'undefined' ) {
-                        if ( $.inArray(category,navCategories) < 0 ) {
-                            navCategories.push(category);
-                            navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a>\n<ul class="flip-nav-items">\n';
-                        }
-                    }
-
-                    if ( $.inArray(itemId,navItems) < 0 ) {
-                        navItems.push(itemId);
-                        var link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
-                        if ( typeof category !== 'undefined' ) {
-                            navList[category] = navList[category] + '<li class="flip-nav-item">' + link;
-                        }
-                        else {
-                            navList[itemId] = '<li class="flip-nav-item no-category">' + link;
-                        }
-                    }
-                });
-
-                var navDisplay = '<ul class="flipster-nav">\n';
-                for (var catIndex in navCategories) {
-                    navList[navCategories[catIndex]] = navList[navCategories[catIndex]] + "</ul>\n</li>\n";
-                }
-                for (var navIndex in navList) {
-                    navDisplay += navList[navIndex];
-                }
-                navDisplay += '</ul>';
-
-                if(settings.navPosition.toLowerCase() != "after") {
-                    _flipNav = $(navDisplay).prependTo(_flipster);
-                } else {
-                    _flipNav = $(navDisplay).appendTo(_flipster);
-                }
-
-                _flipNavItems = _flipNav.find("a").on("click",function(e){
-                    var target;
-                    if ( $(this).hasClass("flip-nav-category-link") ) {
-                        target = _flipItems.filter("[data-flip-category='"+$(this).data("flip-category")+"']");
-                    } else {
-                        target = $(this.hash);
-                    }
-
-                    if ( target.length ) {
-                        jump(target);
-                        e.preventDefault();
-                    }
-                });
+            if ( !settings.enableNav || _flipItems.length <= 1 ) {
+                return;
             }
+            var navCategories = [],
+                navItems = [],
+                navList = [];
+
+            _flipItems.each(function(){
+                var category = $(this).data("flip-category"),
+                    itemId = $(this).attr("id"),
+                    itemTitle = $(this).attr("title");
+
+                if ( typeof category !== 'undefined' ) {
+                    if ( $.inArray(category,navCategories) < 0 ) {
+                        navCategories.push(category);
+                        navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a>\n<ul class="flip-nav-items">\n';
+                    }
+                }
+
+                if ( $.inArray(itemId,navItems) < 0 ) {
+                    navItems.push(itemId);
+                    var link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
+                    if ( typeof category !== 'undefined' ) {
+                        navList[category] = navList[category] + '<li class="flip-nav-item">' + link;
+                    }
+                    else {
+                        navList[itemId] = '<li class="flip-nav-item no-category">' + link;
+                    }
+                }
+            });
+
+            var navDisplay = '<ul class="flipster-nav">\n';
+            for (var catIndex in navCategories) {
+                navList[navCategories[catIndex]] = navList[navCategories[catIndex]] + "</ul>\n</li>\n";
+            }
+            for (var navIndex in navList) {
+                navDisplay += navList[navIndex];
+            }
+            navDisplay += '</ul>';
+
+            if(settings.navPosition.toLowerCase() != "after") {
+                _flipNav = $(navDisplay).prependTo(_flipster);
+            } else {
+                _flipNav = $(navDisplay).appendTo(_flipster);
+            }
+
+            _flipNavItems = _flipNav.find("a").on("click",function(e){
+                var target;
+                if ( $(this).hasClass("flip-nav-category-link") ) {
+                    target = _flipItems.filter("[data-flip-category='"+$(this).data("flip-category")+"']");
+                } else {
+                    target = $(this.hash);
+                }
+
+                if ( target.length ) {
+                    jump(target);
+                    e.preventDefault();
+                }
+            });
         }
 
         function updateNav() {
@@ -254,22 +255,23 @@ $.fn.flipster = function(options) {
         }
 
         function jump(to) {
-            if ( _flipItems.length > 1 ) {
-                if ( to === "left" ) {
-                    if ( _current > 0 ) { _current--; }
-                    else { _current = _flipItems.length-1; }
-                }
-                else if ( to === "right" ) {
-                    if ( _current < _flipItems.length-1 ) { _current++; }
-                    else { _current = 0; }
-                } else if ( typeof to === 'number' ) {
-                    _current = to;
-                } else {
-                    // if object is sent, get its index
-                    _current = _flipItems.index(to);
-                }
-                center();
+            if ( _flipItems.length <= 1 ) {
+                return;
             }
+            if ( to === "left" ) {
+                if ( _current > 0 ) { _current--; }
+                else { _current = _flipItems.length-1; }
+            }
+            else if ( to === "right" ) {
+                if ( _current < _flipItems.length-1 ) { _current++; }
+                else { _current = 0; }
+            } else if ( typeof to === 'number' ) {
+                _current = to;
+            } else {
+                // if object is sent, get its index
+                _current = _flipItems.index(to);
+            }
+            center();
         }
 
         function play(interval) {
@@ -310,7 +312,6 @@ $.fn.flipster = function(options) {
                     _current = settings.start;
                 }
             }
-
 
             // initialize containers
             resize();
