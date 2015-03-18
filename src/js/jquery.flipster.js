@@ -55,7 +55,6 @@ $.fn.flipster = function(options) {
         var _startTouchX = 0;
         var _actionThrottle = 0;
         var _throttleTimeout;
-        var compatibility;
 
         // public methods
         methods = {
@@ -241,23 +240,8 @@ $.fn.flipster = function(options) {
 
                 totalLeft = (currentLeft + (currentWidth/2)) - (totalWidth/2);
                 var newLeftPos = -1*(totalLeft)+"px";
-                /* Untested Compatibility */
-                if (compatibility) {
-                    var leftItems = $(".flip-past");
-                    var rightItems = $(".flip-future");
-                    $(".flip-current").css("zoom", "1.0");
-                    for (i = 0; i < leftItems.length; i++) {
-                        $(leftItems[i]).css("zoom", (100-((leftItems.length-i)*5)+"%"));
-                    }
-                    for (i = 0; i < rightItems.length; i++) {
-                        $(rightItems[i]).css("zoom", (100-((i+1)*5)+"%"));
-                    }
 
-                    _flipItemsOuter.animate({"left":newLeftPos}, 333);
-                }
-                else {
-                    _flipItemsOuter.css("left", newLeftPos);
-                }
+                _flipItemsOuter.css("left", newLeftPos);
             }
 
             currentItem
@@ -308,16 +292,6 @@ $.fn.flipster = function(options) {
               _flipster.addClass('no-rotate');
             _flipItemsOuter = _flipster.find(settings.itemContainer).addClass("flip-items");
             _flipItems = _flipItemsOuter.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
-
-            //Browsers that don't support CSS3 transforms get compatibility:
-            var isIEmax8 = ('\v' === 'v'); //IE <= 8
-            var checkIE = document.createElement("b");
-            checkIE.innerHTML = "<!--[if IE 9]><i></i><![endif]-->"; //IE 9
-            var isIE9 = checkIE.getElementsByTagName("i").length === 1;
-            if (isIEmax8 || isIE9) {
-                compatibility = true;
-                _flipItemsOuter.addClass("compatibility");
-            }
 
             // Insert navigation if enabled.
             buildNav();
