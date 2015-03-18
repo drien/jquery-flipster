@@ -386,13 +386,14 @@ $.fn.flipster = function(options) {
                 });
 
                 _flipster.on("touchmove.flipster", function(e) {
-                    e.preventDefault();
                     var nowX = e.originalEvent.targetTouches[0].screenX;
                     var touchDiff = nowX-_startTouchX;
                     if (touchDiff > _flipItems[0].clientWidth/1.75){
+                        e.preventDefault();
                         jump("left");
                         _startTouchX = nowX;
-                    }else if (touchDiff < -1*(_flipItems[0].clientWidth/1.75)){
+                    } else if (touchDiff < -1*(_flipItems[0].clientWidth/1.75)){
+                        e.preventDefault();
                         jump("right");
                         _startTouchX = nowX;
                     }
