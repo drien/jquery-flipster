@@ -8,24 +8,27 @@ $.fn.flipster = function(options) {
         var args = Array.prototype.slice.call(arguments, 1);
     } else {
         var defaults = {
-            itemContainer:    'ul', // Container for the flippin' items.
-            itemSelector:     'li', // Selector for children of itemContainer to flip
+            itemContainer:    'ul',        // Container for the flippin' items.
+            itemSelector:     'li',        // Selector for children of itemContainer to flip
             style:            'coverflow', // Switch between 'coverflow' or 'carousel' display styles
-            start:            'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
-            
+            start:            'center',    // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
+
             enableKeyboard:   true, // Enable left/right arrow navigation
             enableMousewheel: true, // Enable scrollwheel navigation (up = left, down = right)
             enableTouch:      true, // Enable swipe navigation for touch devices
-            
+
             onItemSwitch:     $.noop, // Callback function when items are switched
             disableRotation:  false,
 
-            enableNav:        false, // If true, flipster will insert an unordered list of the slides
+            enableNav:        false,    // If true, flipster will insert an unordered list of the slides
             navPosition:      'before', // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
 
-            enableNavButtons: false, // If true, flipster will insert Previous / Next buttons
-            prevText:         'Previous',       // Changes the text for the Previous button
-            nextText:         'Next'            // Changes the text for the Next button
+            enableNavButtons: false,      // If true, flipster will insert Previous / Next buttons
+            prevText:         'Previous', // Changes the text for the Previous button
+            nextText:         'Next',     // Changes the text for the Next button
+
+            autoplay:         false,
+            autoplayInterval: 5000
         };
         var settings = $.extend({}, defaults, options);
 
@@ -47,7 +50,8 @@ $.fn.flipster = function(options) {
         var _flipNav;
         var _flipNavItems;
         var _current = 0;
-        
+
+        var _playing = false;
         var _startTouchX = 0;
         var _actionThrottle = 0;
         var _throttleTimeout;
@@ -55,7 +59,9 @@ $.fn.flipster = function(options) {
 
         // public methods
         methods = {
-            jump: jump
+            jump: jump,
+            play: play,
+            pause: pause
         };
         _flipster.data('methods', methods);
 
@@ -129,7 +135,7 @@ $.fn.flipster = function(options) {
                     } else {
                         target = $(this.hash);
                     }
-                    
+
                     if ( target.length ) {
                         jump(target);
                         e.preventDefault();
@@ -151,12 +157,12 @@ $.fn.flipster = function(options) {
             if ( settings.enableNavButtons && _flipItems.length > 1 ) {
                 _flipster.find(".flipto-prev, .flipto-next").remove();
                 _flipster.append("<a href='#' class='flipto-prev'>"+settings.prevText+"</a> <a href='#' class='flipto-next'>"+settings.nextText+"</a>");
-                
+
                 _flipster.children('.flipto-prev').on("click", function(e) {
                     jump("left");
                     e.preventDefault();
                 });
-                
+
                 _flipster.children('.flipto-next').on("click", function(e) {
                     jump("right");
                     e.preventDefault();
@@ -166,11 +172,11 @@ $.fn.flipster = function(options) {
 
         function center() {
             var currentItem = $(_flipItems[_current]).addClass("flip-current");
-            
+
             _flipItems.removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
 
             if ( settings.style === 'carousel' ) {
-                
+
                 _flipItems.addClass("flip-hidden");
 
                 var nextItem = $(_flipItems[_current+1]),
@@ -262,7 +268,7 @@ $.fn.flipster = function(options) {
             updateNav();
             settings.onItemSwitch.call(this);
         }
-        
+
         function jump(to) {
             if ( _flipItems.length > 1 ) {
                 if ( to === "left" ) {
@@ -280,6 +286,19 @@ $.fn.flipster = function(options) {
                 }
                 center();
             }
+        }
+
+        function play(interval) {
+            var time = interval || settings.autoplayInterval;
+            settings.autoplayInterval = time;
+            _playing = setInterval(function(){
+                 jump('right');
+            }, time);
+        }
+
+        function pause() {
+            clearInterval(_playing);
+            _playing = -1;
         }
 
         function init() {
@@ -326,9 +345,9 @@ $.fn.flipster = function(options) {
             _flipster.hide().css("visibility","visible").fadeIn(400,function(){ center(); });
 
             // Attach event bindings.
-            win.on("resize.flipster", function() { 
-                resize(); 
-                center(); 
+            win.on("resize.flipster", function() {
+                resize();
+                center();
             });
 
             // Navigate directly to an item by clicking
@@ -337,12 +356,22 @@ $.fn.flipster = function(options) {
                 jump(_flipItems.index(this));
             });
 
+            _flipItems.on("mouseenter", function(e) {
+                 pause();
+            });
+
+            _flipItems.on("mouseleave", function(e) {
+                if (_playing === -1) {
+                    play();
+                }
+            });
+
             // Keyboard Navigation
             if (settings.enableKeyboard && _flipItems.length > 1) {
                 win.on("keydown.flipster", function(e) {
                     _actionThrottle++;
                     if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
-                    
+
                     var code = e.which;
                     if (code === 37 ) {
                         e.preventDefault();
@@ -352,7 +381,7 @@ $.fn.flipster = function(options) {
                         jump('right');
                     }
                 });
-        
+
                 win.on("keyup.flipster", function(e){
                     _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
                 });
@@ -365,10 +394,10 @@ $.fn.flipster = function(options) {
                     _actionThrottle++;
                     if (_actionThrottle % 4 !==0 && _actionThrottle !== 1) return; //throttling like with held-down keys
                     window.clearTimeout(_throttleTimeout);
-                    
+
                     if ( e.originalEvent.wheelDelta /120 > 0 ) { jump("left"); }
                     else { jump("right"); }
-                    
+
                     e.preventDefault();
                 });
             }

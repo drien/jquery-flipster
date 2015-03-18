@@ -85,6 +85,7 @@
   -o-transition: all 350ms ease-in-out;
   -ms-transition: all 350ms ease-in-out;
   transition: all 350ms ease-in-out;
+  box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
   -webkit-box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
 }
 .flipster-coverflow .flip-past .flip-content {
