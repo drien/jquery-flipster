@@ -54,9 +54,6 @@ $.fn.flipster = function(options) {
         var _currentIndex = 0;
 
         var _playing = false;
-        var _startTouchX = 0;
-        var _actionThrottle = 0;
-        var _throttleTimeout;
 
         // public methods
         methods = {
@@ -65,10 +62,6 @@ $.fn.flipster = function(options) {
             pause: pause
         };
         self.data('methods', methods);
-
-        function removeThrottle() {
-            _actionThrottle = 0;
-        }
 
         function resize() {
             _container.height(calculateBiggestItemHeight());
@@ -291,10 +284,10 @@ $.fn.flipster = function(options) {
         }
 
         function init() {
-            // Basic setup
             self.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
-            if (settings.disableRotation)
-              self.addClass('no-rotate');
+            if (settings.disableRotation) {
+                self.addClass('no-rotate');
+            }
             _container = self.find(settings.itemContainer).addClass("flip-items");
             _items = _container.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
 
@@ -344,67 +337,96 @@ $.fn.flipster = function(options) {
                 }
             });
 
-            // Keyboard Navigation
-            if (settings.enableKeyboard && _items.length > 1) {
-                $(window).on("keydown.flipster", function(e) {
-                    _actionThrottle++;
-                    if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
-
-                    var code = e.which;
-                    if (code === 37) {
-                        e.preventDefault();
-                        jump('left');
-                    } else if (code === 39) {
-                        e.preventDefault();
-                        jump('right');
-                    }
-                });
-
-                $(window).on("keyup.flipster", function(e){
-                    _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
-                });
+            if (_items.length <= 1) {
+                return;
             }
 
-            // Mousewheel Navigation
-            if (settings.enableMousewheel && _items.length > 1) { // TODO: Fix scrollwheel on Firefox
-                self.on("mousewheel.flipster", function(e){
-                    _throttleTimeout = window.setTimeout(removeThrottle, 500); //throttling should expire if scrolling pauses for a moment.
-                    _actionThrottle++;
-                    if (_actionThrottle % 4 !==0 && _actionThrottle !== 1) return; //throttling like with held-down keys
-                    window.clearTimeout(_throttleTimeout);
-
-                    if ( e.originalEvent.wheelDelta /120 > 0 ) { jump("left"); }
-                    else { jump("right"); }
-
-                    e.preventDefault();
-                });
+            if (settings.enableKeyboard) {
+                new interactor.Keyboard().init();
             }
-
-            // Touch Navigation
-            if ( settings.enableTouch && _items.length > 1 ) {
-                self.on("touchstart.flipster", function(e) {
-                    _startTouchX = e.originalEvent.targetTouches[0].screenX;
-                });
-
-                self.on("touchmove.flipster", function(e) {
-                    var nowX = e.originalEvent.targetTouches[0].screenX;
-                    var touchDiff = nowX-_startTouchX;
-                    if (touchDiff > _items[0].clientWidth/1.75){
-                        e.preventDefault();
-                        jump("left");
-                        _startTouchX = nowX;
-                    } else if (touchDiff < -1*(_items[0].clientWidth/1.75)){
-                        e.preventDefault();
-                        jump("right");
-                        _startTouchX = nowX;
-                    }
-                });
-
-                self.on("touchend.flipster", function(e) {
-                    _startTouchX = 0;
-                });
+            if (settings.enableMousewheel) {
+                new interactor.Mousewheel().init(self);
+            }
+            if (settings.enableTouch) {
+                new interactor.Touch().init(self);
             }
         }
+
+        var interactor = {
+            Keyboard: function() {
+                var _actionThrottle;
+
+                this.init = function() {
+                    $(window).on("keydown.flipster", function(e) {
+                        _actionThrottle++;
+                        if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
+
+                        var code = e.which;
+                        if (code === 37) {
+                            e.preventDefault();
+                            jump('left');
+                        } else if (code === 39) {
+                            e.preventDefault();
+                            jump('right');
+                        }
+                    });
+
+                    $(window).on("keyup.flipster", function(e){
+                        _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
+                    });
+                }
+            },
+
+            Mousewheel: function() {
+                var _actionThrottle;
+                var _throttleTimeout;
+
+                this.init = function(elem) {
+                    elem.on("mousewheel.flipster", function(e){
+                        _throttleTimeout = window.setTimeout(function(){
+                            _actionThrottle = 0;
+                        }, 500); //throttling should expire if scrolling pauses for a moment.
+                        _actionThrottle++;
+                        if (_actionThrottle % 4 !==0 && _actionThrottle !== 1) return; //throttling like with held-down keys
+                        window.clearTimeout(_throttleTimeout);
+
+                        var direction = (e.originalEvent.wheelDelta / 120 > 0) ? "left" : "right";
+                        jump(direction)
+
+                        e.preventDefault();
+                    });
+                }
+            },
+
+            Touch: function() {
+                var _actionThrottle;
+                var _startTouchX;
+
+                this.init = function(elem) {
+                    elem.on("touchstart.flipster", function(e) {
+                        _startTouchX = e.originalEvent.targetTouches[0].screenX;
+                    });
+
+                    elem.on("touchmove.flipster", function(e) {
+                        var nowX = e.originalEvent.targetTouches[0].screenX;
+                        var touchDiff = nowX-_startTouchX;
+                        if (touchDiff > _items[0].clientWidth/1.75){
+                            e.preventDefault();
+                            jump("left");
+                            _startTouchX = nowX;
+                        } else if (touchDiff < -1*(_items[0].clientWidth/1.75)){
+                            e.preventDefault();
+                            jump("right");
+                            _startTouchX = nowX;
+                        }
+                    });
+
+                    elem.on("touchend.flipster", function(e) {
+                        _startTouchX = 0;
+                    });
+                }
+            }
+        };
 
         // Initialize if flipster is not already active.
         if ( !self.hasClass("flipster-active") ) { init(); }
