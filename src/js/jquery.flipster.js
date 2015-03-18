@@ -1,6 +1,8 @@
 /* global window, document, jQuery */
-(function($) {
+(function($, window) {
 $.fn.flipster = function(options) {
+    "use strict";
+
     var isMethodCall = typeof options === 'string' ? true : false;
 
     if (isMethodCall) {
@@ -32,25 +34,24 @@ $.fn.flipster = function(options) {
         };
         var settings = $.extend({}, defaults, options);
 
-        var win = $(window);
     }
 
     return this.each(function() {
 
-        var _flipster = $(this);
+        var self = $(this);
         var methods;
 
         if (isMethodCall) {
-            methods = _flipster.data('methods');
+            methods = self.data('methods');
             return methods[method].apply(this, args);
         }
 
-        var _flipItemsOuter;
-        var _flipItems;
-        var _flipNav;
-        var _flipNavItems;
-        var _previous;
-        var _current = 0;
+        var _container;
+        var _items;
+        var _nav;
+        var _navItems;
+        var _previousIndex;
+        var _currentIndex = 0;
 
         var _playing = false;
         var _startTouchX = 0;
@@ -63,35 +64,35 @@ $.fn.flipster = function(options) {
             play: play,
             pause: pause
         };
-        _flipster.data('methods', methods);
+        self.data('methods', methods);
 
         function removeThrottle() {
             _actionThrottle = 0;
         }
 
         function resize() {
-            _flipItemsOuter.height(calculateBiggestFlipItemHeight());
-            _flipster.css("height","auto");
-            if ( settings.style === 'carousel' ) { _flipItemsOuter.width(_flipItems.width()); }
+            _container.height(calculateBiggestItemHeight());
+            self.css("height","auto");
+            if ( settings.style === 'carousel' ) { _container.width(_items.width()); }
         }
 
-        function calculateBiggestFlipItemHeight() {
+        function calculateBiggestItemHeight() {
             var biggestHeight = 0;
-            _flipItems.each(function() {
+            _items.each(function() {
                 if ($(this).height() > biggestHeight) biggestHeight = $(this).height();
             });
             return biggestHeight;
         }
 
         function buildNav() {
-            if ( !settings.enableNav || _flipItems.length <= 1 ) {
+            if ( !settings.enableNav || _items.length <= 1 ) {
                 return;
             }
             var navCategories = [],
                 navItems = [],
                 navList = [];
 
-            _flipItems.each(function(){
+            _items.each(function(){
                 var category = $(this).data("flip-category"),
                     itemId = $(this).attr("id"),
                     itemTitle = $(this).attr("title");
@@ -125,15 +126,15 @@ $.fn.flipster = function(options) {
             navDisplay += '</ul>';
 
             if(settings.navPosition.toLowerCase() != "after") {
-                _flipNav = $(navDisplay).prependTo(_flipster);
+                _nav = $(navDisplay).prependTo(self);
             } else {
-                _flipNav = $(navDisplay).appendTo(_flipster);
+                _nav = $(navDisplay).appendTo(self);
             }
 
-            _flipNavItems = _flipNav.find("a").on("click",function(e){
+            _navItems = _nav.find("a").on("click",function(e){
                 var target;
                 if ( $(this).hasClass("flip-nav-category-link") ) {
-                    target = _flipItems.filter("[data-flip-category='"+$(this).data("flip-category")+"']");
+                    target = _items.filter("[data-flip-category='"+$(this).data("flip-category")+"']");
                 } else {
                     target = $(this.hash);
                 }
@@ -146,25 +147,25 @@ $.fn.flipster = function(options) {
         }
 
         function updateNav() {
-            if ( settings.enableNav && _flipItems.length > 1 ) {
-                var currentItem = $(_flipItems[_current]);
-                _flipNav.find(".flip-nav-current").removeClass("flip-nav-current");
-                _flipNavItems.filter("[href='#"+currentItem.attr("id")+"']").addClass("flip-nav-current");
-                _flipNavItems.filter("[data-flip-category='"+currentItem.data("flip-category")+"']").parent().addClass("flip-nav-current");
+            if ( settings.enableNav && _items.length > 1 ) {
+                var currentItem = $(_items[_currentIndex]);
+                _nav.find(".flip-nav-current").removeClass("flip-nav-current");
+                _navItems.filter("[href='#"+currentItem.attr("id")+"']").addClass("flip-nav-current");
+                _navItems.filter("[data-flip-category='"+currentItem.data("flip-category")+"']").parent().addClass("flip-nav-current");
             }
         }
 
         function buildNavButtons() {
-            if ( settings.enableNavButtons && _flipItems.length > 1 ) {
-                _flipster.find(".flipto-prev, .flipto-next").remove();
-                _flipster.append("<a href='#' class='flipto-prev'>"+settings.prevText+"</a> <a href='#' class='flipto-next'>"+settings.nextText+"</a>");
+            if ( settings.enableNavButtons && _items.length > 1 ) {
+                self.find(".flipto-prev, .flipto-next").remove();
+                self.append("<a href='#' class='flipto-prev'>"+settings.prevText+"</a> <a href='#' class='flipto-next'>"+settings.nextText+"</a>");
 
-                _flipster.children('.flipto-prev').on("click", function(e) {
+                self.children('.flipto-prev').on("click", function(e) {
                     jump("left");
                     e.preventDefault();
                 });
 
-                _flipster.children('.flipto-next').on("click", function(e) {
+                self.children('.flipto-next').on("click", function(e) {
                     jump("right");
                     e.preventDefault();
                 });
@@ -172,32 +173,32 @@ $.fn.flipster = function(options) {
         }
 
         function center() {
-            var currentItem = $(_flipItems[_current]);
+            var currentItem = $(_items[_currentIndex]);
 
-            _flipItems.removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
+            _items.removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
 
             if ( settings.style === 'carousel' ) {
 
-                _flipItems.addClass("flip-hidden");
+                _items.addClass("flip-hidden");
 
-                var nextItem = $(_flipItems[_current+1]),
-                    futureItem = $(_flipItems[_current+2]),
-                    prevItem = $(_flipItems[_current-1]),
-                    pastItem = $(_flipItems[_current-2]);
+                var nextItem = $(_items[_currentIndex+1]),
+                    futureItem = $(_items[_currentIndex+2]),
+                    prevItem = $(_items[_currentIndex-1]),
+                    pastItem = $(_items[_currentIndex-2]);
 
-                if ( _current === 0 ) {
-                    prevItem = _flipItems.last();
+                if ( _currentIndex === 0 ) {
+                    prevItem = _items.last();
                     pastItem = prevItem.prev();
                 }
-                else if ( _current === 1 ) {
-                    pastItem = _flipItems.last();
+                else if ( _currentIndex === 1 ) {
+                    pastItem = _items.last();
                 }
-                else if ( _current === _flipItems.length-2 ) {
-                    futureItem = _flipItems.first();
+                else if ( _currentIndex === _items.length-2 ) {
+                    futureItem = _items.first();
                 }
-                else if ( _current === _flipItems.length-1 ) {
-                    nextItem = _flipItems.first();
-                    futureItem = $(_flipItems[1]);
+                else if ( _currentIndex === _items.length-1 ) {
+                    nextItem = _items.first();
+                    futureItem = $(_items[1]);
                 }
 
                 futureItem.removeClass("flip-hidden").addClass("flip-future");
@@ -209,41 +210,41 @@ $.fn.flipster = function(options) {
             else {
                 var spacer = currentItem.outerWidth()/2;
                 var totalLeft = 0;
-                var totalWidth = _flipItemsOuter.width();
+                var totalWidth = _container.width();
                 var currentWidth = currentItem.outerWidth();
-                var currentLeft = (_flipItems.index(currentItem)*currentWidth)/2 +spacer/2;
+                var currentLeft = (_items.index(currentItem)*currentWidth)/2 + spacer/2;
 
-                _flipItems.removeClass("flip-hidden");
+                _items.removeClass("flip-hidden");
 
-                for (var i = 0; i < _flipItems.length; i++) {
-                    var thisItem = $(_flipItems[i]);
+                for (var i = 0; i < _items.length; i++) {
+                    var thisItem = $(_items[i]);
                     var thisWidth = thisItem.outerWidth();
 
-                    if (i < _current) {
+                    if (i < _currentIndex) {
                         thisItem.addClass("flip-past")
                             .css({
                                 "z-index" : i,
                                 "left" : (i*thisWidth/2)+"px"
                             });
                     }
-                    else if ( i > _current ) {
+                    else if ( i > _currentIndex ) {
                         thisItem.addClass("flip-future")
                             .css({
-                                "z-index" : _flipItems.length-i,
-                                "left" : (i*thisWidth/2)+spacer+"px"
+                                "z-index" : _items.length-i,
+                                "left" : (i * thisWidth / 2) + spacer + "px"
                             });
                     }
                 }
 
                 currentItem.css({
-                    "z-index" : _flipItems.length+1,
+                    "z-index" : _items.length + 1,
                     "left" : currentLeft +"px"
                 });
 
-                totalLeft = (currentLeft + (currentWidth/2)) - (totalWidth/2);
-                var newLeftPos = -1*(totalLeft)+"px";
+                totalLeft = (currentLeft + (currentWidth / 2)) - (totalWidth / 2);
+                var newLeftPos = -1 * (totalLeft) + "px";
 
-                _flipItemsOuter.css("left", newLeftPos);
+                _container.css("left", newLeftPos);
             }
 
             currentItem
@@ -255,24 +256,24 @@ $.fn.flipster = function(options) {
         }
 
         function jump(to) {
-            _previous = _current;
-            if ( _flipItems.length <= 1 ) {
+            var _previous = _currentIndex;
+            if (_items.length <= 1) {
                 return;
             }
-            if ( to === "left" ) {
-                if ( _current > 0 ) { _current--; }
-                else { _current = _flipItems.length-1; }
+            if (to === "left") {
+                if (_currentIndex > 0) { _currentIndex--; }
+                else { _currentIndex = _items.length - 1; }
             }
-            else if ( to === "right" ) {
-                if ( _current < _flipItems.length-1 ) { _current++; }
-                else { _current = 0; }
-            } else if ( typeof to === 'number' ) {
-                _current = to;
+            else if (to === "right") {
+                if (_currentIndex < _items.length - 1) { _currentIndex++; }
+                else { _currentIndex = 0; }
+            } else if (typeof to === 'number') {
+                _currentIndex = to;
             } else {
                 // if object is sent, get its index
-                _current = _flipItems.index(to);
+                _currentIndex = _items.index(to);
             }
-            settings.onItemSwitch.call(this, _flipItems[_current], _flipItems[_previous]);
+            settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]);
             center();
         }
 
@@ -286,32 +287,32 @@ $.fn.flipster = function(options) {
 
         function pause() {
             clearInterval(_playing);
-            _playing = -1;
+            _playing = _playing ? -1 : false;
         }
 
         function init() {
             // Basic setup
-            _flipster.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
+            self.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
             if (settings.disableRotation)
-              _flipster.addClass('no-rotate');
-            _flipItemsOuter = _flipster.find(settings.itemContainer).addClass("flip-items");
-            _flipItems = _flipItemsOuter.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
+              self.addClass('no-rotate');
+            _container = self.find(settings.itemContainer).addClass("flip-items");
+            _items = _container.find(settings.itemSelector).addClass("flip-item flip-hidden").wrapInner("<div class='flip-content' />");
 
             // Insert navigation if enabled.
             buildNav();
             buildNavButtons();
 
             // Set the starting item
-            if (settings.start && _flipItems.length > 1) {
+            if (settings.start && _items.length > 1) {
                 // Find the middle item if start = center
                 if ( settings.start === 'center' ) {
-                    if (!_flipItems.length % 2) {
-                        _current = _flipItems.length/2 + 1;
+                    if (!_items.length % 2) {
+                        _currentIndex = _items.length/2 + 1;
                     } else {
-                        _current = Math.floor(_flipItems.length/2);
+                        _currentIndex = Math.floor(_items.length/2);
                     }
                 } else {
-                    _current = settings.start;
+                    _currentIndex = settings.start;
                 }
             }
 
@@ -319,54 +320,54 @@ $.fn.flipster = function(options) {
             resize();
 
             // Necessary to start flipster invisible and then fadeIn so height/width can be set accurately after page load
-            _flipster.hide().css("visibility","visible").fadeIn(400,function(){ center(); });
+            self.hide().css("visibility","visible").fadeIn(400,function(){ center(); });
 
             // Attach event bindings.
-            win.on("resize.flipster", function() {
+            $(window).on("resize.flipster", function() {
                 resize();
                 center();
             });
 
             // Navigate directly to an item by clicking
-            _flipItems.on("click", function(e) {
+            _items.on("click", function(e) {
                 if ( !$(this).hasClass("flip-current") ) { e.preventDefault(); }
-                jump(_flipItems.index(this));
+                jump(_items.index(this));
             });
 
-            _flipItems.on("mouseenter", function(e) {
+            _container.on("mouseenter", function(e) {
                  pause();
             });
 
-            _flipItems.on("mouseleave", function(e) {
+            _container.on("mouseleave", function(e) {
                 if (_playing === -1) {
                     play();
                 }
             });
 
             // Keyboard Navigation
-            if (settings.enableKeyboard && _flipItems.length > 1) {
-                win.on("keydown.flipster", function(e) {
+            if (settings.enableKeyboard && _items.length > 1) {
+                $(window).on("keydown.flipster", function(e) {
                     _actionThrottle++;
                     if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
 
                     var code = e.which;
-                    if (code === 37 ) {
+                    if (code === 37) {
                         e.preventDefault();
                         jump('left');
-                    } else if (code === 39 ) {
+                    } else if (code === 39) {
                         e.preventDefault();
                         jump('right');
                     }
                 });
 
-                win.on("keyup.flipster", function(e){
+                $(window).on("keyup.flipster", function(e){
                     _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
                 });
             }
 
             // Mousewheel Navigation
-            if (settings.enableMousewheel && _flipItems.length > 1) { // TODO: Fix scrollwheel on Firefox
-                _flipster.on("mousewheel.flipster", function(e){
+            if (settings.enableMousewheel && _items.length > 1) { // TODO: Fix scrollwheel on Firefox
+                self.on("mousewheel.flipster", function(e){
                     _throttleTimeout = window.setTimeout(removeThrottle, 500); //throttling should expire if scrolling pauses for a moment.
                     _actionThrottle++;
                     if (_actionThrottle % 4 !==0 && _actionThrottle !== 1) return; //throttling like with held-down keys
@@ -380,33 +381,33 @@ $.fn.flipster = function(options) {
             }
 
             // Touch Navigation
-            if ( settings.enableTouch && _flipItems.length > 1 ) {
-                _flipster.on("touchstart.flipster", function(e) {
+            if ( settings.enableTouch && _items.length > 1 ) {
+                self.on("touchstart.flipster", function(e) {
                     _startTouchX = e.originalEvent.targetTouches[0].screenX;
                 });
 
-                _flipster.on("touchmove.flipster", function(e) {
+                self.on("touchmove.flipster", function(e) {
                     var nowX = e.originalEvent.targetTouches[0].screenX;
                     var touchDiff = nowX-_startTouchX;
-                    if (touchDiff > _flipItems[0].clientWidth/1.75){
+                    if (touchDiff > _items[0].clientWidth/1.75){
                         e.preventDefault();
                         jump("left");
                         _startTouchX = nowX;
-                    } else if (touchDiff < -1*(_flipItems[0].clientWidth/1.75)){
+                    } else if (touchDiff < -1*(_items[0].clientWidth/1.75)){
                         e.preventDefault();
                         jump("right");
                         _startTouchX = nowX;
                     }
                 });
 
-                _flipster.on("touchend.flipster", function(e) {
+                self.on("touchend.flipster", function(e) {
                     _startTouchX = 0;
                 });
             }
         }
 
         // Initialize if flipster is not already active.
-        if ( !_flipster.hasClass("flipster-active") ) { init(); }
+        if ( !self.hasClass("flipster-active") ) { init(); }
     });
 };
-})(jQuery);
+})(jQuery, window);
