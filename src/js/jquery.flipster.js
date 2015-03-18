@@ -252,7 +252,6 @@ $.fn.flipster = function(options) {
 
             resize();
             updateNav();
-            settings.onItemSwitch.call(this, currentItem, _flipItems[_previous]);
         }
 
         function jump(to) {
@@ -273,6 +272,7 @@ $.fn.flipster = function(options) {
                 // if object is sent, get its index
                 _current = _flipItems.index(to);
             }
+            settings.onItemSwitch.call(this, _flipItems[_current], _flipItems[_previous]);
             center();
         }
 
