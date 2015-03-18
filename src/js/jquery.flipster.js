@@ -17,7 +17,7 @@ $.fn.flipster = function(options) {
             enableMousewheel: true, // Enable scrollwheel navigation (up = left, down = right)
             enableTouch:      true, // Enable swipe navigation for touch devices
 
-            onItemSwitch:     $.noop, // Callback function when items are switched
+            onItemSwitch:     $.noop, // Callback function when items are switched. Current and previous items passed in as arguments
             disableRotation:  false,
 
             enableNav:        false,    // If true, flipster will insert an unordered list of the slides
@@ -49,6 +49,7 @@ $.fn.flipster = function(options) {
         var _flipItems;
         var _flipNav;
         var _flipNavItems;
+        var _previous;
         var _current = 0;
 
         var _playing = false;
@@ -171,7 +172,7 @@ $.fn.flipster = function(options) {
         }
 
         function center() {
-            var currentItem = $(_flipItems[_current]).addClass("flip-current");
+            var currentItem = $(_flipItems[_current]);
 
             _flipItems.removeClass("flip-prev flip-next flip-current flip-past flip-future no-transition");
 
@@ -251,10 +252,11 @@ $.fn.flipster = function(options) {
 
             resize();
             updateNav();
-            settings.onItemSwitch.call(this);
+            settings.onItemSwitch.call(this, currentItem, _flipItems[_previous]);
         }
 
         function jump(to) {
+            _previous = _current;
             if ( _flipItems.length <= 1 ) {
                 return;
             }
