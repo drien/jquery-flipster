@@ -1,5 +1,5 @@
 /* global window, jQuery */
-(function($, window) {
+(function($, window, undefined) {
 $.fn.flipster = function(options) {
     "use strict";
 
@@ -72,9 +72,9 @@ $.fn.flipster = function(options) {
             if ( !settings.enableNav || _items.length <= 1 ) {
                 return;
             }
-            var navCategories = [],
-                navItems = [],
-                navList = [];
+            var navCategories = {},
+                navItems = {},
+                navList = {};
 
             _items.each(function(){
                 var item = $(this),
@@ -82,37 +82,36 @@ $.fn.flipster = function(options) {
                     itemId = item.attr("id"),
                     itemTitle = item.attr("title");
 
-                if ( typeof category !== 'undefined' ) {
-                    if ( $.inArray(category,navCategories) < 0 ) {
-                        navCategories.push(category);
-                        navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a>\n<ul class="flip-nav-items">\n';
-                    }
-                }
-
-                if ( $.inArray(itemId,navItems) < 0 ) {
-                    navItems.push(itemId);
-                    var link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
-                    if ( typeof category !== 'undefined' ) {
-                        navList[category] = navList[category] + '<li class="flip-nav-item">' + link;
+                if ( !navItems[itemId] ) {
+                    navItems[itemId] = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a>';
+                    if ( category !== undefined ) {
+                        navCategories[category] = category;
+                        if ( !navList[category] ) {
+                            navList[category] = '';
+                        }
+                        navList[category] += '<li class="flip-nav-item">' + navItems[itemId] + '</li>';
                     } else {
-                        navList[itemId] = '<li class="flip-nav-item no-category">' + link;
+                        navList[itemId] = '<li class="flip-nav-item no-category">' + navItems[itemId] + '</li>';
                     }
                 }
             });
 
-            var navDisplay = '<ul class="flipster-nav">\n';
-            for ( var catIndex in navCategories ) {
-                navList[navCategories[catIndex]] = navList[navCategories[catIndex]] + "</ul>\n</li>\n";
+            for ( var category in navCategories ) {
+                navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a><ul class="flip-nav-items">' + navList[category] + "</ul></li>";
             }
+
+            var navDisplay = '<ul class="flipster-nav">';
             for ( var navIndex in navList ) {
                 navDisplay += navList[navIndex];
             }
             navDisplay += '</ul>';
 
-            if ( settings.navPosition.toLowerCase() !== "after" ) {
-                _nav = $(navDisplay).prependTo(self);
+            _nav = $(navDisplay);
+
+            if ( settings.navPosition.toLowerCase() === "after" ) {
+                self.append(_nav);
             } else {
-                _nav = $(navDisplay).appendTo(self);
+                self.prepend(_nav);
             }
 
             _navItems = _nav.find("a").on("click",function(e){
