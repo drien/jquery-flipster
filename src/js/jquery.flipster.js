@@ -77,9 +77,10 @@ $.fn.flipster = function(options) {
                 navList = [];
 
             _items.each(function(){
-                var category = $(this).data("flip-category"),
-                    itemId = $(this).attr("id"),
-                    itemTitle = $(this).attr("title");
+                var item = $(this),
+                    category = item.data("flip-category"),
+                    itemId = item.attr("id"),
+                    itemTitle = item.attr("title");
 
                 if ( typeof category !== 'undefined' ) {
                     if ( $.inArray(category,navCategories) < 0 ) {
