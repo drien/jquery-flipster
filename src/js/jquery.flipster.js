@@ -1,4 +1,4 @@
-/* global window, document, jQuery */
+/* global window, jQuery */
 (function($, window) {
 $.fn.flipster = function(options) {
     "use strict";
@@ -41,7 +41,7 @@ $.fn.flipster = function(options) {
         var self = $(this);
         var methods;
 
-        if (isMethodCall) {
+        if ( isMethodCall ) {
             methods = self.data('methods');
             return methods[method].apply(this, args);
         }
@@ -50,18 +50,9 @@ $.fn.flipster = function(options) {
         var _items;
         var _nav;
         var _navItems;
-        var _previousIndex;
         var _currentIndex = 0;
 
         var _playing = false;
-
-        // public methods
-        methods = {
-            jump: jump,
-            play: play,
-            pause: pause
-        };
-        self.data('methods', methods);
 
         function resize() {
             _container.height(calculateBiggestItemHeight());
@@ -72,7 +63,7 @@ $.fn.flipster = function(options) {
         function calculateBiggestItemHeight() {
             var biggestHeight = 0;
             _items.each(function() {
-                if ($(this).height() > biggestHeight) biggestHeight = $(this).height();
+                if ( $(this).height() > biggestHeight ) { biggestHeight = $(this).height(); }
             });
             return biggestHeight;
         }
@@ -118,7 +109,7 @@ $.fn.flipster = function(options) {
             }
             navDisplay += '</ul>';
 
-            if(settings.navPosition.toLowerCase() != "after") {
+            if ( settings.navPosition.toLowerCase() !== "after" ) {
                 _nav = $(navDisplay).prependTo(self);
             } else {
                 _nav = $(navDisplay).appendTo(self);
@@ -285,7 +276,7 @@ $.fn.flipster = function(options) {
 
         function init() {
             self.addClass("flipster flipster-active flipster-"+settings.style).css("visibility","hidden");
-            if (settings.disableRotation) {
+            if ( settings.disableRotation ) {
                 self.addClass('no-rotate');
             }
             _container = self.find(settings.itemContainer).addClass("flip-items");
@@ -296,7 +287,7 @@ $.fn.flipster = function(options) {
             buildNavButtons();
 
             // Set the starting item
-            if (settings.start && _items.length > 1) {
+            if ( settings.start && _items.length > 1 ) {
                 // Find the middle item if start = center
                 if ( settings.start === 'center' ) {
                     if (!_items.length % 2) {
@@ -327,27 +318,25 @@ $.fn.flipster = function(options) {
                 jump(_items.index(this));
             });
 
-            _container.on("mouseenter", function(e) {
-                 pause();
-            });
+            _container.on("mouseenter", pause);
 
-            _container.on("mouseleave", function(e) {
+            _container.on("mouseleave", function() {
                 if (_playing === -1) {
                     play();
                 }
             });
 
-            if (_items.length <= 1) {
+            if ( _items.length <= 1 ) {
                 return;
             }
 
-            if (settings.enableKeyboard) {
+            if ( settings.enableKeyboard ) {
                 new interactor.Keyboard().init();
             }
-            if (settings.enableMousewheel) {
+            if ( settings.enableMousewheel ) {
                 new interactor.Mousewheel().init(self);
             }
-            if (settings.enableTouch) {
+            if ( settings.enableTouch ) {
                 new interactor.Touch().init(self);
             }
         }
@@ -359,22 +348,22 @@ $.fn.flipster = function(options) {
                 this.init = function() {
                     $(window).on("keydown.flipster", function(e) {
                         _actionThrottle++;
-                        if (_actionThrottle % 7 !== 0 && _actionThrottle !== 1) return; //if holding the key down, ignore most events
+                        if ( _actionThrottle % 7 !== 0 && _actionThrottle !== 1 ) { return; } //if holding the key down, ignore most events
 
                         var code = e.which;
-                        if (code === 37) {
+                        if ( code === 37 ) {
                             e.preventDefault();
                             jump('left');
-                        } else if (code === 39) {
+                        } else if ( code === 39 ) {
                             e.preventDefault();
                             jump('right');
                         }
                     });
 
-                    $(window).on("keyup.flipster", function(e){
+                    $(window).on("keyup.flipster", function(){
                         _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
                     });
-                }
+                };
             },
 
             Mousewheel: function() {
@@ -387,19 +376,18 @@ $.fn.flipster = function(options) {
                             _actionThrottle = 0;
                         }, 500); //throttling should expire if scrolling pauses for a moment.
                         _actionThrottle++;
-                        if (_actionThrottle % 4 !==0 && _actionThrottle !== 1) return; //throttling like with held-down keys
+                        if ( _actionThrottle % 4 !==0 && _actionThrottle !== 1 ) { return; } //throttling like with held-down keys
                         window.clearTimeout(_throttleTimeout);
 
                         var direction = (e.originalEvent.wheelDelta / 120 > 0) ? "left" : "right";
-                        jump(direction)
+                        jump(direction);
 
                         e.preventDefault();
                     });
-                }
+                };
             },
 
             Touch: function() {
-                var _actionThrottle;
                 var _startTouchX;
 
                 this.init = function(elem) {
@@ -410,23 +398,31 @@ $.fn.flipster = function(options) {
                     elem.on("touchmove.flipster", function(e) {
                         var nowX = e.originalEvent.targetTouches[0].screenX;
                         var touchDiff = nowX-_startTouchX;
-                        if (touchDiff > _items[0].clientWidth/1.75){
+                        if ( touchDiff > _items[0].clientWidth/1.75 ){
                             e.preventDefault();
                             jump("left");
                             _startTouchX = nowX;
-                        } else if (touchDiff < -1*(_items[0].clientWidth/1.75)){
+                        } else if ( touchDiff < -1*(_items[0].clientWidth/1.75) ){
                             e.preventDefault();
                             jump("right");
                             _startTouchX = nowX;
                         }
                     });
 
-                    elem.on("touchend.flipster", function(e) {
+                    elem.on("touchend.flipster", function() {
                         _startTouchX = 0;
                     });
-                }
+                };
             }
         };
+
+        // public methods
+        methods = {
+            jump: jump,
+            play: play,
+            pause: pause
+        };
+        self.data('methods', methods);
 
         // Initialize if flipster is not already active.
         if ( !self.hasClass("flipster-active") ) { init(); }
