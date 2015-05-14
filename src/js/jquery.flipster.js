@@ -93,18 +93,17 @@ $.fn.flipster = function(options) {
                     var link = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a></li>\n';
                     if ( typeof category !== 'undefined' ) {
                         navList[category] = navList[category] + '<li class="flip-nav-item">' + link;
-                    }
-                    else {
+                    } else {
                         navList[itemId] = '<li class="flip-nav-item no-category">' + link;
                     }
                 }
             });
 
             var navDisplay = '<ul class="flipster-nav">\n';
-            for (var catIndex in navCategories) {
+            for ( var catIndex in navCategories ) {
                 navList[navCategories[catIndex]] = navList[navCategories[catIndex]] + "</ul>\n</li>\n";
             }
-            for (var navIndex in navList) {
+            for ( var navIndex in navList ) {
                 navDisplay += navList[navIndex];
             }
             navDisplay += '</ul>';
@@ -173,14 +172,11 @@ $.fn.flipster = function(options) {
                 if ( _currentIndex === 0 ) {
                     prevItem = _items.last();
                     pastItem = prevItem.prev();
-                }
-                else if ( _currentIndex === 1 ) {
+                } else if ( _currentIndex === 1 ) {
                     pastItem = _items.last();
-                }
-                else if ( _currentIndex === _items.length-2 ) {
+                } else if ( _currentIndex === _items.length-2 ) {
                     futureItem = _items.first();
-                }
-                else if ( _currentIndex === _items.length-1 ) {
+                } else if ( _currentIndex === _items.length-1 ) {
                     nextItem = _items.first();
                     futureItem = $(_items[1]);
                 }
@@ -190,8 +186,7 @@ $.fn.flipster = function(options) {
                 nextItem.removeClass("flip-hidden").addClass("flip-next");
                 prevItem.removeClass("flip-hidden").addClass("flip-prev");
 
-            }
-            else {
+            } else {
                 var spacer = currentItem.outerWidth()/2;
                 var totalLeft = 0;
                 var totalWidth = _container.width();
@@ -200,18 +195,17 @@ $.fn.flipster = function(options) {
 
                 _items.removeClass("flip-hidden");
 
-                for (var i = 0; i < _items.length; i++) {
+                for ( var i = 0; i < _items.length; i++ ) {
                     var thisItem = $(_items[i]);
                     var thisWidth = thisItem.outerWidth();
 
-                    if (i < _currentIndex) {
+                    if ( i < _currentIndex ) {
                         thisItem.addClass("flip-past")
                             .css({
                                 "z-index" : i,
                                 "left" : (i*thisWidth/2)+"px"
                             });
-                    }
-                    else if ( i > _currentIndex ) {
+                    } else if ( i > _currentIndex ) {
                         thisItem.addClass("flip-future")
                             .css({
                                 "z-index" : _items.length-i,
@@ -241,17 +235,16 @@ $.fn.flipster = function(options) {
 
         function jump(to) {
             var _previous = _currentIndex;
-            if (_items.length <= 1) {
+            if ( _items.length <= 1 ) {
                 return;
             }
-            if (to === "left") {
-                if (_currentIndex > 0) { _currentIndex--; }
+            if ( to === "left" ) {
+                if ( _currentIndex > 0 ) { _currentIndex--; }
                 else { _currentIndex = _items.length - 1; }
-            }
-            else if (to === "right") {
-                if (_currentIndex < _items.length - 1) { _currentIndex++; }
+            } else if ( to === "right" ) {
+                if ( _currentIndex < _items.length - 1 ) { _currentIndex++; }
                 else { _currentIndex = 0; }
-            } else if (typeof to === 'number') {
+            } else if ( typeof to === 'number' ) {
                 _currentIndex = to;
             } else {
                 // if object is sent, get its index
@@ -329,7 +322,6 @@ $.fn.flipster = function(options) {
             if ( _items.length <= 1 ) {
                 return;
             }
-
             if ( settings.enableKeyboard ) {
                 new interactor.Keyboard().init();
             }
