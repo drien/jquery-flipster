@@ -3,7 +3,7 @@
 $.fn.flipster = function(options) {
     "use strict";
 
-    var isMethodCall = typeof options === 'string' ? true : false;
+    var isMethodCall = (typeof options === 'string' ? true : false);
 
     if (isMethodCall) {
         var method = options;
@@ -12,12 +12,13 @@ $.fn.flipster = function(options) {
         var defaults = {
             itemContainer:    'ul',        // Container for the flippin' items.
             itemSelector:     'li',        // Selector for children of itemContainer to flip
-            style:            'coverflow', // Switch between 'coverflow' or 'carousel' display styles
+            style:            'coverflow', // [coverflow|carousel] Switch between 'coverflow' or 'carousel' display styles
             start:            'center',    // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
 
             enableKeyboard:   true, // Enable left/right arrow navigation
             enableMousewheel: true, // Enable scrollwheel navigation (up = left, down = right)
             enableTouch:      true, // Enable swipe navigation for touch devices
+            loop:             true,        // Loop around when the start or end is reached.
 
             onItemSwitch:     $.noop, // Callback function when items are switched. Current and previous items passed in as arguments
             disableRotation:  false,
@@ -43,7 +44,11 @@ $.fn.flipster = function(options) {
 
         if ( isMethodCall ) {
             methods = self.data('methods');
-            return methods[method].apply(this, args);
+            if ( methods[method] ) {
+              return methods[method].apply(this, args);
+            } else {
+              return this;
+            }
         }
 
         var _container;
@@ -78,9 +83,9 @@ $.fn.flipster = function(options) {
 
             _items.each(function(){
                 var item = $(this),
-                    category = item.data("flip-category"),
-                    itemId = item.attr("id"),
-                    itemTitle = item.attr("title");
+                    category = item.data('flip-category'),
+                    itemId = item.attr('id'),
+                    itemTitle = item.data('flip-title') || item.attr('title');
 
                 if ( !navItems[itemId] ) {
                     navItems[itemId] = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a>';
@@ -97,7 +102,7 @@ $.fn.flipster = function(options) {
             });
 
             for ( var category in navCategories ) {
-                navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a><ul class="flip-nav-items">' + navList[category] + "</ul></li>";
+                navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a><ul class="flip-nav-items">' + navList[category] + '</ul></li>';
             }
 
             var navDisplay = '<ul class="flipster-nav">';
@@ -108,16 +113,16 @@ $.fn.flipster = function(options) {
 
             _nav = $(navDisplay);
 
-            if ( settings.navPosition.toLowerCase() === "after" ) {
+            if ( settings.navPosition.toLowerCase() === 'after' ) {
                 self.append(_nav);
             } else {
                 self.prepend(_nav);
             }
 
-            _navItems = _nav.find("a").on("click",function(e){
+            _navItems = _nav.find('a').on('click',function(e){
                 var target;
-                if ( $(this).hasClass("flip-nav-category-link") ) {
-                    target = _items.filter("[data-flip-category='"+$(this).data("flip-category")+"']");
+                if ( $(this).hasClass('flip-nav-category-link') ) {
+                    target = _items.filter('[data-flip-category="'+$(this).data('flip-category')+'"]');
                 } else {
                     target = $(this.hash);
                 }
@@ -130,11 +135,15 @@ $.fn.flipster = function(options) {
         }
 
         function updateNav() {
-            if ( settings.enableNav && _items.length > 1 ) {
-                var currentItem = $(_items[_currentIndex]);
-                _nav.find(".flip-nav-current").removeClass("flip-nav-current");
-                _navItems.filter("[href='#"+currentItem.attr("id")+"']").addClass("flip-nav-current");
-                _navItems.filter("[data-flip-category='"+currentItem.data("flip-category")+"']").parent().addClass("flip-nav-current");
+            if ( settings.enableNav ) {
+                _navItems
+                  .removeClass('flip-nav-current')
+                  .filter('[href="#'+_currentItem.attr('id')+'"]')
+                    .addClass('flip-nav-current')
+                  .end()
+                  .filter('[data-flip-category="'+_currentItem.data('flip-category')+'"]')
+                    .parent()
+                    .addClass('flip-nav-current');
             }
         }
 
@@ -235,22 +244,27 @@ $.fn.flipster = function(options) {
 
         function jump(to) {
             var _previous = _currentIndex;
+
             if ( _items.length <= 1 ) {
                 return;
             }
-            if ( to === "left" ) {
+
+            if ( to === 'left' ) {
                 if ( _currentIndex > 0 ) { _currentIndex--; }
-                else { _currentIndex = _items.length - 1; }
-            } else if ( to === "right" ) {
+                else if ( settings.loop ) { _currentIndex = _items.length - 1; }
+            } else if ( to === 'right' ) {
                 if ( _currentIndex < _items.length - 1 ) { _currentIndex++; }
-                else { _currentIndex = 0; }
+                else if ( settings.loop ) { _currentIndex = 0; }
             } else if ( typeof to === 'number' ) {
                 _currentIndex = to;
-            } else {
+            } else if ( to !== undefined ) {
                 // if object is sent, get its index
                 _currentIndex = _items.index(to);
             }
-            settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]);
+
+            if ( _currentIndex !== _previous ) {
+              settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]);
+            }
             center();
         }
 
@@ -411,13 +425,15 @@ $.fn.flipster = function(options) {
         // public methods
         methods = {
             jump: jump,
+            next: function(){ jump('next'); },
+            prev: function(){ jump('prev'); },
             play: play,
             pause: pause
         };
         self.data('methods', methods);
 
         // Initialize if flipster is not already active.
-        if ( !self.hasClass("flipster-active") ) { init(); }
+        if ( !self.hasClass('flipster-active') ) { init(); }
     });
 };
 })(jQuery, window);
