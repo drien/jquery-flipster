@@ -1,6 +1,21 @@
 /* global window, jQuery */
 (function($, window, undefined) {
 
+    function throttle(func, delay) {
+      var timer = null;
+
+      return function() {
+        var context = this, args = arguments;
+
+        if (timer === null) {
+          timer = setTimeout(function () {
+            func.apply(context, args);
+            timer = null;
+          }, delay);
+        }
+      };
+    }
+
     function checkStyleSupport( prop ) {
 
         var div = document.createElement('div'),
@@ -65,6 +80,7 @@ $.fn.flipster = function(options) {
 
     var settings = $.extend({}, defaults, options);
 
+    var $window = $(window);
 
     return this.each(function() {
 
@@ -313,10 +329,10 @@ $.fn.flipster = function(options) {
                 })
                 // Navigate directly to an item by clicking
                 .on('click touchend', function(e) {
-                    if ( !$(this).hasClass('flip-current') ) {
-                        e.preventDefault();
+                    if ( !_startDrag ) {
+                        if ( !$(this).hasClass('flip-current') ) { e.preventDefault(); }
+                        jump(this);
                     }
-                    jump(this);
                 });
 
             // Insert navigation if enabled.
@@ -364,10 +380,6 @@ $.fn.flipster = function(options) {
 
             var images = self.find('img');
 
-            // Attach event bindings.
-            $(window).on("resize.flipster", function() {
-                resize();
-            });
             if ( images.length ) {
                 var imagesLoaded = 0;
 
@@ -380,97 +392,82 @@ $.fn.flipster = function(options) {
               show();
             }
 
+            // Attach event bindings.
+            $window.on('resize.flipster', throttle(function() {
+                resize();
+            },400));
+
+            if ( settings.autoplay ) { play(); }
 
             _container
                 .on('mouseenter', pause)
-                .on('mouseleave', function() {
-                    if (_playing === -1) {
-                        play();
-                    }
+                .on('mouseleave', function(){
+                  if ( _playing === -1 ) { play(); }
                 });
 
-            if ( settings.enableKeyboard ) {
-                new interactor.Keyboard().init();
-            }
-            if ( settings.enableMousewheel ) {
-                new interactor.Mousewheel().init(self);
-            }
-            if ( settings.enableTouch ) {
-                new interactor.Touch().init(self);
-            }
+            if ( settings.enableKeyboard ) { new interactor.Keyboard().init(self); }
+            if ( settings.enableMousewheel ) { new interactor.Mousewheel().init(_container); }
+            if ( settings.enableTouch ) { new interactor.Touch().init(self); }
         }
 
         var interactor = {
             Keyboard: function() {
-                var _actionThrottle;
-
-                this.init = function() {
-                    $(window).on("keydown.flipster", function(e) {
-                        _actionThrottle++;
-                        if ( _actionThrottle % 7 !== 0 && _actionThrottle !== 1 ) { return; } //if holding the key down, ignore most events
-
+                this.init = function(elem) {
+                    elem[0].tabIndex = 0;
+                    elem.on('keydown.flipster', throttle(function(e){
+                      console.log(e.which);
                         var code = e.which;
                         if ( code === 37 ) {
+                            jump('prev');
                             e.preventDefault();
-                            jump('left');
                         } else if ( code === 39 ) {
+                            jump('next');
                             e.preventDefault();
-                            jump('right');
                         }
-                    });
-
-                    $(window).on("keyup.flipster", function(){
-                        _actionThrottle = 0; //reset action throttle on key lift to avoid throttling new interactions
-                    });
+                    },250,true));
                 };
             },
 
             Mousewheel: function() {
-                var _actionThrottle;
-                var _throttleTimeout;
-
                 this.init = function(elem) {
-                    elem.on("mousewheel.flipster", function(e){
-                        _throttleTimeout = window.setTimeout(function(){
-                            _actionThrottle = 0;
-                        }, 500); //throttling should expire if scrolling pauses for a moment.
-                        _actionThrottle++;
-                        if ( _actionThrottle % 4 !==0 && _actionThrottle !== 1 ) { return; } //throttling like with held-down keys
-                        window.clearTimeout(_throttleTimeout);
 
-                        var direction = (e.originalEvent.wheelDelta / 120 > 0) ? "left" : "right";
-                        jump(direction);
-
+                    elem.on('mousewheel.flipster', throttle(function(e){
+                        jump((e.originalEvent.wheelDelta > 0 ? 'prev' : 'next'));
                         e.preventDefault();
-                    });
+                    },350,true));
                 };
             },
 
             Touch: function() {
-                var _startTouchX;
 
                 this.init = function(elem) {
-                    elem.on("touchstart.flipster", function(e) {
-                        _startTouchX = e.originalEvent.targetTouches[0].screenX;
+
+                    elem.on({
+                      'touchstart.flipster mousedown.flipster' : function(e){
+                              e = e.originalEvent;
+                              _startDrag = ( e.touches ? e.touches[0].clientX : e.clientX );
+                              e.preventDefault();
+                          },
+
+                      'touchmove.flipster mousemove.flipster' : throttle(function(e){
+                              if ( _startDrag !== false ) {
+                                  e = e.originalEvent;
+
+                                  var x = ( e.touches ? e.touches[0].clientX : e.clientX ),
+                                      offset = x - _startDrag;
+
+                                  if ( offset >= 30 || offset <= -30 ) {
+                                      jump((offset < 0 ? 'next' : 'prev'));
+                                      _startDrag = x;
+                                  }
+
+                                  e.preventDefault();
+                              }
+                          },250),
+
+                      'touchend.flipster touchcancel.flipster mouseup.flipster mouseleave.flipster' : function(){ _startDrag = false; }
                     });
 
-                    elem.on("touchmove.flipster", function(e) {
-                        var nowX = e.originalEvent.targetTouches[0].screenX;
-                        var touchDiff = nowX-_startTouchX;
-                        if ( touchDiff > _items[0].clientWidth/1.75 ){
-                            e.preventDefault();
-                            jump("left");
-                            _startTouchX = nowX;
-                        } else if ( touchDiff < -1*(_items[0].clientWidth/1.75) ){
-                            e.preventDefault();
-                            jump("right");
-                            _startTouchX = nowX;
-                        }
-                    });
-
-                    elem.on("touchend.flipster", function() {
-                        _startTouchX = 0;
-                    });
                 };
             }
         };
