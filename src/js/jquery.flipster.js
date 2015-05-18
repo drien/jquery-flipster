@@ -300,14 +300,19 @@ $.fn.flipster = function(options) {
         function play(interval) {
             var time = interval || settings.autoplayInterval;
             settings.autoplayInterval = time;
+
+            clearInterval(_playing);
+
             _playing = setInterval(function(){
-                 jump('next');
+                var prev = _currentIndex;
+                jump('next');
+                if ( prev === _currentIndex && !settings.loop ) { clearInterval(_playing); }
             }, time);
         }
 
         function pause() {
             clearInterval(_playing);
-            _playing = _playing ? -1 : false;
+            if ( settings.autoplay ) { _playing = -1; }
         }
 
         function show() {
