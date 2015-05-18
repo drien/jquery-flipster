@@ -1,80 +1,75 @@
 /* global window, jQuery */
 (function($, window, undefined) {
-var checkSupport = (function() {
-  var div = document.createElement("div"),
-      prefixes = ['o', 'ms', 'moz', 'webkit', ''],
-      cache = {};
 
-  return function(property) {
-      if ( cache[property] ) { return cache[property]; }
-      var i = prefixes.length,
-          prop, support;
-      while ( i-- ) {
-        prop = prefixes[i] + property;
-      	if ( prop in div.style ) {
-      		support = prop;
-          continue;
-      	}
-      }
-      cache[property] = support;
-      return support;
-  };
-}());
+    function checkStyleSupport( prop ) {
 
-$.support.transform = checkSupport('Transform');
+        var div = document.createElement('div'),
+            style = div.style,
+            ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
+            prefixes = ["webkit", "moz", "ms", "o"],
+            props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' ');
+
+        for ( var i in props ) {
+          if ( props[i] in style ) { return props[i]; }
+        }
+        return false;
+    }
+
+    var transformSupport = checkStyleSupport('transform');
+
 $.fn.flipster = function(options) {
-    "use strict";
+    'use strict';
 
     var isMethodCall = (typeof options === 'string' ? true : false);
 
-    if (isMethodCall) {
+    if ( isMethodCall ) {
         var method = options;
         var args = Array.prototype.slice.call(arguments, 1);
-    } else {
-        var defaults = {
-            itemContainer:    'ul',        // Container for the flippin' items.
-            itemSelector:     'li',        // Selector for children of itemContainer to flip
-
-            start:            'center',    // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
-            loop:             true,        // Loop around when the start or end is reached.
-
-            style:            'coverflow', // [coverflow|carousel] Switch between 'coverflow' or 'carousel' display styles
-            spacing:          -0.5,        // Space between items relative to each item's width, 0 for no spacing, negative values to  overlap
-            disableRotation:  false,
-
-            enableKeyboard:   true,        // Enable left/right arrow navigation
-            enableMousewheel: true,        // Enable scrollwheel navigation (up = left, down = right)
-            enableTouch:      true,        // Enable swipe navigation for touch devices
-
-            onItemSwitch:     $.noop,      // Callback function when items are switched. Current and previous items passed in as arguments
-
-            enableNav:        false,    // If true, flipster will insert an unordered list of the slides
-            navPosition:      'before', // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
-
-            enableNavButtons: false,      // If true, flipster will insert Previous / Next buttons
-            prevText:         'Previous', // Changes the text for the Previous button
-            nextText:         'Next',     // Changes the text for the Next button
-
-            autoplay:         false,
-            autoplayInterval: 5000
-        };
-        var settings = $.extend({}, defaults, options);
-
-    }
-
-    return this.each(function() {
-
-        var self = $(this);
-        var methods;
-
-        if ( isMethodCall ) {
-            methods = self.data('methods');
+        return this.each(function(){
+            var methods = $(this).data('methods');
             if ( methods[method] ) {
               return methods[method].apply(this, args);
             } else {
               return this;
             }
-        }
+        });
+    }
+
+    var defaults = {
+        itemContainer:    'ul',        // Container for the flippin' items.
+        itemSelector:     'li',        // Selector for children of itemContainer to flip
+
+        start:            'center',    // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
+        loop:             true,        // Loop around when the start or end is reached.
+
+        style:            'coverflow', // [coverflow|carousel] Switch between 'coverflow' or 'carousel' display styles
+        spacing:          -0.5,        // Space between items relative to each item's width, 0 for no spacing, negative values to  overlap
+        disableRotation:  false,
+
+        enableKeyboard:   true,        // Enable left/right arrow navigation
+        enableMousewheel: true,        // Enable scrollwheel navigation (up = left, down = right)
+        enableTouch:      true,        // Enable swipe navigation for touch devices
+
+        onItemSwitch:     $.noop,      // Callback function when items are switched. Current and previous items passed in as arguments
+
+        enableNav:        false,    // If true, flipster will insert an unordered list of the slides
+        navPosition:      'before', // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
+
+        enableNavButtons: false,      // If true, flipster will insert Previous / Next buttons
+        prevText:         'Previous', // Changes the text for the Previous button
+        nextText:         'Next',     // Changes the text for the Next button
+
+        autoplay:         false,
+        autoplayInterval: 5000
+    };
+
+    var settings = $.extend({}, defaults, options);
+
+
+    return this.each(function() {
+
+        var self = $(this);
+        var methods;
 
         var _container;
         var _containerWidth;
@@ -85,6 +80,7 @@ $.fn.flipster = function(options) {
         var _currentItem;
 
         var _playing = false;
+        var _startDrag = false;
 
         function buildNavButtons() {
             if ( settings.enableNavButtons && _items.length > 1 ) {
@@ -107,9 +103,7 @@ $.fn.flipster = function(options) {
         }
 
         function buildNav() {
-            if ( !settings.enableNav || _items.length <= 1 ) {
-                return;
-            }
+            if ( !settings.enableNav || _items.length <= 1 ) { return; }
 
             self.find('.flipster-nav').remove();
 
@@ -225,7 +219,7 @@ $.fn.flipster = function(options) {
                     currentLeft = _currentItem.position().left,
                     containerOffset = -1 * ((currentLeft + (currentWidth / 2)) - (_containerWidth / 2));
 
-                if ( $.support.transform ) {
+                if ( transformSupport ) {
                     _container.css('transform', 'translateX(' + containerOffset + 'px)');
                 } else {
                     _container.css({
@@ -307,20 +301,15 @@ $.fn.flipster = function(options) {
 
         function index() {
 
-            _items = _container.find(settings.itemSelector)
-                .addClass('flip-item');
+            _items = _container.find(settings.itemSelector).addClass('flip-item');
 
-            if ( _items.length <= 1 ) {
-                return;
-            }
+            if ( _items.length <= 1 ) { return; }
 
             _items
                 // Wrap inner content
                 .each(function(){
                     var item = $(this);
-                    if ( !item.children('.flip-content').length ) {
-                        item.wrapInner('<div class="flip-content" />');
-                    }
+                    if ( !item.children('.flip-content').length ) { item.wrapInner('<div class="flip-content" />'); }
                 })
                 // Navigate directly to an item by clicking
                 .on('click touchend', function(e) {
@@ -335,14 +324,13 @@ $.fn.flipster = function(options) {
             buildNav();
 
             if ( _currentIndex >= 0 ) {
-              jump(_currentIndex);
+                jump(_currentIndex);
             }
         }
 
         function init() {
 
-            self
-                .addClass(
+            self.addClass(
                     'flipster flipster-active' +
                     ( settings.style ? ' flipster-'+settings.style : '' ) +
                     ( settings.disableRotation ? ' no-rotate' : '' ) +
@@ -386,11 +374,7 @@ $.fn.flipster = function(options) {
                 // Resize after all images have loaded.
                 images.on('load',function(){
                   imagesLoaded++;
-
-                  if ( imagesLoaded >= images.length ) {
-                    console.log('images loaded');
-                    show();
-                  }
+                  if ( imagesLoaded >= images.length ) { show(); }
                 });
             } else {
               show();
@@ -496,8 +480,14 @@ $.fn.flipster = function(options) {
             jump: jump,
             next: function(){ jump('next'); },
             prev: function(){ jump('prev'); },
-            play: play,
-            pause: pause,
+            play: function(){
+              settings.autoplay = true;
+              play();
+            },
+            pause: function(){
+              settings.autoplay = false;
+              pause();
+            },
             index: index
         };
         self.data('methods', methods);
