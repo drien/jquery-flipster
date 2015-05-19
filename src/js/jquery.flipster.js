@@ -82,6 +82,30 @@ $.fn.flipster = function(options) {
 
     var $window = $(window);
 
+    var classes = {
+        main: 'flipster',
+        active: 'flipster-active',
+        container: 'flip-items',
+
+        nav: 'flipster-nav',
+        navItem: 'flip-nav-item',
+        navCategory: 'flip-nav-category',
+        navCategoryLink: 'flip-nav-category-link',
+        navLink: 'flip-nav-item-link',
+        navCurrent: 'flip-nav-current',
+
+        navPrev: 'flipto-prev',
+        navNext: 'flipto-next',
+
+        item: 'flip-item',
+        itemCurrent: 'flip-current',
+        itemPast: 'flip-past',
+        itemFuture: 'flip-future',
+        itemContent: 'flip-content'
+    };
+
+    var classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)','g');
+
     return this.each(function() {
 
         var self = $(this);
@@ -100,16 +124,16 @@ $.fn.flipster = function(options) {
 
         function buildNavButtons() {
             if ( settings.enableNavButtons && _items.length > 1 ) {
-                self.find('.flipto-prev, .flipto-next').remove();
+                self.find('.' + classes.navPrev + ', .' + classes.navNext).remove();
 
-                $('<a href="#" class="flipto-prev">'+settings.prevText+'</a>')
+                $('<a href="#" class="' + classes.navPrev + '" role="button">'+settings.prevText+'</a>')
                     .on('click', function(e) {
                         jump('prev');
                         e.preventDefault();
                     })
                     .appendTo(self);
 
-                $('<a href="#" class="flipto-next">'+settings.nextText+'</a>')
+                $('<a href="#" class="' + classes.navNext + '" role="button">'+settings.nextText+'</a>')
                     .on('click', function(e) {
                         jump('next');
                         e.preventDefault();
@@ -121,7 +145,7 @@ $.fn.flipster = function(options) {
         function buildNav() {
             if ( !settings.enableNav || _items.length <= 1 ) { return; }
 
-            self.find('.flipster-nav').remove();
+            self.find('.' + classes.nav).remove();
 
             var navCategories = {},
                 navItems = {},
@@ -134,24 +158,24 @@ $.fn.flipster = function(options) {
                     itemTitle = item.data('flip-title') || item.attr('title');
 
                 if ( !navItems[itemId] ) {
-                    navItems[itemId] = '<a href="#'+itemId+'" class="flip-nav-item-link">'+itemTitle+'</a>';
+                    navItems[itemId] = '<a href="#'+itemId+'" class="' + classes.navLink + '">'+itemTitle+'</a>';
                     if ( category !== undefined ) {
                         navCategories[category] = category;
                         if ( !navList[category] ) {
                             navList[category] = '';
                         }
-                        navList[category] += '<li class="flip-nav-item">' + navItems[itemId] + '</li>';
+                        navList[category] += '<li class="' + classes.navItem + '">' + navItems[itemId] + '</li>';
                     } else {
-                        navList[itemId] = '<li class="flip-nav-item no-category">' + navItems[itemId] + '</li>';
+                        navList[itemId] = '<li class="' + classes.navItem + ' no-category">' + navItems[itemId] + '</li>';
                     }
                 }
             });
 
             for ( var category in navCategories ) {
-                navList[category] = '<li class="flip-nav-category"><a href="#" class="flip-nav-category-link" data-flip-category="'+category+'">'+category+'</a><ul class="flip-nav-items">' + navList[category] + '</ul></li>';
+                navList[category] = '<li class="' + classes.navCategory + '"><a href="#" class="' + classes.navCategoryLink + '" data-flip-category="'+category+'">'+category+'</a><ul class="flip-nav-items">' + navList[category] + '</ul></li>';
             }
 
-            var navDisplay = '<ul class="flipster-nav">';
+            var navDisplay = '<ul class="' + classes.nav + '" role="navigation">';
             for ( var navIndex in navList ) {
                 navDisplay += navList[navIndex];
             }
@@ -167,7 +191,7 @@ $.fn.flipster = function(options) {
 
             _navItems = _nav.find('a').on('click',function(e){
                 var target;
-                if ( $(this).hasClass('flip-nav-category-link') ) {
+                if ( $(this).hasClass(classes.navCategoryLink) ) {
                     target = _items.filter('[data-flip-category="'+$(this).data('flip-category')+'"]').first();
                 } else {
                     target = $(this.hash);
@@ -183,13 +207,13 @@ $.fn.flipster = function(options) {
         function updateNav() {
             if ( settings.enableNav ) {
                 _navItems
-                  .removeClass('flip-nav-current')
-                  .filter('[href="#'+_currentItem.attr('id')+'"]')
-                    .addClass('flip-nav-current')
-                  .end()
-                  .filter('[data-flip-category="'+_currentItem.data('flip-category')+'"]')
-                    .parent()
-                    .addClass('flip-nav-current');
+                    .removeClass(classes.navCurrent)
+                    .filter('[href="#'+_currentItem.attr('id')+'"]')
+                        .addClass(classes.navCurrent)
+                    .end()
+                    .filter('[data-flip-category="'+_currentItem.data('flip-category')+'"]')
+                        .parent()
+                        .addClass(classes.navCurrent);
             }
         }
 
@@ -225,8 +249,6 @@ $.fn.flipster = function(options) {
             });
         }
 
-        var classRemover = new RegExp('\\b(flip-current|flip-past|flip-future)(.*?)(\\s|$)','g');
-
         function center() {
             if ( _currentItem ) {
                 if ( !_containerWidth ) { resize(true); }
@@ -255,13 +277,15 @@ $.fn.flipster = function(options) {
                 });
 
                 if ( i === _currentIndex ) {
-                    item.addClass('flip-current')
+                    item.addClass(classes.itemCurrent)
                         .css('z-index', (total + 1) );
                 } else if ( i < _currentIndex ) {
-                    item.addClass('flip-past flip-past--' + (_currentIndex - i) )
+                    item.addClass( classes.itemPast + ' ' +
+                        classes.itemPast + '--' + (_currentIndex - i) )
                         .css('z-index', i);
                 } else if ( i > _currentIndex ) {
-                    item.addClass('flip-future flip-future--' + ( i - _currentIndex ) )
+                    item.addClass( classes.itemFuture + ' ' +
+                        classes.itemFuture + '--' + ( i - _currentIndex ) )
                         .css('z-index', (total - i) );
                 }
             });
@@ -317,12 +341,15 @@ $.fn.flipster = function(options) {
 
         function show() {
             resize(true);
-            self.hide().css('visibility','').fadeIn(400);
+            self.hide()
+                .css('visibility','')
+                .addClass(classes.active)
+                .fadeIn(400);
         }
 
         function index() {
 
-            _items = _container.find(settings.itemSelector).addClass('flip-item');
+            _items = _container.find(settings.itemSelector).addClass(classes.item);
 
             if ( _items.length <= 1 ) { return; }
 
@@ -330,12 +357,12 @@ $.fn.flipster = function(options) {
                 // Wrap inner content
                 .each(function(){
                     var item = $(this);
-                    if ( !item.children('.flip-content').length ) { item.wrapInner('<div class="flip-content" />'); }
+                    if ( !item.children('.' + classes.itemContent).length ) { item.wrapInner('<div class="' + classes.itemContent + '" />'); }
                 })
                 // Navigate directly to an item by clicking
                 .on('click touchend', function(e) {
                     if ( !_startDrag ) {
-                        if ( !$(this).hasClass('flip-current') ) { e.preventDefault(); }
+                        if ( !$(this).hasClass(classes.itemCurrent) ) { e.preventDefault(); }
                         jump(this);
                     }
                 });
@@ -351,15 +378,15 @@ $.fn.flipster = function(options) {
 
         function init() {
 
-            self.addClass(
-                    'flipster flipster-active' +
-                    ( settings.style ? ' flipster-'+settings.style : '' ) +
-                    ( settings.disableRotation ? ' no-rotate' : '' ) +
-                    ( $.support.transform ? ' flipster-transform' : ' flipster-no-transform' )
-                )
+            self.addClass([
+                    classes.main,
+                    ( settings.style ? 'flipster-'+settings.style : '' ),
+                    ( settings.disableRotation ? 'no-rotate' : '' ),
+                    ( transformSupport ? 'flipster-transform' : ' flipster-no-transform' )
+                ].join(' '))
                 .css('visibility','hidden');
 
-            _container = self.find(settings.itemContainer).addClass('flip-items');
+            _container = self.find(settings.itemContainer).addClass(classes.container);
 
             index();
 
@@ -407,7 +434,7 @@ $.fn.flipster = function(options) {
             _container
                 .on('mouseenter', pause)
                 .on('mouseleave', function(){
-                  if ( _playing === -1 ) { play(); }
+                    if ( _playing === -1 ) { play(); }
                 });
 
             if ( settings.enableKeyboard ) { new interactor.Keyboard().init(self); }
@@ -420,7 +447,6 @@ $.fn.flipster = function(options) {
                 this.init = function(elem) {
                     elem[0].tabIndex = 0;
                     elem.on('keydown.flipster', throttle(function(e){
-                      console.log(e.which);
                         var code = e.which;
                         if ( code === 37 ) {
                             jump('prev');
@@ -500,7 +526,7 @@ $.fn.flipster = function(options) {
         self.data('methods', methods);
 
         // Initialize if flipster is not already active.
-        if ( !self.hasClass('flipster-active') ) { init(); }
+        if ( !self.hasClass(classes.active) ) { init(); }
     });
 };
 })(jQuery, window);
