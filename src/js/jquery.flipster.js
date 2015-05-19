@@ -147,15 +147,15 @@ $.fn.flipster = function(options) {
 
             self.find('.' + classes.nav).remove();
 
-            var navCategories = {},
-                navItems = {},
-                navList = {};
+            var navCategories = {};
+            var navItems = {};
+            var navList = {};
 
             _items.each(function(){
-                var item = $(this),
-                    category = item.data('flip-category'),
-                    itemId = item.attr('id'),
-                    itemTitle = item.data('flip-title') || item.attr('title');
+                var item = $(this);
+                var category = item.data('flip-category');
+                var itemId = item.attr('id');
+                var itemTitle = item.data('flip-title') || item.attr('title');
 
                 if ( !navItems[itemId] ) {
                     navItems[itemId] = '<a href="#'+itemId+'" class="' + classes.navLink + '">'+itemTitle+'</a>';
@@ -231,8 +231,10 @@ $.fn.flipster = function(options) {
 
         function calculateBiggestItemHeight() {
             var biggestHeight = 0;
+            var itemHeight;
             _items.each(function() {
-                if ( $(this).height() > biggestHeight ) { biggestHeight = $(this).height(); }
+                itemHeight = $(this).height();
+                if ( itemHeight > biggestHeight ) { biggestHeight = itemHeight; }
             });
             return biggestHeight;
         }
@@ -246,8 +248,8 @@ $.fn.flipster = function(options) {
 
             if ( settings.spacing !== 0 ) {
                 _items.each(function(i){
-                    var item = $(this),
-                        spacing = (item.outerWidth() * settings.spacing);
+                    var item = $(this);
+                    var spacing = (item.outerWidth() * settings.spacing);
 
                     item.css('margin-right', spacing + 'px');
 
@@ -271,7 +273,7 @@ $.fn.flipster = function(options) {
                 var item = $(this);
 
                 item.attr('class',function(i, c){
-                  return c && c.replace(classRemover, '').trim();
+                    return c && c.replace(classRemover, '').trim();
                 });
 
                 if ( i === _currentIndex ) {
@@ -291,9 +293,9 @@ $.fn.flipster = function(options) {
             if ( _currentItem ) {
                 if ( !_containerWidth ) { resize(true); }
 
-                var currentWidth = _currentItem.outerWidth(),
-                    currentLeft = _currentItem.position().left,
-                    containerOffset = -1 * ((currentLeft + (currentWidth / 2)) - (_containerWidth / 2));
+                var currentWidth = _currentItem.outerWidth();
+                var currentLeft = _currentItem.position().left;
+                var containerOffset = -1 * ((currentLeft + (currentWidth / 2)) - (_containerWidth / 2));
 
                 if ( transformSupport ) {
                     _container.css('transform', 'translateX(' + containerOffset + 'px)');
@@ -321,8 +323,7 @@ $.fn.flipster = function(options) {
             } else if ( typeof to === 'number' ) {
                 _currentIndex = to;
             } else if ( to !== undefined ) {
-                // if object is sent, get its index
-                _currentIndex = _items.index(to);
+                _currentIndex = _items.index(to); // if object is sent, get its index
             }
 
             if ( _currentIndex !== _previous ) {
@@ -526,8 +527,9 @@ $.fn.flipster = function(options) {
             },
 
             Touch: function() {
-                var _startDragY = false,
-                    _touchJump = throttle(jump,300);
+                var _startDragY = false;
+                var _touchJump = throttle(jump,300);
+                var x, y, offsetY, offsetX;
 
                 this.init = function(elem) {
 
@@ -543,10 +545,10 @@ $.fn.flipster = function(options) {
                               if ( _startDrag !== false ) {
                                   e = e.originalEvent;
 
-                                  var x = ( e.touches ? e.touches[0].clientX : e.clientX ),
-                                      y = ( e.touches ? e.touches[0].clientY : e.clientY ),
-                                      offsetY = y - _startDragY,
-                                      offsetX = x - _startDrag;
+                                  x = ( e.touches ? e.touches[0].clientX : e.clientX );
+                                  y = ( e.touches ? e.touches[0].clientY : e.clientY );
+                                  offsetY = y - _startDragY;
+                                  offsetX = x - _startDrag;
 
                                   if ( Math.abs(offsetY) < 100 && Math.abs(offsetX) >= 30 ) {
                                       _touchJump((offsetX < 0 ? 'next' : 'prev'));
