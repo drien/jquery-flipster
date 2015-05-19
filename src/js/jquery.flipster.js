@@ -444,33 +444,38 @@ $.fn.flipster = function(options) {
             },
 
             Touch: function() {
+                var _startDragY = false,
+                    _touchJump = throttle(jump,300);
 
-                this.init = function(elem) {
+                this.init = function() {
 
-                    elem.on({
-                      'touchstart.flipster mousedown.flipster' : function(e){
+                    _container.on({
+                      'touchstart.flipster' : function(e){
                               e = e.originalEvent;
                               _startDrag = ( e.touches ? e.touches[0].clientX : e.clientX );
-                              e.preventDefault();
+                              _startDragY = ( e.touches ? e.touches[0].clientY : e.clientY );
+                              //e.preventDefault();
                           },
 
-                      'touchmove.flipster mousemove.flipster' : throttle(function(e){
+                      'touchmove.flipster' : throttle(function(e){
                               if ( _startDrag !== false ) {
                                   e = e.originalEvent;
 
                                   var x = ( e.touches ? e.touches[0].clientX : e.clientX ),
-                                      offset = x - _startDrag;
+                                      y = ( e.touches ? e.touches[0].clientY : e.clientY ),
+                                      offsetY = y - _startDragY,
+                                      offsetX = x - _startDrag;
 
-                                  if ( offset >= 30 || offset <= -30 ) {
-                                      jump((offset < 0 ? 'next' : 'prev'));
+                                  if ( Math.abs(offsetY) < 100 && Math.abs(offsetX) >= 30 ) {
+                                      _touchJump((offsetX < 0 ? 'next' : 'prev'));
                                       _startDrag = x;
+                                      e.preventDefault();
                                   }
 
-                                  e.preventDefault();
                               }
-                          },250),
+                          },100),
 
-                      'touchend.flipster touchcancel.flipster mouseup.flipster mouseleave.flipster' : function(){ _startDrag = false; }
+                      'touchend.flipster touchcancel.flipster ' : function(){ _startDrag = false; }
                     });
 
                 };
