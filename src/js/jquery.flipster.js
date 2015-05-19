@@ -460,12 +460,56 @@ $.fn.flipster = function(options) {
             },
 
             Mousewheel: function() {
+                var _wheel = false;
+                var _actionThrottle = 0;
+                var _throttleTimeout = 0;
+                var _delta = 0;
+                var _dir;
+                var _lastDir;
+
                 this.init = function(elem) {
 
-                    elem.on('mousewheel.flipster', throttle(function(e){
-                        jump((e.originalEvent.wheelDelta > 0 ? 'prev' : 'next'));
+                    elem
+                        .on('mousewheel.flipster wheel.flipster', function(){ _wheel = true; })
+                        .on('mousewheel.flipster wheel.flipster', throttle(function(e){
+
+                            // Reset after a period without scrolling.
+                            clearTimeout(_throttleTimeout);
+                            _throttleTimeout = setTimeout(function(){
+                                _actionThrottle = 0;
+                                _delta = 0;
+                            }, 300);
+
+                            e = e.originalEvent;
+
+                            // Add to delta (+=) so that continuous small events can still get past the speed limit, and quick direction reversals get cancelled out
+                            _delta += ( e.wheelDelta || ( e.deltaY + e.deltaX ) * -1 ); // Invert numbers for Firefox
+
+                            // Don't trigger unless the scroll is decent speed.
+                            if ( Math.abs(_delta) < 25 ) { return; }
+
+                            _actionThrottle++;
+
+                            _dir = ( _delta > 0 ? 'prev' : 'next' );
+
+                            // Reset throttle if direction changed.
+                            if ( _lastDir !== _dir ) { _actionThrottle = 0; }
+                            _lastDir = _dir;
+
+                            // Regular scroll wheels trigger less events, so they don't need to be throttled. Trackpads trigger many events (inertia), so only trigger jump every three times to slow things down.
+                            if ( _actionThrottle < 6 || _actionThrottle % 3 === 0 ) { jump(_dir); }
+
+                            _delta = 0;
+
+                        },50));
+
+                    // Disable mousewheel on window if event began in elem.
+                    $window.on('mousewheel.flipster wheel.flipster',function(e){
+                      if ( _wheel ) {
                         e.preventDefault();
-                    },350,true));
+                        _wheel = false;
+                      }
+                    });
                 };
             },
 
