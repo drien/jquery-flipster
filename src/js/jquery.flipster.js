@@ -418,6 +418,8 @@ $.fn.flipster = function(options) {
                   imagesLoaded++;
                   if ( imagesLoaded >= images.length ) { show(); }
                 });
+
+                setTimeout(show,500);
             } else {
               show();
             }
