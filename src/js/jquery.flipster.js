@@ -229,24 +229,38 @@ $.fn.flipster = function(options) {
             _items.css('transition','');
         }
 
+        function calculateBiggestItemHeight() {
+            var biggestHeight = 0;
+            _items.each(function() {
+                if ( $(this).height() > biggestHeight ) { biggestHeight = $(this).height(); }
+            });
+            return biggestHeight;
+        }
+
         function resize(skipTransition) {
 
             if ( skipTransition ) { noTransition(); }
 
             _containerWidth = _container.width();
+            _container.height(calculateBiggestItemHeight());
 
-            _items.each(function(i){
-                var item = $(this),
-                    spacing = (item.outerWidth() * settings.spacing);
+            if ( settings.spacing !== 0 ) {
+                _items.each(function(i){
+                    var item = $(this),
+                        spacing = (item.outerWidth() * settings.spacing);
 
-                item.css('margin-right', spacing + 'px');
+                    item.css('margin-right', spacing + 'px');
 
-                if ( i === _items.length - 1 ) {
-                    center();
+                    if ( i === _items.length - 1 ) {
+                        center();
 
-                    if ( skipTransition ) { resetTransition(); }
-                }
-            });
+                        if ( skipTransition ) { resetTransition(); }
+                    }
+                });
+            } else {
+                center();
+                if ( skipTransition ) { resetTransition(); }
+            }
         }
 
         function center() {
