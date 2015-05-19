@@ -8,10 +8,10 @@
         var context = this, args = arguments;
 
         if (timer === null) {
-          timer = setTimeout(function () {
-            func.apply(context, args);
-            timer = null;
-          }, delay);
+            timer = setTimeout(function () {
+                func.apply(context, args);
+                timer = null;
+            }, delay);
         }
       };
     }
@@ -371,9 +371,7 @@ $.fn.flipster = function(options) {
             buildNavButtons();
             buildNav();
 
-            if ( _currentIndex >= 0 ) {
-                jump(_currentIndex);
-            }
+            if ( _currentIndex >= 0 ) { jump(_currentIndex); }
         }
 
         function init() {
@@ -439,7 +437,7 @@ $.fn.flipster = function(options) {
 
             if ( settings.enableKeyboard ) { new interactor.Keyboard().init(self); }
             if ( settings.enableMousewheel ) { new interactor.Mousewheel().init(_container); }
-            if ( settings.enableTouch ) { new interactor.Touch().init(self); }
+            if ( settings.enableTouch ) { new interactor.Touch().init(_container); }
         }
 
         var interactor = {
@@ -517,9 +515,9 @@ $.fn.flipster = function(options) {
                 var _startDragY = false,
                     _touchJump = throttle(jump,300);
 
-                this.init = function() {
+                this.init = function(elem) {
 
-                    _container.on({
+                    elem.on({
                       'touchstart.flipster' : function(e){
                               e = e.originalEvent;
                               _startDrag = ( e.touches ? e.touches[0].clientX : e.clientX );
