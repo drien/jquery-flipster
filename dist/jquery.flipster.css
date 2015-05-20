@@ -1,0 +1,250 @@
+/*! jquery.flipster, built 2015-05-20 */
+/* @group Flipster Essential Styles */
+.flipster {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: visible;
+  position: relative;
+}
+.flipster:focus {
+  outline: none;
+}
+.flip-items,
+.flip-item {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  position: relative;
+}
+.flip-items {
+  display: block;
+  white-space: nowrap;
+  word-spacing: -0.25em;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+.flip-item {
+  display: inline-block;
+  white-space: normal;
+  word-spacing: normal;
+  vertical-align: bottom;
+}
+.flip-past,
+.flip-future {
+  cursor: pointer;
+}
+.flip-item img {
+  max-width: 100%;
+}
+/* @end */
+
+/* @group Flipster Previous & Next Buttons */
+.flipto-prev,
+.flipto-next {
+  position: absolute;
+  top: 50%;
+  z-index: 999;
+  display: block;
+  padding: 10px;
+  background-color: #000000;
+  color: #FFF;
+  transition: background-color 300ms ease;
+}
+.flipto-prev:hover,
+.flipto-next:hover {
+  background-color: #FFF;
+  color: #000000;
+}
+.flipto-prev {
+  left: 0;
+}
+.flipto-next {
+  right: 0;
+}
+/* @end */
+
+/* @group Flipster Navigation */
+.flipster-nav {
+  display: block;
+  background: #000000;
+  height: 25px;
+  margin: 0 0 32px;
+  padding: 5px 5px 0;
+  text-align: center;
+  margin-bottom: 32px;
+  position: relative;
+  border-bottom: solid 2px #000000;
+  list-style-type: none;
+}
+.flipster-nav li {
+  display: inline-block;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.flipster-nav .flip-nav-category-link,
+.flipster-nav .flip-nav-item-link {
+  display: block;
+  transition: all 100ms ease;
+}
+.flipster-nav .flip-nav-category-link,
+.flipster-nav .no-category .flip-nav-item-link {
+  border: solid 2px transparent;
+  height: 23px;
+  line-height: 25px;
+  color: #ffffff;
+  padding: 1px 7px;
+  font-size: 0.8em;
+}
+.flipster-nav .flip-nav-current .flip-nav-category-link,
+.flipster-nav .no-category .flip-nav-current.flip-nav-item-link {
+  border-color: #000000;
+  border-bottom: none;
+  background: #ffffff;
+  color: #000000;
+}
+.flipster-nav .flip-nav-category .flip-nav-items {
+  display: none;
+  position: absolute;
+  top: 27px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 10px 0;
+  height: 32px;
+}
+.flipster-nav .flip-nav-category .flip-nav-items:after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+}
+.flipster-nav .flip-nav-category .flip-nav-items .flip-nav-item-link {
+  padding: 5px 15px;
+  color: #000000;
+  font-family: Helvetica;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+.flipster-nav .flip-nav-category .flip-nav-items .flip-nav-item-link.flip-nav-current {
+  background: #000000;
+  color: #FFF;
+}
+.flipster-nav .flip-nav-category.flip-nav-current .flip-nav-items {
+  display: block;
+}
+/* @end */
+
+/* @group Flipster Carousel Theme */
+.flipster-carousel .flip-items,
+.flipster-carousel .flip-item,
+.flipster-carousel .flip-content {
+  transition: all 400ms ease-in-out;
+}
+.flipster-carousel .flip-item {
+  perspective: 800px;
+}
+.flipster-carousel .flip-past,
+.flipster-carousel .flip-future {
+  opacity: 0;
+  transition-delay: 115ms;
+}
+.flipster-carousel .flip-past--2,
+.flipster-carousel .flip-future--2 {
+  opacity: 0.6;
+  transition-delay: 90ms;
+}
+.flipster-carousel .flip-past--1,
+.flipster-carousel .flip-future--1 {
+  opacity: 0.8;
+  transition-delay: 60ms;
+}
+.flipster-carousel .flip-past .flip-content {
+  transform: translateX(100%) rotateY(-20deg) scale(0.5);
+}
+.flipster-carousel .flip-past--2 .flip-content {
+  transform: translateX(25%) rotateY(40deg) scale(0.65);
+}
+.flipster-carousel .flip-past--1 .flip-content {
+  transform: rotateY(45deg) scale(0.8);
+}
+.flipster-carousel .flip-future .flip-content {
+  transform: translateX(-100%) rotateY(20deg) scale(0.5);
+}
+.flipster-carousel .flip-future--2 .flip-content {
+  transform: translateX(-25%) rotateY(-40deg) scale(0.65);
+}
+.flipster-carousel .flip-future--1 .flip-content {
+  transform: rotateY(-45deg) scale(0.8);
+}
+.flipster-carousel.no-rotate .flip-past .flip-content {
+  transform: translateX(175%) scale(0.5);
+}
+.flipster-carousel.no-rotate .flip-past--2 .flip-content {
+  transform: translateX(25%) scale(0.65);
+}
+.flipster-carousel.no-rotate .flip-past--1 .flip-content {
+  transform: translateX(0%) scale(0.8);
+}
+.flipster-carousel.no-rotate .flip-future .flip-content {
+  transform: translateX(-175%) scale(0.5);
+}
+.flipster-carousel.no-rotate .flip-future--2 .flip-content {
+  transform: translateX(-25%) scale(0.65);
+}
+.flipster-carousel.no-rotate .flip-future--1 .flip-content {
+  transform: translateX(0%) scale(0.8);
+}
+.flipster-carousel .flip-current .flip-content {
+  transform: translateX(0) rotateY(0deg) scale(1);
+  transition-delay: 60ms;
+}
+/* @end */
+
+/* @group Flipster Coverflow Theme */
+.flipster-coverflow .flip-items,
+.flipster-coverflow .flip-item,
+.flipster-coverflow .flip-content {
+  transition: all 400ms ease-in-out;
+}
+.flipster-coverflow .flip-item {
+  perspective: 800px;
+}
+.flipster-coverflow .flip-content {
+  transform-origin: 50% 100%;
+  box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
+  -webkit-box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
+}
+.flipster-coverflow .flip-content img:only-child {
+  display: block;
+}
+.flipster-coverflow .flip-past .flip-content {
+  transform-origin: 0% 100%;
+  transform: scale(0.75) rotateY(55deg);
+}
+.flipster-coverflow .flip-future .flip-content {
+  transform-origin: 100% 100%;
+  transform: scale(0.75) rotateY(-55deg);
+}
+.flipster-coverflow .flip-current .flip-content {
+  transform: rotateY(0deg);
+}
+/* @end */
+
+/* @group Flat */
+.flipster-flat .flip-items,
+.flipster-flat .flip-item,
+.flipster-flat .flip-content {
+  transition: all 400ms ease-in-out;
+}
+.flipster-flat .flip-past,
+.flipster-flat .flip-future {
+  opacity: 0.5;
+}
+.flipster-flat .flip-past .flip-content {
+  transform: scale(0.75);
+}
+.flipster-flat .flip-future .flip-content {
+  transform: scale(0.75);
+}
+/* @end */

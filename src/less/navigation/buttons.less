@@ -1,0 +1,25 @@
+/* @group Flipster Previous & Next Buttons */
+
+@color: #000;
+
+.flipto-prev,
+.flipto-next {
+		position: absolute;
+		top: 50%;
+		z-index: 999;
+		display: block;
+		padding: 10px;
+		background-color: @color;
+		color: #FFF;
+		transition: background-color 300ms ease;
+
+		&:hover {
+  			background-color: #FFF;
+  			color: @color;
+		}
+}
+
+.flipto-prev { left: 0; }
+.flipto-next { right: 0; }
+
+/* @end */

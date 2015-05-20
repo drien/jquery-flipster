@@ -1,0 +1,94 @@
+
+	@white: #FFF;
+	@black: #000;
+
+	@navBg: @black;
+	@navHeight: 25px;
+	@subHeight: 32px;
+	@borderWidth: 2px;
+	@borderColor: @black;
+	@catBg: @white;
+	@catText: @white;
+	@catSelectText: @black;
+	@itemLink: @black;
+
+	/* @group Flipster Navigation */
+
+	.flipster-nav {
+  		display: block;
+  		background: @navBg;
+  		height: @navHeight;
+  		margin: 0 0 @subHeight;
+  		padding: 5px 5px 0;
+  		text-align: center;
+  		margin-bottom: @subHeight;
+  		position: relative;
+  		border-bottom: solid @borderWidth @borderColor; //@accent;
+  		list-style-type: none;
+
+  		li {
+    			display: inline-block;
+    			text-align: center;
+    			margin: 0;
+    			padding: 0;
+    			list-style-type: none;
+  		}
+
+  		.flip-nav-category-link,
+  		.flip-nav-item-link {
+    			display: block;
+    			transition: all 100ms ease;
+  		}
+
+  		.flip-nav-category-link,
+  		.no-category .flip-nav-item-link {
+    			border: solid @borderWidth transparent;
+    			height: @navHeight - @borderWidth;
+    			line-height: @navHeight;
+    			color: @catText;
+    			padding: 1px 7px;
+    			font-size: 0.8em;
+  		}
+
+  		.flip-nav-current .flip-nav-category-link,
+  		.no-category .flip-nav-current.flip-nav-item-link {
+    			border-color: @borderColor;
+    			border-bottom: none;
+    			background: @catBg;
+    			color: @catSelectText;
+  		}
+
+  		.flip-nav-category .flip-nav-items {
+    			display: none;
+    			position: absolute;
+    			top: @navHeight + @borderWidth;
+    			left: 0;
+    			right: 0;
+    			text-align: center;
+    			padding: 10px 0;
+    			height: @subHeight;
+
+  			&:after{
+      			content: '';
+      			display: inline-block;
+      			width: 100%;
+  			}
+
+  			.flip-nav-item-link {
+    				padding: 5px 15px;
+    				color: @itemLink;
+    				font-family: Helvetica;
+    				text-transform: uppercase;
+    				font-size: 16px;
+
+    				&.flip-nav-current {
+      					background: @itemLink;
+      					color: #FFF;
+    				}
+  			}
+  		}
+
+  		.flip-nav-category.flip-nav-current .flip-nav-items { display: block; }
+	}
+
+	/* @end */
