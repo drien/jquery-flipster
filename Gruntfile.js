@@ -41,11 +41,24 @@ module.exports = function(grunt) {
           'dist/jquery.flipster.min.css': ['src/less/jquery.flipster.less', 'src/less/*/*.less']
         }
       }
-    }
+    },
+    watch: {
+      scripts: {
+        files: 'src/jquery.flipster.js',
+        tasks: ['uglify'],
+        options: { debounceDelay: 250 },
+      },
+      less: {
+        files: ['src/less/**/*.less'],
+        tasks: ['less'],
+        options: { debounceDelay: 250 },
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['uglify', 'less']);
 
