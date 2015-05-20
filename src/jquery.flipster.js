@@ -1,3 +1,4 @@
+/* jshint browser: true, jquery: true, devel: true */
 /* global window, jQuery */
 (function($, window, undefined) {
 
@@ -116,6 +117,7 @@ $.fn.flipster = function(options) {
         var _items;
         var _nav;
         var _navItems;
+        var _navCategories;
         var _currentIndex = 0;
         var _currentItem;
 
@@ -189,10 +191,12 @@ $.fn.flipster = function(options) {
                 self.prepend(_nav);
             }
 
+            _navCategories = _nav.find('.' + classes.navCategory);
+
             _navItems = _nav.find('a').on('click',function(e){
                 var target;
                 if ( $(this).hasClass(classes.navCategoryLink) ) {
-                    target = _items.filter('[data-flip-category="'+$(this).data('flip-category')+'"]').first();
+                    target = _items.filter('[data-flip-category="' + $(this).data('flip-category') + '"]').first();
                 } else {
                     target = $(this.hash);
                 }
@@ -206,9 +210,12 @@ $.fn.flipster = function(options) {
 
         function updateNav() {
             if ( settings.enableNav ) {
+                _navCategories
+                    .removeClass(classes.navCurrent);
+
                 _navItems
                     .removeClass(classes.navCurrent)
-                    .filter('[href="#'+_currentItem.attr('id')+'"]')
+                    .filter('[href="#' + _currentItem.attr('id') + '"]')
                         .addClass(classes.navCurrent)
                     .end()
                     .filter('[data-flip-category="'+_currentItem.data('flip-category')+'"]')
