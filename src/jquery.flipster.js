@@ -68,15 +68,15 @@ $.fn.flipster = function(options) {
 
         onItemSwitch:     $.noop,      // Callback function when items are switched. Current and previous items passed in as arguments
 
-        enableNav:        false,    // If true, flipster will insert an unordered list of the slides
-        navPosition:      'before', // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
+        enableNav:        false,       // If true, flipster will insert an unordered list of the slides
+        navPosition:      'before',    // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
 
-        enableNavButtons: false,      // If true, flipster will insert Previous / Next buttons
-        prevText:         'Previous', // Changes the text for the Previous button
-        nextText:         'Next',     // Changes the text for the Next button
+        enableNavButtons: false,       // If true, flipster will insert Previous / Next buttons
+        prevText:         'Previous',  // Changes the text for the Previous button
+        nextText:         'Next',      // Changes the text for the Next button
 
-        autoplay:         false,
-        autoplayInterval: 5000
+        autoplay:         false,       // Switch to next item after autoplayInterval unless hovered.
+        autoplayInterval: 5000         // Interval in milliseconds
     };
 
     var settings = $.extend({}, defaults, options);
