@@ -1,0 +1,40 @@
+/* @group Flipster Essential Styles */
+
+.flipster {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: visible;
+    position: relative;
+}
+
+.flipster:focus { outline: none; }
+
+.flip-items,
+.flip-item {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+}
+
+.flip-items {
+    display: block;
+    white-space: nowrap;
+    word-spacing: -0.25em;
+    transform-origin: 50% 50%;
+    backface-visibility: hidden;
+}
+
+.flip-item {
+    display: inline-block;
+    white-space: normal;
+    word-spacing: normal;
+    vertical-align: bottom;
+}
+
+.flip-past,
+.flip-future { cursor: pointer; }
+
+.flip-item img { max-width: 100%; }
+
+/* @end */

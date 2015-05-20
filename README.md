@@ -2,7 +2,7 @@ jQuery.Flipster
 ===============
 ![libscore](http://img.shields.io/badge/libscore-40-brightgreen.svg?style=flat-square)
 
-jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect and now features a 'carousel' effect! It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. It degrades (vaguely) gracefully, falling back to being just as flat and boring as the browsers that don't support 3D transforms. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.
+jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect and now features a 'carousel' effect! It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.
 
 At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL MY LIFE???'. I would be if I were you. So your project needs some sweet, sweet coverflow loving. You've come to the right place.
 
@@ -17,7 +17,6 @@ Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 - [x] IE 10 _(no mousewheel, no box reflections)_
 
 **Latest Version Untested in:**
-- [ ] IE 8 & 9 _(no 3D transforms, 'compatibility mode')_
 - [ ] IE <= 7
 - [ ] Android browsers
 - [ ] Opera
@@ -78,20 +77,20 @@ Advanced Usage
 
 If you want to change options, add the parameters when initializing the script. Default values are shown below
 ````javascript
-$(function(){ 
+$(function(){
 	$('.flipster').flipster({
 		itemContainer:		'ul', // Container for the flippin' items.
 		itemSelector:		'li', // Selector for children of itemContainer to flip
 		style:				'coverflow', // Switch between 'coverflow' or 'carousel' display styles
 		start:				'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
-		
+
 		enableKeyboard:		true, // Enable left/right arrow navigation
 		enableMousewheel:	true, // Enable scrollwheel navigation (up = left, down = right)
 		enableTouch:		true, // Enable swipe navigation for touch devices
-		
+
 		enableNav:			false, // If true, flipster will insert an unordered list of the slides
 		enableNavButtons:	false, // If true, flipster will insert Previous / Next buttons
-		
+
 		onItemSwitch:		function(){}, // Callback function when items are switches
 	}
 });
@@ -235,7 +234,7 @@ Version History
     - A few minor code improvements.
     - Added minified versions of the js and css files.
 
-- 0.1.3 - March 25 2013 
+- 0.1.3 - March 25 2013
     - Strong men also cry, strong men also cry.
 
 - 0.1.0 - March 25 2013
@@ -269,4 +268,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
