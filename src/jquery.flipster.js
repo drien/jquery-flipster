@@ -299,27 +299,32 @@ $.fn.flipster = function(options) {
 
         function center() {
             var total = _items.length;
+            var item;
+            var newClass;
+            var zIndex;
 
-            _items.each(function(i){
-                var item = $(this);
+        _items.each(function(i){
+            item = $(this);
+            newClass = ' ';
 
-                item.attr('class',function(i, c){
-                    return c && c.replace(classRemover, '').trim();
-                });
+            if ( i === _currentIndex ) {
+                newClass += classes.itemCurrent;
+                zIndex = (total + 1);
+            } else if ( i < _currentIndex ) {
+                newClass += classes.itemPast + ' ' +
+                    classes.itemPast + '-' + (_currentIndex - i);
+                zIndex = i;
+            } else {
+                newClass += classes.itemFuture + ' ' +
+                    classes.itemFuture + '-' + ( i - _currentIndex );
+                zIndex = (total - i);
+            }
 
-                if ( i === _currentIndex ) {
-                    item.addClass(classes.itemCurrent)
-                        .css('z-index', (total + 1) );
-                } else if ( i < _currentIndex ) {
-                    item.addClass( classes.itemPast + ' ' +
-                        classes.itemPast + '-' + (_currentIndex - i) )
-                        .css('z-index', i );
-                } else {
-                    item.addClass( classes.itemFuture + ' ' +
-                        classes.itemFuture + '-' + ( i - _currentIndex ) )
-                        .css('z-index', (total - i) );
-                }
-            });
+            item.css('z-index', zIndex )
+              .attr('class',function(i, c){
+                return c && c.replace(classRemover, '').trim() + newClass;
+              });
+        });
 
             if ( _currentItem ) {
                 if ( !_containerWidth ) { resize(true); }
