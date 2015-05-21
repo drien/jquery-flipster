@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   var globalConfig = {
         today: grunt.template.today("yyyy-mm-dd"),
-        banner: '/*! <%= pkg.name %>, built <%= globalConfig.today %> */\n',
+        banner: '/*! jQuery.Flipster, v<%= pkg.version %> (built <%= globalConfig.today %>) */\n',
         autoprefix: new (require('less-plugin-autoprefix'))({browsers: ["last 3 versions", 'ie >= 9']}),
       };
 
