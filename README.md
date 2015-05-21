@@ -62,59 +62,73 @@ Options
 Set your options when initializing the script. Default values and descriptions are shown below.
 ````javascript  
     $('.my-flipster').flipster({
-        itemContainer: 'ul', // [selector]
+        itemContainer: 'ul', 
+        // [string|object]
         // Selector for the container of the flippin' items.
 
-        itemSelector: 'li', // [selector]
+        itemSelector: 'li', 
+        // [string|object]
         // Selector for children of `itemContainer` to flip
 
-        start: 'center', // ['center'|number]
+        start: 'center', 
+        // ['center'|number]
         // Zero based index of the starting item, or use 'center' to start in the middle
 
-        loop: true, // [true|false]
+        loop: true, 
+        // [true|false]
         // Loop around when the start or end is reached.
 
-        autoplay: false, // [false|milliseconds]
+        autoplay: false, 
+        // [false|milliseconds]
         // If a positive number, Flipster will automatically advance to next item after that number of milliseconds
 
-        pauseOnHover: true, // [true|false]
+        pauseOnHover: true, 
+        // [true|false]
         // If true, autoplay advancement will pause when Flipster is hovered
 
-        style: 'coverflow', //[coverflow|carousel|flat|...]
+        style: 'coverflow',
+        // [coverflow|carousel|flat|...]
         // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
         // Create your own theme in CSS and use this setting to have Flipster add the custom class.
 
-        spacing: 0, // [number]
+        spacing: -0.6,
+        // [number]
         // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
 
-        rotation: true,
-
-        enableKeyboard: true, // [true|false]
+        enableKeyboard: true,
+        // [true|false]
         // Enable left/right arrow navigation
 
-        enableWheel: true, // [true|false]
+        enableWheel: true,
+        // [true|false]
         // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
 
-        enableTouch: true, // [true|false]
+        enableTouch: true,
+        // [true|false]
         // Enable swipe navigation for touch devices
 
         nav: false,
         // [false|'before'true|false]
         // If true, flipster will insert an unordered list of the slides
 
-        navPosition: 'before', // [before|after]
+        navPosition: 'before',
+        // [before|after]
         //Changes the position of the navigation before or after the flipsterified items - case-insensitive
 
-        navButtons: false, // [true|false]
+        navButtons: false,
+        // [true|false]
         // If true, Flipster will insert Previous / Next buttons
 
-        prevText: 'Previous', // [text|html]
+        prevText: 'Previous',
+        // [text|html]
         // Changes the text for the Previous button
 
-        nextText: 'Next', // [text|html]
+        nextText: 'Next',
+        // [text|html]
         // Changes the text for the Next button
 
-        onItemSwitch: false  // [function]
+        onItemSwitch: false
+        // [function]
         // Callback function when items are switched.
         // Arguments received: [currentItem, previousItem]
     });
