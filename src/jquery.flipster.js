@@ -85,24 +85,25 @@ $.fn.flipster = function(options) {
 
     var classes = {
         main: 'flipster',
-        active: 'flipster-active',
-        container: 'flip-items',
+        active: 'flipster--active',
+        container: 'flipster__container',
 
-        nav: 'flipster-nav',
-        navItem: 'flip-nav-item',
-        navCategory: 'flip-nav-category',
-        navCategoryLink: 'flip-nav-category-link',
-        navLink: 'flip-nav-item-link',
-        navCurrent: 'flip-nav-current',
+        nav: 'flipster__nav',
+        navChild: 'flipster__nav__child',
+        navItem: 'flipster__nav__item',
+        navLink: 'flipster__nav__link',
+        navCurrent: 'flipster__nav__item--current',
+        navCategory: 'flipster__nav__item--category',
+        navCategoryLink: 'flipster__nav__link--category',
 
         navPrev: 'flipto-prev',
         navNext: 'flipto-next',
 
-        item: 'flip-item',
-        itemCurrent: 'flip-current',
-        itemPast: 'flip-past',
-        itemFuture: 'flip-future',
-        itemContent: 'flip-content'
+        item: 'flipster__item',
+        itemCurrent: 'flipster__item--current',
+        itemPast: 'flipster__item--past',
+        itemFuture: 'flipster__item--future',
+        itemContent: 'flipster__item__content'
     };
 
     var classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)','g');
@@ -117,7 +118,7 @@ $.fn.flipster = function(options) {
         var _items;
         var _nav;
         var _navItems;
-        var _navCategories;
+        var _navLinks;
         var _currentIndex = 0;
         var _currentItem;
 
@@ -150,7 +151,7 @@ $.fn.flipster = function(options) {
             self.find('.' + classes.nav).remove();
 
             var navCategories = {};
-            var navItems = {};
+            var navLinks = {};
             var navList = {};
 
             _items.each(function(){
@@ -159,22 +160,23 @@ $.fn.flipster = function(options) {
                 var itemId = item.attr('id');
                 var itemTitle = item.data('flip-title') || item.attr('title');
 
-                if ( !navItems[itemId] ) {
-                    navItems[itemId] = '<a href="#'+itemId+'" class="' + classes.navLink + '">'+itemTitle+'</a>';
+                if ( !navLinks[itemId] ) {
+                    navLinks[itemId] = '<a href="#'+itemId+'" class="' + classes.navLink + '">'+itemTitle+'</a>';
+
+                    var listItem = '<li class="' + classes.navItem + '">' + navLinks[itemId] + '</li>';
+
                     if ( category !== undefined ) {
                         navCategories[category] = category;
-                        if ( !navList[category] ) {
-                            navList[category] = '';
-                        }
-                        navList[category] += '<li class="' + classes.navItem + '">' + navItems[itemId] + '</li>';
+                        if ( !navList[category] ) { navList[category] = ''; }
+                        navList[category] += listItem;
                     } else {
-                        navList[itemId] = '<li class="' + classes.navItem + ' no-category">' + navItems[itemId] + '</li>';
+                        navList[itemId] = listItem;
                     }
                 }
             });
 
             for ( var category in navCategories ) {
-                navList[category] = '<li class="' + classes.navCategory + '"><a href="#" class="' + classes.navCategoryLink + '" data-flip-category="'+category+'">'+category+'</a><ul class="flip-nav-items">' + navList[category] + '</ul></li>';
+                navList[category] = '<li class="' + classes.navItem + ' ' + classes.navCategory + '"><a href="#" class="' + classes.navLink + ' ' +  classes.navCategoryLink + '" data-flip-category="'+category+'">'+category+'</a><ul class="' + classes.navChild + '">' + navList[category] + '</ul></li>';
             }
 
             var navDisplay = '<ul class="' + classes.nav + '" role="navigation">';
@@ -191,9 +193,9 @@ $.fn.flipster = function(options) {
                 self.prepend(_nav);
             }
 
-            _navCategories = _nav.find('.' + classes.navCategory);
+            _navItems = _nav.find('.' + classes.navItem);
 
-            _navItems = _nav.find('a').on('click',function(e){
+            _navLinks = _nav.find('a').on('click',function(e){
                 var target;
                 if ( $(this).hasClass(classes.navCategoryLink) ) {
                     target = _items.filter('[data-flip-category="' + $(this).data('flip-category') + '"]').first();
@@ -210,17 +212,16 @@ $.fn.flipster = function(options) {
 
         function updateNav() {
             if ( settings.enableNav ) {
-                _navCategories
-                    .removeClass(classes.navCurrent);
 
                 _navItems
+                    .removeClass(classes.navCurrent);
+
+                _navLinks
                     .removeClass(classes.navCurrent)
-                    .filter('[href="#' + _currentItem.attr('id') + '"]')
-                        .addClass(classes.navCurrent)
-                    .end()
-                    .filter('[data-flip-category="'+_currentItem.data('flip-category')+'"]')
+                    .filter('[href="#' + _currentItem.attr('id') + '"], [data-flip-category="' + _currentItem.data('flip-category') + '"]')
                         .parent()
                         .addClass(classes.navCurrent);
+
             }
         }
 
@@ -247,7 +248,6 @@ $.fn.flipster = function(options) {
         }
 
         function resize(skipTransition) {
-
             if ( skipTransition ) { noTransition(); }
 
             _containerWidth = _container.width();
@@ -273,7 +273,6 @@ $.fn.flipster = function(options) {
         }
 
         function center() {
-
             var total = _items.length;
 
             _items.each(function(i){
@@ -288,11 +287,11 @@ $.fn.flipster = function(options) {
                         .css('z-index', (total + 1) );
                 } else if ( i < _currentIndex ) {
                     item.addClass( classes.itemPast + ' ' +
-                        classes.itemPast + '--' + (_currentIndex - i) )
-                        .css('z-index', i);
-                } else if ( i > _currentIndex ) {
+                        classes.itemPast + '-' + (_currentIndex - i) )
+                        .css('z-index', i );
+                } else {
                     item.addClass( classes.itemFuture + ' ' +
-                        classes.itemFuture + '--' + ( i - _currentIndex ) )
+                        classes.itemFuture + '-' + ( i - _currentIndex ) )
                         .css('z-index', (total - i) );
                 }
             });
@@ -317,9 +316,7 @@ $.fn.flipster = function(options) {
         function jump(to) {
             var _previous = _currentIndex;
 
-            if ( _items.length <= 1 ) {
-                return;
-            }
+            if ( _items.length <= 1 ) { return; }
 
             if ( to === 'prev' ) {
                 if ( _currentIndex > 0 ) { _currentIndex--; }
@@ -333,11 +330,10 @@ $.fn.flipster = function(options) {
                 _currentIndex = _items.index(to); // if object is sent, get its index
             }
 
-            if ( _currentIndex !== _previous ) {
-              settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]);
-            }
-
             _currentItem = _items.eq(_currentIndex);
+
+            if ( _currentIndex !== _previous ) { settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]); }
+
             center();
         }
 
@@ -368,12 +364,12 @@ $.fn.flipster = function(options) {
         }
 
         function index() {
-
-            _items = _container.find(settings.itemSelector).addClass(classes.item);
+            _items = _container.find(settings.itemSelector);
 
             if ( _items.length <= 1 ) { return; }
 
             _items
+                .addClass(classes.item)
                 // Wrap inner content
                 .each(function(){
                     var item = $(this);
@@ -396,19 +392,21 @@ $.fn.flipster = function(options) {
 
         function init() {
 
-            self.addClass([
-                    classes.main,
-                    ( settings.style ? 'flipster-'+settings.style : '' ),
-                    ( settings.disableRotation ? 'no-rotate' : '' ),
-                    ( transformSupport ? 'flipster-transform' : ' flipster-no-transform' )
-                ].join(' '))
-                .css('visibility','hidden');
-
-            _container = self.find(settings.itemContainer).addClass(classes.container);
+            _container = self.find(settings.itemContainer);
 
             index();
 
             if ( _items.length <= 1 ) { return; }
+
+            self.addClass([
+                    classes.main,
+                    ( transformSupport ? 'flipster--transform' : ' flipster--no-transform' ),
+                    ( settings.style ? 'flipster--'+settings.style : '' ),
+                    ( settings.disableRotation ? 'no-rotate' : '' )
+                ].join(' '))
+                .css('visibility','hidden');
+
+            _container.addClass(classes.container);
 
             noTransition();
 
@@ -445,9 +443,7 @@ $.fn.flipster = function(options) {
             }
 
             // Attach event bindings.
-            $window.on('resize.flipster', throttle(function() {
-                resize();
-            },400));
+            $window.on('resize.flipster', throttle(resize,400));
 
             if ( settings.autoplay ) { play(); }
 

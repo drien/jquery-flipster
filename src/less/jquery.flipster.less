@@ -9,15 +9,15 @@
 
 .flipster:focus { outline: none; }
 
-.flip-items,
-.flip-item {
+.flipster__container,
+.flipster__item {
     margin: 0;
     padding: 0;
     list-style-type: none;
     position: relative;
 }
 
-.flip-items {
+.flipster__container {
     display: block;
     white-space: nowrap;
     word-spacing: -0.25em;
@@ -25,16 +25,16 @@
     backface-visibility: hidden;
 }
 
-.flip-item {
+.flipster__item {
     display: inline-block;
     white-space: normal;
     word-spacing: normal;
     vertical-align: bottom;
 }
 
-.flip-past,
-.flip-future { cursor: pointer; }
+.flipster__item--past,
+.flipster__item--future { cursor: pointer; }
 
-.flip-item img { max-width: 100%; }
+.flipster__item img { max-width: 100%; }
 
 /* @end */
