@@ -48,29 +48,62 @@ $.fn.flipster = function(options) {
     }
 
     var defaults = {
-        itemContainer:    'ul',        // Container for the flippin' items.
-        itemSelector:     'li',        // Selector for children of itemContainer to flip
+        itemContainer: 'ul', // [selector]
+        // Selector for the container of the flippin' items.
 
-        start:            'center',    // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
-        loop:             true,        // Loop around when the start or end is reached.
-        autoplay:         false,       // Set to Switch to next item after autoplayInterval unless hovered.
+        itemSelector: 'li', // [selector]
+        // Selector for children of `itemContainer` to flip
 
-        style:            'coverflow', // [coverflow|carousel] Switch between 'coverflow' or 'carousel' display styles
-        spacing:          -0.5,        // Space between items relative to each item's width, 0 for no spacing, negative values to  overlap
-        disableRotation:  false,
+        start: 'center', // ['center'|0|index]
+        // Starting item.
+        // 'center' will start in the middle.
+        // 0 will start at the first item, or the index of the item you want to start with
 
-        enableKeyboard:   true,        // Enable left/right arrow navigation
-        enableWheel:      true,        // Enable mousewheel/trackpad navigation (up/left = previous, down/right = next)
-        enableTouch:      true,        // Enable swipe navigation for touch devices
+        loop: true, // [true|false]
+        // Loop around when the start or end is reached.
 
-        onItemSwitch:     $.noop,      // Callback function when items are switched. Current and previous items passed in as arguments
+        autoplay: false, // [false|milliseconds]
+        // If a positive number, Flipster will automatically advance to next item after that number of milliseconds
 
-        enableNav:        false,       // If true, flipster will insert an unordered list of the slides
-        navPosition:      'before',    // [before|after] Changes the position of the navigation before or after the flipsterified items - case-insensitive
+        pauseOnHover: true, // [true|false]
+        // If true, autoplay advancement will pause when Flipster is hovered
 
-        enableNavButtons: false,       // If true, flipster will insert Previous / Next buttons
-        prevText:         'Previous',  // Changes the text for the Previous button
-        nextText:         'Next'       // Changes the text for the Next button
+        style: 'coverflow', //[coverflow|carousel|flat|...]
+        // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
+        // Create your own theme in CSS and use this setting to have Flipster add the custom class.
+
+        spacing: 0, // [number]
+        // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
+
+        rotation: true,
+
+        enableKeyboard: true, // [true|false]
+        // Enable left/right arrow navigation
+
+        enableWheel: true, // [true|false]
+        // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
+
+        enableTouch: true, // [true|false]
+        // Enable swipe navigation for touch devices
+
+        nav: false,  // [false|'before'true|false]
+        // If true, flipster will insert an unordered list of the slides
+
+        navPosition: 'before', // [before|after]
+        //Changes the position of the navigation before or after the flipsterified items - case-insensitive
+
+        navButtons: false, // [true|false]
+        // If true, Flipster will insert Previous / Next buttons
+
+        prevText: 'Previous', // [text|html]
+        // Changes the text for the Previous button
+
+        nextText: 'Next', // [text|html]
+        // Changes the text for the Next button
+
+        onItemSwitch: false  // [function]
+        // Callback function when items are switched.
+        // Arguments received: [currentItem, previousItem]
     };
 
     var settings = $.extend({}, defaults, options);
@@ -120,7 +153,7 @@ $.fn.flipster = function(options) {
         var _startDrag = false;
 
         function buildNavButtons() {
-            if ( settings.enableNavButtons && _items.length > 1 ) {
+            if ( settings.navButtons && _items.length > 1 ) {
                 self.find('.' + classes.navPrev + ', .' + classes.navNext).remove();
 
                 $('<button class="' + classes.navPrev + '" role="button">'+settings.prevText+'</button>')
@@ -140,7 +173,7 @@ $.fn.flipster = function(options) {
         }
 
         function buildNav() {
-            if ( !settings.enableNav || _items.length <= 1 ) { return; }
+            if ( !settings.nav || _items.length <= 1 ) { return; }
 
             self.find('.' + classes.nav).remove();
 
@@ -204,7 +237,7 @@ $.fn.flipster = function(options) {
         }
 
         function updateNav() {
-            if ( settings.enableNav ) {
+            if ( settings.nav ) {
 
                 _navItems.removeClass(classes.navCurrent);
 
@@ -324,7 +357,7 @@ $.fn.flipster = function(options) {
 
             _currentItem = _items.eq(_currentIndex);
 
-            if ( _currentIndex !== _previous ) { settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]); }
+            if ( _currentIndex !== _previous && settings.onItemSwitch ) { settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]); }
 
             center();
 
@@ -408,7 +441,7 @@ $.fn.flipster = function(options) {
 
         function wheelEvents(elem) {
             if ( settings.enableWheel ) {
-                var _wheel = false;
+                var _wheelInside = false;
                 var _actionThrottle = 0;
                 var _throttleTimeout = 0;
                 var _delta = 0;
@@ -416,7 +449,7 @@ $.fn.flipster = function(options) {
                 var _lastDir;
 
                 elem
-                    .on('mousewheel.flipster wheel.flipster', function(){ _wheel = true; })
+                    .on('mousewheel.flipster wheel.flipster', function(){ _wheelInside = true; })
                     .on('mousewheel.flipster wheel.flipster', throttle(function(e){
 
                         // Reset after a period without scrolling.
@@ -451,9 +484,9 @@ $.fn.flipster = function(options) {
 
                 // Disable mousewheel on window if event began in elem.
                 $window.on('mousewheel.flipster wheel.flipster',function(e){
-                  if ( _wheel ) {
+                  if ( _wheelInside ) {
                     e.preventDefault();
-                    _wheel = false;
+                    _wheelInside = false;
                   }
                 });
             }
@@ -553,11 +586,13 @@ $.fn.flipster = function(options) {
 
             if ( settings.autoplay ) { play(); }
 
-            _container
-                .on('mouseenter', pause)
-                .on('mouseleave', function(){
-                    if ( _playing === -1 ) { play(); }
-                });
+            if ( settings.pauseOnHover ) {
+              _container
+                  .on('mouseenter', pause)
+                  .on('mouseleave', function(){
+                      if ( _playing === -1 ) { play(); }
+                  });
+            }
 
             keyboardEvents(self);
             wheelEvents(_container);
