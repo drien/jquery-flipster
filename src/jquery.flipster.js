@@ -39,15 +39,11 @@ $.fn.flipster = function(options) {
     var isMethodCall = (typeof options === 'string' ? true : false);
 
     if ( isMethodCall ) {
-        var method = options;
         var args = Array.prototype.slice.call(arguments, 1);
         return this.each(function(){
             var methods = $(this).data('methods');
-            if ( methods[method] ) {
-              return methods[method].apply(this, args);
-            } else {
-              return this;
-            }
+            if ( methods[options] ) { return methods[options].apply(this, args); }
+            else { return this; }
         });
     }
 
@@ -333,6 +329,8 @@ $.fn.flipster = function(options) {
             if ( _currentIndex !== _previous ) { settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]); }
 
             center();
+
+            return self;
         }
 
         function play(interval) {
@@ -345,11 +343,15 @@ $.fn.flipster = function(options) {
                 jump('next');
                 if ( prev === _currentIndex && !settings.loop ) { clearInterval(_playing); }
             }, settings.autoplay);
+
+            return self;
         }
 
         function pause() {
             clearInterval(_playing);
             if ( settings.autoplay ) { _playing = -1; }
+
+            return self;
         }
 
         function show() {
@@ -386,6 +388,7 @@ $.fn.flipster = function(options) {
 
             if ( _currentIndex >= 0 ) { jump(_currentIndex); }
 
+            return self;
         }
 
 
@@ -566,8 +569,8 @@ $.fn.flipster = function(options) {
         // public methods
         methods = {
             jump: jump,
-            next: function(){ jump('next'); },
-            prev: function(){ jump('prev'); },
+            next: function(){ return jump('next'); },
+            prev: function(){ return jump('prev'); },
             play: play,
             pause: pause,
             index: index
