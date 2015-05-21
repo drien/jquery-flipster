@@ -64,7 +64,7 @@ $.fn.flipster = function(options) {
         disableRotation:  false,
 
         enableKeyboard:   true,        // Enable left/right arrow navigation
-        enableMousewheel: true,        // Enable scrollwheel navigation (up = left, down = right)
+        enableWheel:      true,        // Enable mousewheel/trackpad navigation (up/left = previous, down/right = next)
         enableTouch:      true,        // Enable swipe navigation for touch devices
 
         onItemSwitch:     $.noop,      // Callback function when items are switched. Current and previous items passed in as arguments
@@ -385,6 +385,114 @@ $.fn.flipster = function(options) {
             buildNav();
 
             if ( _currentIndex >= 0 ) { jump(_currentIndex); }
+
+        }
+
+
+        function keyboardEvents(elem) {
+            if ( settings.enableKeyboard ) {
+                elem[0].tabIndex = 0;
+                elem.on('keydown.flipster', throttle(function(e){
+                    var code = e.which;
+                    if ( code === 37 ) {
+                        jump('prev');
+                        e.preventDefault();
+                    } else if ( code === 39 ) {
+                        jump('next');
+                        e.preventDefault();
+                    }
+                },250,true));
+            }
+        }
+
+        function wheelEvents(elem) {
+            if ( settings.enableWheel ) {
+                var _wheel = false;
+                var _actionThrottle = 0;
+                var _throttleTimeout = 0;
+                var _delta = 0;
+                var _dir;
+                var _lastDir;
+
+                elem
+                    .on('mousewheel.flipster wheel.flipster', function(){ _wheel = true; })
+                    .on('mousewheel.flipster wheel.flipster', throttle(function(e){
+
+                        // Reset after a period without scrolling.
+                        clearTimeout(_throttleTimeout);
+                        _throttleTimeout = setTimeout(function(){
+                            _actionThrottle = 0;
+                            _delta = 0;
+                        }, 300);
+
+                        e = e.originalEvent;
+
+                        // Add to delta (+=) so that continuous small events can still get past the speed limit, and quick direction reversals get cancelled out
+                        _delta += ( e.wheelDelta || ( e.deltaY + e.deltaX ) * -1 ); // Invert numbers for Firefox
+
+                        // Don't trigger unless the scroll is decent speed.
+                        if ( Math.abs(_delta) < 25 ) { return; }
+
+                        _actionThrottle++;
+
+                        _dir = ( _delta > 0 ? 'prev' : 'next' );
+
+                        // Reset throttle if direction changed.
+                        if ( _lastDir !== _dir ) { _actionThrottle = 0; }
+                        _lastDir = _dir;
+
+                        // Regular scroll wheels trigger less events, so they don't need to be throttled. Trackpads trigger many events (inertia), so only trigger jump every three times to slow things down.
+                        if ( _actionThrottle < 6 || _actionThrottle % 3 === 0 ) { jump(_dir); }
+
+                        _delta = 0;
+
+                    },50));
+
+                // Disable mousewheel on window if event began in elem.
+                $window.on('mousewheel.flipster wheel.flipster',function(e){
+                  if ( _wheel ) {
+                    e.preventDefault();
+                    _wheel = false;
+                  }
+                });
+            }
+        }
+
+        function touchEvents(elem) {
+            if ( settings.enableTouch ) {
+                var _startDragY = false;
+                var _touchJump = throttle(jump,300);
+                var x, y, offsetY, offsetX;
+
+                elem.on({
+                  'touchstart.flipster' : function(e){
+                          e = e.originalEvent;
+                          _startDrag = ( e.touches ? e.touches[0].clientX : e.clientX );
+                          _startDragY = ( e.touches ? e.touches[0].clientY : e.clientY );
+                          //e.preventDefault();
+                      },
+
+                  'touchmove.flipster' : throttle(function(e){
+                          if ( _startDrag !== false ) {
+                              e = e.originalEvent;
+
+                              x = ( e.touches ? e.touches[0].clientX : e.clientX );
+                              y = ( e.touches ? e.touches[0].clientY : e.clientY );
+                              offsetY = y - _startDragY;
+                              offsetX = x - _startDrag;
+
+                              if ( Math.abs(offsetY) < 100 && Math.abs(offsetX) >= 30 ) {
+                                  _touchJump((offsetX < 0 ? 'next' : 'prev'));
+                                  _startDrag = x;
+                                  e.preventDefault();
+                              }
+
+                          }
+                      },100),
+
+                  'touchend.flipster touchcancel.flipster ' : function(){ _startDrag = false; }
+                });
+            }
         }
 
         function init() {
@@ -450,121 +558,10 @@ $.fn.flipster = function(options) {
                     if ( _playing === -1 ) { play(); }
                 });
 
-            if ( settings.enableKeyboard ) { new interactor.Keyboard().init(self); }
-            if ( settings.enableMousewheel ) { new interactor.Mousewheel().init(_container); }
-            if ( settings.enableTouch ) { new interactor.Touch().init(_container); }
+            keyboardEvents(self);
+            wheelEvents(_container);
+            touchEvents(_container);
         }
-
-        var interactor = {
-            Keyboard: function() {
-                this.init = function(elem) {
-                    elem[0].tabIndex = 0;
-                    elem.on('keydown.flipster', throttle(function(e){
-                        var code = e.which;
-                        if ( code === 37 ) {
-                            jump('prev');
-                            e.preventDefault();
-                        } else if ( code === 39 ) {
-                            jump('next');
-                            e.preventDefault();
-                        }
-                    },250,true));
-                };
-            },
-
-            Mousewheel: function() {
-                var _wheel = false;
-                var _actionThrottle = 0;
-                var _throttleTimeout = 0;
-                var _delta = 0;
-                var _dir;
-                var _lastDir;
-
-                this.init = function(elem) {
-
-                    elem
-                        .on('mousewheel.flipster wheel.flipster', function(){ _wheel = true; })
-                        .on('mousewheel.flipster wheel.flipster', throttle(function(e){
-
-                            // Reset after a period without scrolling.
-                            clearTimeout(_throttleTimeout);
-                            _throttleTimeout = setTimeout(function(){
-                                _actionThrottle = 0;
-                                _delta = 0;
-                            }, 300);
-
-                            e = e.originalEvent;
-
-                            // Add to delta (+=) so that continuous small events can still get past the speed limit, and quick direction reversals get cancelled out
-                            _delta += ( e.wheelDelta || ( e.deltaY + e.deltaX ) * -1 ); // Invert numbers for Firefox
-
-                            // Don't trigger unless the scroll is decent speed.
-                            if ( Math.abs(_delta) < 25 ) { return; }
-
-                            _actionThrottle++;
-
-                            _dir = ( _delta > 0 ? 'prev' : 'next' );
-
-                            // Reset throttle if direction changed.
-                            if ( _lastDir !== _dir ) { _actionThrottle = 0; }
-                            _lastDir = _dir;
-
-                            // Regular scroll wheels trigger less events, so they don't need to be throttled. Trackpads trigger many events (inertia), so only trigger jump every three times to slow things down.
-                            if ( _actionThrottle < 6 || _actionThrottle % 3 === 0 ) { jump(_dir); }
-
-                            _delta = 0;
-
-                        },50));
-
-                    // Disable mousewheel on window if event began in elem.
-                    $window.on('mousewheel.flipster wheel.flipster',function(e){
-                      if ( _wheel ) {
-                        e.preventDefault();
-                        _wheel = false;
-                      }
-                    });
-                };
-            },
-
-            Touch: function() {
-                var _startDragY = false;
-                var _touchJump = throttle(jump,300);
-                var x, y, offsetY, offsetX;
-
-                this.init = function(elem) {
-
-                    elem.on({
-                      'touchstart.flipster' : function(e){
-                              e = e.originalEvent;
-                              _startDrag = ( e.touches ? e.touches[0].clientX : e.clientX );
-                              _startDragY = ( e.touches ? e.touches[0].clientY : e.clientY );
-                              //e.preventDefault();
-                          },
-
-                      'touchmove.flipster' : throttle(function(e){
-                              if ( _startDrag !== false ) {
-                                  e = e.originalEvent;
-
-                                  x = ( e.touches ? e.touches[0].clientX : e.clientX );
-                                  y = ( e.touches ? e.touches[0].clientY : e.clientY );
-                                  offsetY = y - _startDragY;
-                                  offsetX = x - _startDrag;
-
-                                  if ( Math.abs(offsetY) < 100 && Math.abs(offsetX) >= 30 ) {
-                                      _touchJump((offsetX < 0 ? 'next' : 'prev'));
-                                      _startDrag = x;
-                                      e.preventDefault();
-                                  }
-
-                              }
-                          },100),
-
-                      'touchend.flipster touchcancel.flipster ' : function(){ _startDrag = false; }
-                    });
-
-                };
-            }
-        };
 
         // public methods
         methods = {
