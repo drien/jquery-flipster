@@ -57,6 +57,7 @@ $.fn.flipster = function(options) {
 
         start:            'center',    // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
         loop:             true,        // Loop around when the start or end is reached.
+        autoplay:         false,       // Set to Switch to next item after autoplayInterval unless hovered.
 
         style:            'coverflow', // [coverflow|carousel] Switch between 'coverflow' or 'carousel' display styles
         spacing:          -0.5,        // Space between items relative to each item's width, 0 for no spacing, negative values to  overlap
@@ -73,10 +74,7 @@ $.fn.flipster = function(options) {
 
         enableNavButtons: false,       // If true, flipster will insert Previous / Next buttons
         prevText:         'Previous',  // Changes the text for the Previous button
-        nextText:         'Next',      // Changes the text for the Next button
-
-        autoplay:         false,       // Switch to next item after autoplayInterval unless hovered.
-        autoplayInterval: 5000         // Interval in milliseconds
+        nextText:         'Next'       // Changes the text for the Next button
     };
 
     var settings = $.extend({}, defaults, options);
@@ -338,8 +336,7 @@ $.fn.flipster = function(options) {
         }
 
         function play(interval) {
-            var time = interval || settings.autoplayInterval;
-            settings.autoplayInterval = time;
+            settings.autoplay = interval || settings.autoplay;
 
             clearInterval(_playing);
 
@@ -347,7 +344,7 @@ $.fn.flipster = function(options) {
                 var prev = _currentIndex;
                 jump('next');
                 if ( prev === _currentIndex && !settings.loop ) { clearInterval(_playing); }
-            }, time);
+            }, settings.autoplay);
         }
 
         function pause() {
@@ -574,14 +571,8 @@ $.fn.flipster = function(options) {
             jump: jump,
             next: function(){ jump('next'); },
             prev: function(){ jump('prev'); },
-            play: function(){
-              settings.autoplay = true;
-              play();
-            },
-            pause: function(){
-              settings.autoplay = false;
-              pause();
-            },
+            play: play,
+            pause: pause,
             index: index
         };
         self.data('methods', methods);
