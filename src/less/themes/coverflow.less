@@ -5,8 +5,8 @@
     .flipster__container,
     .flipster__item,
     .flipster__item__content {
-        transition: all 400ms ease-in-out;
-        transition-timing-function: cubic-bezier(.56,.12,.12,.98);
+          transition: all 350ms ease-in-out;
+          transition-timing-function: cubic-bezier(.56,.12,.12,.98);
     }
 
     .flipster__item { perspective: 800px; }
@@ -22,12 +22,12 @@
     .flipster__item__content img:only-child { display: block; }
 
     .flipster__item--past .flipster__item__content {
-        transform-origin: 0% 100%;
+        transform-origin: 0% 50%;
         transform: scale(0.75) rotateY(55deg);
     }
 
     .flipster__item--future .flipster__item__content {
-        transform-origin: 100% 100%;
+        transform-origin: 100% 50%;
         transform: scale(0.75) rotateY(-55deg);
     }
 
