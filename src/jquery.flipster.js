@@ -147,17 +147,21 @@ $.fn.flipster = function(options) {
             var navCategories = {};
             var navLinks = {};
             var navList = {};
+            var category;
+            var navDisplay;
+            var navIndex;
 
             _items.each(function(){
                 var item = $(this);
                 var category = item.data('flip-category');
                 var itemId = item.attr('id');
                 var itemTitle = item.data('flip-title') || item.attr('title');
+                var listItem;
 
                 if ( !navLinks[itemId] ) {
                     navLinks[itemId] = '<a href="#'+itemId+'" class="' + classes.navLink + '">'+itemTitle+'</a>';
 
-                    var listItem = '<li class="' + classes.navItem + '">' + navLinks[itemId] + '</li>';
+                    listItem = '<li class="' + classes.navItem + '">' + navLinks[itemId] + '</li>';
 
                     if ( category !== undefined ) {
                         navCategories[category] = category;
@@ -169,23 +173,18 @@ $.fn.flipster = function(options) {
                 }
             });
 
-            for ( var category in navCategories ) {
+            for ( category in navCategories ) {
                 navList[category] = '<li class="' + classes.navItem + ' ' + classes.navCategory + '"><a href="#" class="' + classes.navLink + ' ' +  classes.navCategoryLink + '" data-flip-category="'+category+'">'+category+'</a><ul class="' + classes.navChild + '">' + navList[category] + '</ul></li>';
             }
 
-            var navDisplay = '<ul class="' + classes.nav + '" role="navigation">';
-            for ( var navIndex in navList ) {
-                navDisplay += navList[navIndex];
-            }
+            navDisplay = '<ul class="' + classes.nav + '" role="navigation">';
+            for ( navIndex in navList ) { navDisplay += navList[navIndex]; }
             navDisplay += '</ul>';
 
             _nav = $(navDisplay);
 
-            if ( settings.navPosition.toLowerCase() === 'after' ) {
-                self.append(_nav);
-            } else {
-                self.prepend(_nav);
-            }
+            if ( settings.navPosition.toLowerCase() === 'after' ) { self.append(_nav); }
+            else { self.prepend(_nav); }
 
             _navItems = _nav.find('.' + classes.navItem);
 
@@ -207,8 +206,7 @@ $.fn.flipster = function(options) {
         function updateNav() {
             if ( settings.enableNav ) {
 
-                _navItems
-                    .removeClass(classes.navCurrent);
+                _navItems.removeClass(classes.navCurrent);
 
                 _navLinks
                     .removeClass(classes.navCurrent)
