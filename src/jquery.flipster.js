@@ -123,14 +123,14 @@ $.fn.flipster = function(options) {
             if ( settings.enableNavButtons && _items.length > 1 ) {
                 self.find('.' + classes.navPrev + ', .' + classes.navNext).remove();
 
-                $('<a href="#" class="' + classes.navPrev + '" role="button">'+settings.prevText+'</a>')
+                $('<button class="' + classes.navPrev + '" role="button">'+settings.prevText+'</button>')
                     .on('click', function(e) {
                         jump('prev');
                         e.preventDefault();
                     })
                     .appendTo(self);
 
-                $('<a href="#" class="' + classes.navNext + '" role="button">'+settings.nextText+'</a>')
+                $('<button class="' + classes.navNext + '" role="button">'+settings.nextText+'</button>')
                     .on('click', function(e) {
                         jump('next');
                         e.preventDefault();
