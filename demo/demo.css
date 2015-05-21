@@ -1,0 +1,104 @@
+/*
+* Base Template
+* Combines HTML5 Boilerplate & Boostrap. Includes some basic templating.
+* Authored by Stephen Shaw (shshaw@gmail.com)
+*/
+
+/* @group Basics */
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  color: #333333;
+  font-weight: 400;
+  font-size: 15px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 20px;
+  margin: 0;
+  padding: 4em 0 4em 20%;
+}
+
+a {
+  color: #da0d25;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #f22840;
+  text-decoration: none;
+}
+p { margin: 0 0 20px; }
+
+h1,
+h2,{
+  margin: 10px 0;
+  font-weight: 500;
+  line-height: 40px;
+  color: inherit;
+  text-align: center;
+}
+h1 small,
+h2 small {
+  font-weight: 400;
+  line-height: 1;
+  color: #8d8d8d;
+}
+h1 { font-size: 28px; }
+h2 { font-size: 22px; }
+
+/* @end */
+
+.main-header {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 20%;
+  background: #eee;
+  padding: 1em;
+}
+
+.intro {
+  padding: 2em;
+}
+
+.demo {
+  padding: 4em 0;
+}
+
+.demo h2 {
+  text-align: center;
+  font-size: 18px;
+}
+
+.button {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0;
+  background-color: #da0d25;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: #FFF;
+  text-shadow: none;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 0;
+  transition: all 300ms ease;
+}
+
+.button:hover,
+.button:focus {
+  color: #7a0715;
+  background: #f22840;
+}
