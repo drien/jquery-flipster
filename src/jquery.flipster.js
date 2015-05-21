@@ -143,6 +143,7 @@ $.fn.flipster = function(options) {
         var _container;
         var _containerWidth;
         var _items;
+        var _itemOffsets = [];
         var _nav;
         var _navItems;
         var _navLinks;
@@ -278,23 +279,28 @@ $.fn.flipster = function(options) {
             _containerWidth = _container.width();
             _container.height(calculateBiggestItemHeight());
 
-            if ( settings.spacing !== 0 ) {
-                _items.each(function(i){
-                    var item = $(this);
-                    var spacing = (item.outerWidth() * settings.spacing);
+            _items.each(function(i){
+                var item = $(this);
 
-                    item.css('margin-right', spacing + 'px');
-
-                    if ( i === _items.length - 1 ) {
-                        center();
-
-                        if ( skipTransition ) { resetTransition(); }
-                    }
+                item.attr('class',function(i, c){
+                    return c && c.replace(classRemover, '').trim();
                 });
-            } else {
-                center();
-                if ( skipTransition ) { resetTransition(); }
-            }
+
+                var width = item.outerWidth();
+                var left;
+
+                if ( settings.spacing !== 0 ) {
+                  item.css('margin-right', ( width * settings.spacing) + 'px');
+                }
+
+                left = item.position().left;
+                _itemOffsets[i] = -1 * ((left + (width / 2)) - (_containerWidth / 2));
+
+                if ( i === _items.length - 1 ) {
+                    center();
+                    if ( skipTransition ) { resetTransition(); }
+                }
+            });
         }
 
         function center() {
@@ -326,17 +332,15 @@ $.fn.flipster = function(options) {
               });
         });
 
-            if ( _currentItem ) {
-                if ( !_containerWidth ) { resize(true); }
 
-                var currentWidth = _currentItem.outerWidth();
-                var currentLeft = _currentItem.position().left;
-                var containerOffset = -1 * ((currentLeft + (currentWidth / 2)) - (_containerWidth / 2));
+
+            if ( _currentIndex >= 0 ) {
+                if ( !_containerWidth || _itemOffsets[_currentIndex] === undefined ) { resize(true); }
 
                 if ( transformSupport ) {
-                    _container.css('transform', 'translateX(' + containerOffset + 'px)');
+                    _container.css('transform', 'translateX(' + _itemOffsets[_currentIndex] + 'px)');
                 } else {
-                    _container.css({ 'left': containerOffset + 'px' });
+                    _container.css({ 'left': _itemOffsets[_currentIndex] + 'px' });
                 }
             }
 
