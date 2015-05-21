@@ -54,10 +54,8 @@ $.fn.flipster = function(options) {
         itemSelector: 'li', // [selector]
         // Selector for children of `itemContainer` to flip
 
-        start: 'center', // ['center'|0|index]
-        // Starting item.
-        // 'center' will start in the middle.
-        // 0 will start at the first item, or the index of the item you want to start with
+        start: 'center', // ['center'|number]
+        // Zero based index of the starting item, or use 'center' to start in the middle
 
         loop: true, // [true|false]
         // Loop around when the start or end is reached.
@@ -309,30 +307,28 @@ $.fn.flipster = function(options) {
             var newClass;
             var zIndex;
 
-        _items.each(function(i){
-            item = $(this);
-            newClass = ' ';
+            _items.each(function(i){
+                item = $(this);
+                newClass = ' ';
 
-            if ( i === _currentIndex ) {
-                newClass += classes.itemCurrent;
-                zIndex = (total + 1);
-            } else if ( i < _currentIndex ) {
-                newClass += classes.itemPast + ' ' +
-                    classes.itemPast + '-' + (_currentIndex - i);
-                zIndex = i;
-            } else {
-                newClass += classes.itemFuture + ' ' +
-                    classes.itemFuture + '-' + ( i - _currentIndex );
-                zIndex = (total - i);
-            }
+                if ( i === _currentIndex ) {
+                    newClass += classes.itemCurrent;
+                    zIndex = (total + 1);
+                } else if ( i < _currentIndex ) {
+                    newClass += classes.itemPast + ' ' +
+                        classes.itemPast + '-' + (_currentIndex - i);
+                    zIndex = i;
+                } else {
+                    newClass += classes.itemFuture + ' ' +
+                        classes.itemFuture + '-' + ( i - _currentIndex );
+                    zIndex = (total - i);
+                }
 
-            item.css('z-index', zIndex )
-              .attr('class',function(i, c){
-                return c && c.replace(classRemover, '').trim() + newClass;
-              });
-        });
-
-
+                item.css('z-index', zIndex )
+                  .attr('class',function(i, c){
+                    return c && c.replace(classRemover, '').trim() + newClass;
+                  });
+            });
 
             if ( _currentIndex >= 0 ) {
                 if ( !_containerWidth || _itemOffsets[_currentIndex] === undefined ) { resize(true); }
@@ -546,13 +542,14 @@ $.fn.flipster = function(options) {
 
             if ( _items.length <= 1 ) { return; }
 
-            self.addClass([
+            self
+                .css('visibility','hidden')
+                .addClass([
                     classes.main,
                     ( transformSupport ? 'flipster--transform' : ' flipster--no-transform' ),
                     ( settings.style ? 'flipster--'+settings.style : '' ),
                     ( settings.disableRotation ? 'no-rotate' : '' )
-                ].join(' '))
-                .css('visibility','hidden');
+                ].join(' '));
 
             _container.addClass(classes.container);
 
@@ -585,7 +582,7 @@ $.fn.flipster = function(options) {
                   if ( imagesLoaded >= images.length ) { show(); }
                 });
 
-                setTimeout(show,500);
+                setTimeout(show,750);
             } else {
               show();
             }
