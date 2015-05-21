@@ -311,7 +311,7 @@ $.fn.flipster = function(options) {
 
                 if ( i === _items.length - 1 ) {
                     center();
-                    if ( skipTransition ) { resetTransition(); }
+                    if ( skipTransition ) { setTimeout(resetTransition,1); }
                 }
             });
         }
@@ -414,6 +414,9 @@ $.fn.flipster = function(options) {
         }
 
         function index() {
+
+            _container = self.find(settings.itemContainer).addClass(classes.container);
+
             _items = _container.find(settings.itemSelector);
 
             if ( _items.length <= 1 ) { return; }
@@ -551,23 +554,20 @@ $.fn.flipster = function(options) {
 
         function init() {
 
-            _container = self.find(settings.itemContainer);
+            self.css('visibility','hidden');
 
             index();
 
-            if ( _items.length <= 1 ) { return; }
+            if ( _items.length <= 1 ) {
+              self.css('visibility','');
+              return;
+            }
 
-            self
-                .css('visibility','hidden')
-                .addClass([
+            self.addClass([
                     classes.main,
                     ( transformSupport ? 'flipster--transform' : ' flipster--no-transform' ),
                     ( settings.style ? 'flipster--'+settings.style : '' )
                 ].join(' '));
-
-            _container.addClass(classes.container);
-
-            noTransition();
 
             // Set the starting item
             if ( settings.start ) {
