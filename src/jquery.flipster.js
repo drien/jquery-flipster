@@ -94,12 +94,9 @@ $.fn.flipster = function(options) {
         // Enable swipe navigation for touch devices
 
         nav: false,
-        // [false|'before'true|false]
-        // If true, flipster will insert an unordered list of the slides
-
-        navPosition: 'before',
-        // [before|after]
-        //Changes the position of the navigation before or after the flipsterified items - case-insensitive
+        // [true|false|'before'|'after']
+        // If not false, Flipster will build an unordered list of the items.
+        // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items.
 
         navButtons: false,
         // [true|false]
@@ -230,7 +227,7 @@ $.fn.flipster = function(options) {
 
             _nav = $(navDisplay);
 
-            if ( settings.navPosition.toLowerCase() === 'after' ) { self.append(_nav); }
+            if ( settings.nav.toLowerCase() === 'after' ) { self.append(_nav); }
             else { self.prepend(_nav); }
 
             _navItems = _nav.find('.' + classes.navItem);

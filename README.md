@@ -61,77 +61,74 @@ Options
 
 Set your options when initializing the script. Default values and descriptions are shown below.
 ````javascript  
-    $('.my-flipster').flipster({
-        itemContainer: 'ul', 
-        // [string|object]
-        // Selector for the container of the flippin' items.
+$('.my-flipster').flipster({
+    itemContainer: 'ul',
+    // [string|object]
+    // Selector for the container of the flippin' items.
 
-        itemSelector: 'li', 
-        // [string|object]
-        // Selector for children of `itemContainer` to flip
+    itemSelector: 'li',
+    // [string|object]
+    // Selector for children of `itemContainer` to flip
 
-        start: 'center', 
-        // ['center'|number]
-        // Zero based index of the starting item, or use 'center' to start in the middle
+    start: 'center',
+    // ['center'|number]
+    // Zero based index of the starting item, or use 'center' to start in the middle
 
-        loop: true, 
-        // [true|false]
-        // Loop around when the start or end is reached.
+    loop: true,
+    // [true|false]
+    // Loop around when the start or end is reached.
 
-        autoplay: false, 
-        // [false|milliseconds]
-        // If a positive number, Flipster will automatically advance to next item after that number of milliseconds
+    autoplay: false,
+    // [false|milliseconds]
+    // If a positive number, Flipster will automatically advance to next item after that number of milliseconds
 
-        pauseOnHover: true, 
-        // [true|false]
-        // If true, autoplay advancement will pause when Flipster is hovered
+    pauseOnHover: true,
+    // [true|false]
+    // If true, autoplay advancement will pause when Flipster is hovered
 
-        style: 'coverflow',
-        // [coverflow|carousel|flat|...]
-        // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
-        // Create your own theme in CSS and use this setting to have Flipster add the custom class.
+    style: 'coverflow',
+    // [coverflow|carousel|flat|...]
+    // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
+    // Create your own theme in CSS and use this setting to have Flipster add the custom class.
 
-        spacing: -0.6,
-        // [number]
-        // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
+    spacing: -0.6,
+    // [number]
+    // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
 
-        enableKeyboard: true,
-        // [true|false]
-        // Enable left/right arrow navigation
+    enableKeyboard: true,
+    // [true|false]
+    // Enable left/right arrow navigation
 
-        enableWheel: true,
-        // [true|false]
-        // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
+    enableWheel: true,
+    // [true|false]
+    // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
 
-        enableTouch: true,
-        // [true|false]
-        // Enable swipe navigation for touch devices
+    enableTouch: true,
+    // [true|false]
+    // Enable swipe navigation for touch devices
 
-        nav: false,
-        // [false|'before'true|false]
-        // If true, flipster will insert an unordered list of the slides
+    nav: false,
+    // [true|false|'before'|'after']
+    // If not false, Flipster will build an unordered list of the items.
+    // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items.
+    
+    navButtons: false,
+    // [true|false]
+    // If true, Flipster will insert Previous / Next buttons
 
-        navPosition: 'before',
-        // [before|after]
-        //Changes the position of the navigation before or after the flipsterified items - case-insensitive
+    prevText: 'Previous',
+    // [text|html]
+    // Changes the text for the Previous button
 
-        navButtons: false,
-        // [true|false]
-        // If true, Flipster will insert Previous / Next buttons
+    nextText: 'Next',
+    // [text|html]
+    // Changes the text for the Next button
 
-        prevText: 'Previous',
-        // [text|html]
-        // Changes the text for the Previous button
-
-        nextText: 'Next',
-        // [text|html]
-        // Changes the text for the Next button
-
-        onItemSwitch: false
-        // [function]
-        // Callback function when items are switched.
-        // Arguments received: [currentItem, previousItem]
-    });
+    onItemSwitch: false
+    // [function]
+    // Callback function when items are switched.
+    // Arguments received: [currentItem, previousItem]
+});
 ````
 
 Methods
@@ -203,7 +200,7 @@ Version History
 - 1.0.0 - May 2015
     - Massive rewrite for performance optimization and simplification
     - Added `autoplay` option to automatically rotate through items
-    - 
+    - ...
     
 - 0.3.4 - July 23 2014
     - Some additional options available
