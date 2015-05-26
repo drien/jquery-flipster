@@ -18,7 +18,6 @@
     }
 
     function checkStyleSupport( prop ) {
-
         var div = document.createElement('div'),
             style = div.style,
             ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
@@ -66,7 +65,7 @@ $.fn.flipster = function(options) {
 
         loop: true,
         // [true|false]
-        // Loop around when the start or end is reached.
+        // Loop around when the start or end is reached
 
         autoplay: false,
         // [false|milliseconds]
@@ -79,7 +78,7 @@ $.fn.flipster = function(options) {
         style: 'coverflow',
         // [coverflow|carousel|flat|...]
         // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
-        // Create your own theme in CSS and use this setting to have Flipster add the custom class.
+        // Create your own theme in CSS and use this setting to have Flipster add the custom class
 
         spacing: -0.6,
         // [number]
@@ -99,8 +98,8 @@ $.fn.flipster = function(options) {
 
         nav: false,
         // [true|false|'before'|'after']
-        // If not false, Flipster will build an unordered list of the items.
-        // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items.
+        // If not false, Flipster will build an unordered list of the items
+        // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
 
         navButtons: false,
         // [true|false]
@@ -116,7 +115,7 @@ $.fn.flipster = function(options) {
 
         onItemSwitch: false
         // [function]
-        // Callback function when items are switched.
+        // Callback function when items are switched
         // Arguments received: [currentItem, previousItem]
     };
 
@@ -508,10 +507,10 @@ $.fn.flipster = function(options) {
 
                 // Disable mousewheel on window if event began in elem.
                 $window.on('mousewheel.flipster wheel.flipster',function(e){
-                  if ( _wheelInside ) {
-                    e.preventDefault();
-                    _wheelInside = false;
-                  }
+                    if ( _wheelInside ) {
+                        e.preventDefault();
+                        _wheelInside = false;
+                    }
                 });
             }
         }
@@ -560,8 +559,8 @@ $.fn.flipster = function(options) {
             index();
 
             if ( _items.length <= 1 ) {
-              self.css('visibility','');
-              return;
+                self.css('visibility','');
+                return;
             }
 
             self.addClass([
@@ -589,13 +588,14 @@ $.fn.flipster = function(options) {
 
                 // Resize after all images have loaded.
                 images.on('load',function(){
-                  imagesLoaded++;
-                  if ( imagesLoaded >= images.length ) { show(); }
+                    imagesLoaded++;
+                    if ( imagesLoaded >= images.length ) { show(); }
                 });
 
+                // Fallback to show Flipster while images load in case it takes a while.
                 setTimeout(show,750);
             } else {
-              show();
+                show();
             }
 
             // Attach event bindings.
