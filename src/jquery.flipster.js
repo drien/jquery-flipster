@@ -574,11 +574,7 @@ $.fn.flipster = function(options) {
             if ( settings.start ) {
                 // Find the middle item if start = center
                 if ( settings.start === 'center' ) {
-                    if (!_items.length % 2) {
-                        _currentIndex = _items.length/2 + 1;
-                    } else {
-                        _currentIndex = Math.floor(_items.length/2);
-                    }
+                    _currentIndex = Math.floor( _items.length / 2 );
                 } else {
                     _currentIndex = settings.start;
                 }
