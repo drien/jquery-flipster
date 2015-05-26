@@ -2,24 +2,22 @@ jQuery.Flipster
 ===============
 [![](http://api.libscore.com/badge/$.fn.flipster.svg)](http://libscore.com/#$.fn.flipster)
 
-Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect and now features a 'carousel' effect! It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.
+Flipster is a CSS3 3D transform-based jQuery plugin built to replicate the familiar 'cover flow' effect, but also supports a variety of styles. Not only is it gorgeous to look at, Flipster is also:
 
-At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL MY LIFE???'. I would be if I were you. So your project needs some sweet, sweet coverflow loving. You've come to the right place.
-
-The slider can be operated with arrow keys, clicks, side to side scrolling or by touch on mobile devices. Wrapping the image elements in anchor tags also works to enable linking out from the current element.
+- **Responsive** Automatically centers and scales to fit the area provided.
+- **Flexible** Flip an image gallery or any HTML content.
+- **Touch Friendly** Swipe between items on touch devices without interrupting scroll.
+- **Keyboard Friendly** Go ahead, use your arrow keys. I dare you.
+- **Lightweight** Javascript and CSS are only 5kb gzipped (13kb uncompressed) combined. Only dependency is jQuery.
+- **Customizable** Three built in styles (coverflow, carousel and flat) and plenty of options to configure Flipster the way you want
 
 Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 
-**Tested in:**
+#Browser Support
 - [x] Chrome (latest)
-- [x] Safari & Mobile Safari (latest)
-- [x] Firefox (latest) _(no box reflections)_
-- [x] IE 10 _(no box reflections)_
-
-**Latest Version Untested in:**
-- [ ] IE <= 7
-- [ ] Android browsers
-- [ ] Opera
+- [x] Safari & iOS Safari (latest)
+- [x] Firefox (latest)
+- [x] IE 10
 
 
 Basic Usage
@@ -33,22 +31,20 @@ Include Flipster's CSS, typically in the `<head>`:
 Set up your content:
 ````html
 <div class="my-flipster">
-	<ul>
-		<li><img src=""  /></li>
-		...
-	</ul>
+  <ul>
+    <li><img src="" /></li>
+    <li><p>Plain ol' <abbr>HTML</abbr>!</p></li>
+    ...
+  </ul>
 </div>
 ````
-* Tip: Your items don't have to be in an unordered list. You can set the `itemContainer` and `itemSelector` options to fit your markup, but you do need an outer container and inner container. *
 
-Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag
+*Tip: Set the `itemContainer` and `itemSelector` options to fit your markup. You don't need to use `<div>`, `<ul>` and `<li>`s like the markup above, but Flipster does require an outer container and inner container.*
+
+Include Flipster's javascript after jQuery (ideally at the bottom of the page before the `</body>` tag and initialize Flipster on your element:
 ````html
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.flipster.js"></script>
-````
-
-Initialize Flipster on your element:
-````javascript
 <script>
     $('.my-flipster').flipster();
 </script>
@@ -56,10 +52,11 @@ Initialize Flipster on your element:
 
 That's it. Now start flippin'!
 
+
 Options
 ---------------
 
-Set your options when initializing the script. Default values and descriptions are shown below.
+Set your options when first initializing Flipster. Default values and descriptions are shown below.
 ````javascript  
 $('.my-flipster').flipster({
     itemContainer: 'ul',
@@ -74,9 +71,13 @@ $('.my-flipster').flipster({
     // ['center'|number]
     // Zero based index of the starting item, or use 'center' to start in the middle
 
+    fadeIn: 400,
+    // [milliseconds]
+    // Speed of the fade in animation after items have been setup
+
     loop: true,
     // [true|false]
-    // Loop around when the start or end is reached.
+    // Loop around when the start or end is reached
 
     autoplay: false,
     // [false|milliseconds]
@@ -89,7 +90,7 @@ $('.my-flipster').flipster({
     style: 'coverflow',
     // [coverflow|carousel|flat|...]
     // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
-    // Create your own theme in CSS and use this setting to have Flipster add the custom class.
+    // Create your own theme in CSS and use this setting to have Flipster add the custom class
 
     spacing: -0.6,
     // [number]
@@ -109,9 +110,9 @@ $('.my-flipster').flipster({
 
     nav: false,
     // [true|false|'before'|'after']
-    // If not false, Flipster will build an unordered list of the items.
-    // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items.
-    
+    // If not false, Flipster will build an unordered list of the items
+    // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
+
     navButtons: false,
     // [true|false]
     // If true, Flipster will insert Previous / Next buttons
@@ -126,7 +127,7 @@ $('.my-flipster').flipster({
 
     onItemSwitch: false
     // [function]
-    // Callback function when items are switched.
+    // Callback function when items are switched
     // Arguments received: [currentItem, previousItem]
 });
 ````
