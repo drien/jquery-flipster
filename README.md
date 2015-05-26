@@ -152,35 +152,33 @@ myFlipster.flipster('index'); // If items are added or removed, you can tell Fli
 Navigation
 ---------------
 
-Flipster can build an unordered list of links to each item to let users jump around. Set `nav: true` in the options and include an `id`. 
+Set `nav: true` in the options and Flipster can build an unordered list of links to each item to let users jump around. 
 
 The navigation list will use each item's `data-flip-title` attribute as the text. If an item does not have a `data-flip-title`, Flipster will try to grab the `title` attribute, or will default to the item's index.
 
 ````html
 <div class="my-flipster">
-	<ul>
-		<li id="Item-1" data-flip-title="Item 1 Title">...</li>
-		<li id="Item-2" data-flip-title="Item 2 Title">...</li>
-		...
-  </ul>
+    <ul>
+        <li data-flip-title="Item 1 Title">...</li>
+        <li data-flip-title="Item 2 Title">...</li>
+        ...
+    </ul>
 </div>
 ````
 
-
 ### Categories ###
 
-The navigation list can also group items into categories. Include the `data-flip-category` along with the `id` and `title` attributes with `nav: true` in the Javascript parameters.
+Include `data-flip-category` attributes on your items, and the navigation list will group items into categories, allowing for basic filtering and quicker navigation.
 
-An item list like:
 ````html
-<div class="flipster">
-	<ul>
-		<li id="Item-1" data-flip-title="Item 1 Title" data-flip-category="Category 1">...</li>
-		<li id="Item-2" data-flip-title="Item 2 Title" data-flip-category="Category 1">...</li>
-		<li id="Item-3" data-flip-title="Item 3 Title" data-flip-category="Category 2">...</li>
-		<li id="Item-4" data-flip-title="Item 4 Title" data-flip-category="Category 2">...</li>
-		<li id="Item-5" data-flip-title="Item 5 Title">...</li>
-  </ul>
+<div class="my-flipster">
+    <ul>
+        <li data-flip-title="Item 1 Title" data-flip-category="Category 1">...</li>
+        <li data-flip-title="Item 2 Title" data-flip-category="Category 1">...</li>
+        <li data-flip-title="Item 3 Title" data-flip-category="Category 2">...</li>
+        <li data-flip-title="Item 4 Title" data-flip-category="Category 2">...</li>
+        <li data-flip-title="Item 5 Title">...</li>
+    </ul>
 </div>
 ````
 
