@@ -189,75 +189,74 @@ $.fn.flipster = function(options) {
         function buildNav() {
             if ( !settings.nav || _items.length <= 1 ) { return; }
 
-            self.find('.' + classes.nav).remove();
+            if ( _nav ) { _nav.remove(); }
 
             var navCategories = {};
-            var navLinks = {};
-            var navList = {};
-            var category;
-            var navDisplay;
-            var navIndex;
+
+            _nav = $('<ul class="' + classes.nav + '" role="navigation" />');
+            _navLinks = $('');
 
             _items.each(function(i){
                 var item = $(this);
                 var category = item.data('flip-category');
-                var itemId = item.attr('id');
                 var itemTitle = item.data('flip-title') || item.attr('title') || i;
-                var listItem;
+                var navLink = $('<a href="#" class="' + classes.navLink + '">' + itemTitle + '</a>')
+                        .data('index',i);
 
-                if ( !navLinks[itemId] ) {
-                    navLinks[itemId] = '<a href="#'+itemId+'" class="' + classes.navLink + '">'+itemTitle+'</a>';
+                _navLinks = _navLinks.add(navLink);
 
-                    listItem = '<li class="' + classes.navItem + '">' + navLinks[itemId] + '</li>';
+                if ( category ) {
 
-                    if ( category !== undefined ) {
-                        navCategories[category] = category;
-                        if ( !navList[category] ) { navList[category] = ''; }
-                        navList[category] += listItem;
-                    } else {
-                        navList[itemId] = listItem;
+                    if ( !navCategories[category] ) {
+
+                        var categoryItem = $('<li class="' + classes.navItem + ' ' + classes.navCategory + '">');
+                        var categoryLink = $('<a href="#" class="' + classes.navLink + ' ' +  classes.navCategoryLink + '" data-flip-category="' + category + '">' + category + '</a>')
+                                .data('category',category)
+                                .data('index',i);
+
+                        navCategories[category] = $('<ul class="' + classes.navChild + '" />');
+
+                        _navLinks = _navLinks.add(categoryLink);
+
+                        categoryItem
+                            .append(categoryLink, navCategories[category])
+                            .appendTo(_nav);
                     }
+
+                    navCategories[category].append(navLink);
+                } else {
+                    _nav.append(navLink);
                 }
+
+                navLink.wrap('<li class="' + classes.navItem + '">');
+
             });
 
-            for ( category in navCategories ) {
-                navList[category] = '<li class="' + classes.navItem + ' ' + classes.navCategory + '"><a href="#" class="' + classes.navLink + ' ' +  classes.navCategoryLink + '" data-flip-category="'+category+'">'+category+'</a><ul class="' + classes.navChild + '">' + navList[category] + '</ul></li>';
-            }
-
-            navDisplay = '<ul class="' + classes.nav + '" role="navigation">';
-            for ( navIndex in navList ) { navDisplay += navList[navIndex]; }
-            navDisplay += '</ul>';
-
-            _nav = $(navDisplay);
-
-            if ( settings.nav.toLowerCase() === 'after' ) { self.append(_nav); }
-            else { self.prepend(_nav); }
-
-            _navItems = _nav.find('.' + classes.navItem);
-
-            _navLinks = _nav.find('a').on('click',function(e){
-                var target;
-                if ( $(this).hasClass(classes.navCategoryLink) ) {
-                    target = _items.filter('[data-flip-category="' + $(this).data('flip-category') + '"]').first();
-                } else {
-                    target = $(this.hash);
-                }
-
-                if ( target.length ) {
-                    jump(target);
+            _nav.on('click','a',function(e){
+                var index = $(this).data('index');
+                if ( index >= 0 ) {
+                    jump( index );
                     e.preventDefault();
                 }
             });
+
+            if ( settings.nav === 'after' ) { self.append(_nav); }
+            else { self.prepend(_nav); }
+
+            _navItems = _nav.find('.' + classes.navItem);
         }
 
         function updateNav() {
             if ( settings.nav ) {
 
+                var category = _currentItem.data('flip-category');
+
                 _navItems.removeClass(classes.navCurrent);
 
                 _navLinks
-                    .removeClass(classes.navCurrent)
-                    .filter('[href="#' + _currentItem.attr('id') + '"], [data-flip-category="' + _currentItem.data('flip-category') + '"]')
+                    .filter(function() {
+                        return ( $(this).data('index') === _currentIndex || $(this).data('category') === category );
+                    })
                         .parent()
                         .addClass(classes.navCurrent);
 
