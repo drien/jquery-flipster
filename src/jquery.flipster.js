@@ -60,6 +60,10 @@ $.fn.flipster = function(options) {
         // ['center'|number]
         // Zero based index of the starting item, or use 'center' to start in the middle
 
+        fadeIn: 400,
+        // [milliseconds]
+        // Speed of the fade in animation after items have been setup
+
         loop: true,
         // [true|false]
         // Loop around when the start or end is reached.
@@ -407,7 +411,7 @@ $.fn.flipster = function(options) {
             self.hide()
                 .css('visibility','')
                 .addClass(classes.active)
-                .fadeIn(400);
+                .fadeIn(settings.fadeIn);
         }
 
         function index() {
