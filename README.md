@@ -4,10 +4,10 @@ jQuery.Flipster
 
 Flipster is a CSS3 3D transform-based jQuery plugin built to replicate the familiar 'cover flow' effect, but also supports a variety of styles. Not only is it gorgeous to look at, Flipster is also:
 
-- **Responsive:** From desktop to mobile, Flipster automatically centers and scales to fit the area provided.
-- **Lightweight:** Javascript and CSS are only 5kb gzipped (13kb uncompressed) combined. Only dependency is jQuery.
-- **Touch, Scrollwheel, Trackpad and Keyboard Friendly:** swipe on touch devices, scroll via trackpad or mousewheel, and use your arrow keys to fly through items!
-- **Flexible:** Flip an image gallery or any HTML content. Add 
+- **Responsive**: From desktop to mobile, Flipster automatically centers and scales to fit the area provided.
+- **Lightweight**: Javascript and CSS are only 5kb gzipped (13kb uncompressed) combined. Only dependency is jQuery.
+- **Touch/Scrollwheel/Trackpad/Keyboard Friendly** Swipe on touch devices, scroll via trackpad or mousewheel, and use your arrow keys to fly through items!
+- **Flexible:** Flip an image gallery or any HTML content. Links and dynamic content work great!
 - **Customizable:** Three built in styles (coverflow, carousel and flat) and plenty of options to configure Flipster the way you want.
 
 Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
@@ -22,14 +22,14 @@ Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 Basic Usage
 ---------------
 
-- Include Flipster's CSS, typically in the `<head>`:
-````html
+**Step 1**: Include Flipster's CSS, typically in the `<head>`:
+```html
 <link rel="stylesheet" href="css/flipster.min.css">
-````
-***Tip:** Use the un-minified `flipster.css` or the LESS files in the `src/less` folder to make your own Flipster styles!*
+```
+*Tip: Use the un-minified `flipster.css` or the LESS files in the `src/less` folder to make your own Flipster styles!*
 
-- Set up your content:
-````html
+**Step 2**: Set up your content:
+```html
 <div class="my-flipster">
   <ul>
     <li><img src="" /></li>
@@ -37,27 +37,27 @@ Basic Usage
     ...
   </ul>
 </div>
-````
+```
 
-***Tip:** Set the `itemContainer` and `itemSelector` options to fit your markup. Flipster only requires an outer container and inner container; you aren't restricted to `<div>`, `<ul>`, and `<li>`s. *
+*Tip: Set the `itemContainer` and `itemSelector` options to fit your markup. Flipster only requires an outer container and inner container; you aren't restricted to `<div>`, `<ul>`, and `<li>`s. *
 
-- Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag) and initialize Flipster on your element:
-````html
+**Step 3**: Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag) and initialize Flipster on your element:
+```html
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.flipster.js"></script>
 <script>
     $('.my-flipster').flipster();
 </script>
-````
+```
 
-- Start flippin'!
+**Step 4**: Start flippin'!
 
 
 Options
 ---------------
 
-Set your options when first initializing Flipster. Default values and descriptions are shown below.
-````javascript  
+Configure your options when first initializing Flipster. Default values and descriptions are shown below.
+```javascript  
 $('.my-flipster').flipster({
     itemContainer: 'ul',
     // [string|object]
@@ -130,14 +130,14 @@ $('.my-flipster').flipster({
     // Callback function when items are switched
     // Arguments received: [currentItem, previousItem]
 });
-````
+```
 
 Methods
 ---------------
 
 Once an element has been initialized with Flipster, you can call methods to control it:
 
-````javascript
+```javascript
 var myFlipster = $('.my-flipster').flipster(); // It's best to store the element as a variable for easy reference.
 
 myFlipster.flipster('next'); // Next item
@@ -148,7 +148,7 @@ myFlipster.flipster('play'); // Resume autoplay
 myFlipster.flipster('play', 5000); // Set autoplay duration
 myFlipster.flipster('pause'); // Pause the autoplay
 myFlipster.flipster('index'); // If items are added or removed, you can tell Flipster to reindex 
-````
+```
 
 Navigation
 ---------------
@@ -157,7 +157,7 @@ Set `nav: true` in the options and Flipster can build an unordered list of links
 
 The navigation list will use each item's `data-flip-title` attribute as the text. If an item does not have a `data-flip-title`, Flipster will try to grab the `title` attribute, or will default to the item's index.
 
-````html
+```html
 <div class="my-flipster">
     <ul>
         <li data-flip-title="Item 1 Title">...</li>
@@ -165,7 +165,7 @@ The navigation list will use each item's `data-flip-title` attribute as the text
         ...
     </ul>
 </div>
-````
+```
 
 ***Tip:** Flipster 
 
@@ -173,7 +173,7 @@ The navigation list will use each item's `data-flip-title` attribute as the text
 
 Include `data-flip-category` attributes on your items, and the navigation list will group items into categories, allowing for basic filtering and quicker navigation.
 
-````html
+```html
 <div class="my-flipster">
     <ul>
         <li data-flip-title="Item 1 Title" data-flip-category="Category 1">...</li>
@@ -183,7 +183,7 @@ Include `data-flip-category` attributes on your items, and the navigation list w
         <li data-flip-title="Item 5 Title">...</li>
     </ul>
 </div>
-````
+```
 
 
 Contributing
@@ -192,22 +192,19 @@ If you run into a problem or have an idea, [make an issue](https://github.com/dr
 
 See room for improvement? Don't be shy! Fork this repo and I'll be happy to merge pull requests provided they keep Flipster lightweight, simple, and free of dependencies beyond jQuery. Make sure that you run [`grunt`](http://gruntjs.com) to generate minified files for distribution before making a pull request!
 
-## Contributors
-- 
-Special thanks to (@shshaw)[http://twitter.com/shshaw]</a> for major additions leading to version 1.0!
+
+*Special thanks to (@shshaw)[http://twitter.com/shshaw]</a> for major additions leading to version 1.0!*
 
 
 Version History
 ---------------
 - 1.0.0 - May 2015
     - Massive rewrite for performance optimization and simplification
+    - *Some option names have changed*; be sure to check the documentation to update your code
     - Better scrollwheel, keyboard and touch events
     - [BEM syntax](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/) for all Flipster classes
     - Added `autoplay` option to automatically advance through items; `pauseOnHover` option will prevent items from switching automatically while hovered
     - Added `fadeIn` option for controlling duration of fade-in animation after Flipster has been setup
-    - 
-    - Option names have changed; be sure to check the documentation to update your code
-    - ...
     
 - 0.3.4 - July 23 2014
     - Some additional options available
