@@ -4,16 +4,15 @@ jQuery.Flipster
 
 Flipster is a CSS3 3D transform-based jQuery plugin built to replicate the familiar 'cover flow' effect, but also supports a variety of styles. Not only is it gorgeous to look at, Flipster is also:
 
-- **Responsive** Automatically centers and scales to fit the area provided.
-- **Flexible** Flip an image gallery or any HTML content.
-- **Touch Friendly** Swipe between items on touch devices without interrupting scroll.
-- **Keyboard Friendly** Go ahead, use your arrow keys. I dare you.
-- **Lightweight** Javascript and CSS are only 5kb gzipped (13kb uncompressed) combined. Only dependency is jQuery.
-- **Customizable** Three built in styles (coverflow, carousel and flat) and plenty of options to configure Flipster the way you want
+- **Responsive:** From desktop to mobile, Flipster automatically centers and scales to fit the area provided.
+- **Lightweight:** Javascript and CSS are only 5kb gzipped (13kb uncompressed) combined. Only dependency is jQuery.
+- **Touch, Scrollwheel, Trackpad and Keyboard Friendly:** swipe on touch devices, scroll via trackpad or mousewheel, and use your arrow keys to fly through items!
+- **Flexible:** Flip an image gallery or any HTML content. Add 
+- **Customizable:** Three built in styles (coverflow, carousel and flat) and plenty of options to configure Flipster the way you want.
 
 Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 
-#Browser Support
+## Browser Support
 - [x] Chrome (latest)
 - [x] Safari & iOS Safari (latest)
 - [x] Firefox (latest)
@@ -23,13 +22,13 @@ Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 Basic Usage
 ---------------
 
-1. Include Flipster's CSS, typically in the `<head>`:
+- Include Flipster's CSS, typically in the `<head>`:
 ````html
 <link rel="stylesheet" href="css/flipster.min.css">
 ````
-*Tip: Use the un-minified `flipster.css` or the LESS files in the `src/less` folder to make your own Flipster styles!*
+***Tip:** Use the un-minified `flipster.css` or the LESS files in the `src/less` folder to make your own Flipster styles!*
 
-2. Set up your content:
+- Set up your content:
 ````html
 <div class="my-flipster">
   <ul>
@@ -40,9 +39,9 @@ Basic Usage
 </div>
 ````
 
-*Tip: Set the `itemContainer` and `itemSelector` options to fit your markup. Flipster only requires an outer container and inner container; you aren't restricted to `<div>`, `<ul>`, and `<li>`s. *
+***Tip:** Set the `itemContainer` and `itemSelector` options to fit your markup. Flipster only requires an outer container and inner container; you aren't restricted to `<div>`, `<ul>`, and `<li>`s. *
 
-3. Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag) and initialize Flipster on your element:
+- Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag) and initialize Flipster on your element:
 ````html
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.flipster.js"></script>
@@ -51,7 +50,7 @@ Basic Usage
 </script>
 ````
 
-4. Start flippin'!
+- Start flippin'!
 
 
 Options
@@ -146,7 +145,8 @@ myFlipster.flipster('prev'); // Previous item
 myFlipster.flipster('jump', 0); // Jump to a specific index
 myFlipster.flipster('jump', $('.my-item')); // Jump to a specific item
 myFlipster.flipster('play'); // Resume autoplay
-myFlipster.flipster('pause'); // Pause the autoplay.
+myFlipster.flipster('play', 5000); // Set autoplay duration
+myFlipster.flipster('pause'); // Pause the autoplay
 myFlipster.flipster('index'); // If items are added or removed, you can tell Flipster to reindex 
 ````
 
@@ -167,7 +167,9 @@ The navigation list will use each item's `data-flip-title` attribute as the text
 </div>
 ````
 
-### Categories ###
+***Tip:** Flipster 
+
+## Categories
 
 Include `data-flip-category` attributes on your items, and the navigation list will group items into categories, allowing for basic filtering and quicker navigation.
 
@@ -186,13 +188,13 @@ Include `data-flip-category` attributes on your items, and the navigation list w
 
 Contributing
 ---------------
-If you run into a problem or have an idea, feel free to <a href="https://github.com/drien/jquery-flipster/issues">make an issue</a> on the Github project and I'll get on it when I can!
+If you run into a problem or have an idea, [make an issue](https://github.com/drien/jquery-flipster/issues) on Github.
 
-See room for improvement? Don't be shy! Fork this repo and I'll be happy to merge pull requests provided they keep Flipster lightweight, simple to set up and free of dependencies beyond jQuery.
+See room for improvement? Don't be shy! Fork this repo and I'll be happy to merge pull requests provided they keep Flipster lightweight, simple, and free of dependencies beyond jQuery. Make sure that you run [`grunt`](http://gruntjs.com) to generate minified files for distribution before making a pull request!
 
-Please run `grunt` to generate minified files for distribution before making a pull request!
-
-Special thanks to <a href="http://twitter.com/shshaw">@shshaw</a> for major additions leading to version 1.0!
+## Contributors
+- 
+Special thanks to (@shshaw)[http://twitter.com/shshaw]</a> for major additions leading to version 1.0!
 
 
 Version History
