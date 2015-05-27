@@ -84,15 +84,15 @@ $.fn.flipster = function(options) {
         // [number]
         // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
 
-        enableKeyboard: true,
+        keyboard: true,
         // [true|false]
         // Enable left/right arrow navigation
 
-        enableWheel: true,
+        scrollwheel: true,
         // [true|false]
         // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
 
-        enableTouch: true,
+        touch: true,
         // [true|false]
         // Enable swipe navigation for touch devices
 
@@ -446,7 +446,7 @@ $.fn.flipster = function(options) {
 
 
         function keyboardEvents(elem) {
-            if ( settings.enableKeyboard ) {
+            if ( settings.keyboard ) {
                 elem[0].tabIndex = 0;
                 elem.on('keydown.flipster', throttle(function(e){
                     var code = e.which;
@@ -462,7 +462,7 @@ $.fn.flipster = function(options) {
         }
 
         function wheelEvents(elem) {
-            if ( settings.enableWheel ) {
+            if ( settings.scrollwheel ) {
                 var _wheelInside = false;
                 var _actionThrottle = 0;
                 var _throttleTimeout = 0;
@@ -515,7 +515,7 @@ $.fn.flipster = function(options) {
         }
 
         function touchEvents(elem) {
-            if ( settings.enableTouch ) {
+            if ( settings.touch ) {
                 var _startDragY = false;
                 var _touchJump = throttle(jump,300);
                 var x, y, offsetY, offsetX;

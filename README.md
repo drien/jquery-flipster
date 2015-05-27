@@ -22,13 +22,14 @@ Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 
 Basic Usage
 ---------------
-Include Flipster's CSS, typically in the `<head>`:
+
+1. Include Flipster's CSS, typically in the `<head>`:
 ````html
 <link rel="stylesheet" href="css/flipster.min.css">
 ````
-*Tip: Use the un-minified `flipster.css` or the LESS files in the `src` folder to make your own Flipster styles!*
+*Tip: Use the un-minified `flipster.css` or the LESS files in the `src/less` folder to make your own Flipster styles!*
 
-Set up your content:
+2. Set up your content:
 ````html
 <div class="my-flipster">
   <ul>
@@ -39,9 +40,9 @@ Set up your content:
 </div>
 ````
 
-*Tip: Set the `itemContainer` and `itemSelector` options to fit your markup. You don't need to use `<div>`, `<ul>` and `<li>`s like the markup above, but Flipster does require an outer container and inner container.*
+*Tip: Set the `itemContainer` and `itemSelector` options to fit your markup. Flipster only requires an outer container and inner container; you aren't restricted to `<div>`, `<ul>`, and `<li>`s. *
 
-Include Flipster's javascript after jQuery (ideally at the bottom of the page before the `</body>` tag and initialize Flipster on your element:
+3. Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag) and initialize Flipster on your element:
 ````html
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.flipster.js"></script>
@@ -50,7 +51,7 @@ Include Flipster's javascript after jQuery (ideally at the bottom of the page be
 </script>
 ````
 
-That's it. Now start flippin'!
+4. Start flippin'!
 
 
 Options
@@ -96,15 +97,15 @@ $('.my-flipster').flipster({
     // [number]
     // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
 
-    enableKeyboard: true,
+    keyboard: true,
     // [true|false]
     // Enable left/right arrow navigation
 
-    enableWheel: true,
+    scrollwheel: true,
     // [true|false]
     // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
 
-    enableTouch: true,
+    touch: true,
     // [true|false]
     // Enable swipe navigation for touch devices
 
@@ -144,7 +145,7 @@ myFlipster.flipster('next'); // Next item
 myFlipster.flipster('prev'); // Previous item
 myFlipster.flipster('jump', 0); // Jump to a specific index
 myFlipster.flipster('jump', $('.my-item')); // Jump to a specific item
-myFlipster.flipster('play'); // Resume autop
+myFlipster.flipster('play'); // Resume autoplay
 myFlipster.flipster('pause'); // Pause the autoplay.
 myFlipster.flipster('index'); // If items are added or removed, you can tell Flipster to reindex 
 ````
@@ -198,7 +199,12 @@ Version History
 ---------------
 - 1.0.0 - May 2015
     - Massive rewrite for performance optimization and simplification
-    - Added `autoplay` option to automatically rotate through items
+    - Better scrollwheel, keyboard and touch events
+    - [BEM syntax](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/) for all Flipster classes
+    - Added `autoplay` option to automatically advance through items; `pauseOnHover` option will prevent items from switching automatically while hovered
+    - Added `fadeIn` option for controlling duration of fade-in animation after Flipster has been setup
+    - 
+    - Option names have changed; be sure to check the documentation to update your code
     - ...
     
 - 0.3.4 - July 23 2014
