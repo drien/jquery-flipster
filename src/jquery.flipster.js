@@ -1,6 +1,7 @@
 /* jshint browser: true, jquery: true, devel: true */
 /* global window, jQuery */
 (function($, window, undefined) {
+'use strict';
 
     function throttle(func, delay) {
       var timer = null;
@@ -17,24 +18,31 @@
       };
     }
 
-    function checkStyleSupport( prop ) {
-        var div = document.createElement('div'),
-            style = div.style,
-            ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
-            prefixes = ["webkit", "moz", "ms", "o"],
-            props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' ');
+    // Check for browser CSS support and cache the result for subsequent calls.
+    var checkStyleSupport = (function() {
+        var support;
+        return function(prop) {
+            if ( support !== undefined ) { return support; }
 
-        for ( var i in props ) {
-          if ( props[i] in style ) { return props[i]; }
+            var div = document.createElement('div'),
+                style = div.style,
+                ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
+                prefixes = ["webkit", "moz", "ms", "o"],
+                props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' ');
+
+            for ( var i in props ) {
+                if ( props[i] in style ) {
+                    support = props[i];
+                    return props[i];
+                }
+            }
+
+            support = false;
+            return false;
         }
-        return false;
-    }
-
-    var transformSupport = checkStyleSupport('transform');
+    }());
 
 $.fn.flipster = function(options) {
-    'use strict';
-
     var isMethodCall = (typeof options === 'string' ? true : false);
 
     if ( isMethodCall ) {
@@ -123,6 +131,8 @@ $.fn.flipster = function(options) {
 
     var $window = $(window);
 
+    var transformSupport = checkStyleSupport('transform');
+
     var classes = {
         main: 'flipster',
         active: 'flipster--active',
@@ -157,11 +167,12 @@ $.fn.flipster = function(options) {
         var _containerWidth;
         var _items;
         var _itemOffsets = [];
+        var _currentIndex = 0;
+        var _currentItem;
+
         var _nav;
         var _navItems;
         var _navLinks;
-        var _currentIndex = 0;
-        var _currentItem;
 
         var _playing = false;
         var _startDrag = false;
