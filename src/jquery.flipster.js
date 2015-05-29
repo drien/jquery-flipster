@@ -42,6 +42,18 @@
         }
     }());
 
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var svgSupport = (function() {
+        var support;
+        return function() {
+            if ( support !== undefined ) { return support; }
+            var div = document.createElement('div');
+            div.innerHTML = '<svg/>';
+            support = ( div.firstChild && div.firstChild.namespaceURI == svgNS );
+            return support;
+        }
+    }());
+
 $.fn.flipster = function(options) {
     var isMethodCall = (typeof options === 'string' ? true : false);
 
@@ -109,15 +121,16 @@ $.fn.flipster = function(options) {
         // If not false, Flipster will build an unordered list of the items
         // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
 
-        navButtons: false,
-        // [true|false]
-        // If true, Flipster will insert Previous / Next buttons
+        buttons: false,
+        // [true|false|'custom']
+        // If true, Flipster will insert Previous / Next buttons with SVG arrows
+        // If 'custom', Flipster will not insert the arrows and will instead use the values of `buttonPrev` and `buttonNext`
 
-        prevText: 'Previous',
+        buttonPrev: 'Previous',
         // [text|html]
         // Changes the text for the Previous button
 
-        nextText: 'Next',
+        buttonNext: 'Next',
         // [text|html]
         // Changes the text for the Next button
 
@@ -146,8 +159,9 @@ $.fn.flipster = function(options) {
         navCategory: 'flipster__nav__item--category',
         navCategoryLink: 'flipster__nav__link--category',
 
-        navPrev: 'flipto-prev',
-        navNext: 'flipto-next',
+        button: 'flipster__button',
+        buttonPrev: 'flipster__button--prev',
+        buttonNext: 'flipster__button--next',
 
         item: 'flipster__item',
         itemCurrent: 'flipster__item--current',
@@ -177,23 +191,44 @@ $.fn.flipster = function(options) {
         var _playing = false;
         var _startDrag = false;
 
-        function buildNavButtons() {
-            if ( settings.navButtons && _items.length > 1 ) {
-                self.find('.' + classes.navPrev + ', .' + classes.navNext).remove();
+        function buildButtonContent(dir) {
+            var text = ( dir === 'next' ? settings.buttonNext : settings.buttonPrev );
 
-                $('<button class="' + classes.navPrev + '" role="button">'+settings.prevText+'</button>')
-                    .on('click', function(e) {
-                        jump('prev');
-                        e.preventDefault();
-                    })
-                    .appendTo(self);
+            if ( settings.buttons === 'custom' || !svgSupport ) { return text; }
 
-                $('<button class="' + classes.navNext + '" role="button">'+settings.nextText+'</button>')
-                    .on('click', function(e) {
-                        jump('next');
-                        e.preventDefault();
-                    })
-                    .appendTo(self);
+            var svg = document.createElementNS( svgNS, 'svg');
+            var arrow = document.createElementNS( svgNS, 'polyline');
+            var title = document.createElementNS( svgNS, 'title');
+
+            svg.setAttribute('viewBox','0 0 13 20');
+            svg.setAttribute('aria-labelledby','title');
+            title.textContent = text;
+            arrow.setAttribute('points','10,3 3,10 10,17');
+
+            if ( dir === 'next' ) { arrow.setAttribute('transform','rotate(180 7,10)'); }
+
+            svg.appendChild(title);
+            svg.appendChild(arrow);
+
+            return svg;
+        }
+
+        function buildButton(dir){
+          dir = dir || 'next';
+
+          return $('<button class="' + classes.button + ' ' + ( dir === 'next' ? classes.buttonNext : classes.buttonPrev ) + '" role="button" />')
+                  .html( buildButtonContent(dir) )
+                  .on('click', function(e) {
+                      jump(dir);
+                      e.preventDefault();
+                  });
+
+        }
+
+        function buildButtons() {
+            if ( settings.buttons && _items.length > 1 ) {
+                self.find('.' + classes.button).remove();
+                self.append( buildButton('prev'), buildButton('next') );
             }
         }
 
@@ -447,7 +482,7 @@ $.fn.flipster = function(options) {
                 });
 
             // Insert navigation if enabled.
-            buildNavButtons();
+            buildButtons();
             buildNav();
 
             if ( _currentIndex >= 0 ) { jump(_currentIndex); }
