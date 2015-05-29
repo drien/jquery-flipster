@@ -439,7 +439,7 @@ $.fn.flipster = function(options) {
                     if ( !item.children('.' + classes.itemContent).length ) { item.wrapInner('<div class="' + classes.itemContent + '" />'); }
                 })
                 // Navigate directly to an item by clicking
-                .on('click touchend', function(e) {
+                .on('click.flipster touchend.flipster', function(e) {
                     if ( !_startDrag ) {
                         if ( !$(this).hasClass(classes.itemCurrent) ) { e.preventDefault(); }
                         jump(this);
@@ -615,8 +615,8 @@ $.fn.flipster = function(options) {
 
             if ( settings.pauseOnHover ) {
               _container
-                  .on('mouseenter', pause)
-                  .on('mouseleave', function(){
+                  .on('mouseenter.flipster', pause)
+                  .on('mouseleave.flipster', function(){
                       if ( _playing === -1 ) { play(); }
                   });
             }
