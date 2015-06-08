@@ -83,7 +83,7 @@ $.fn.flipster = function(options) {
         // [milliseconds]
         // Speed of the fade in animation after items have been setup
 
-        loop: true,
+        loop: false,
         // [true|false]
         // Loop around when the start or end is reached
 
