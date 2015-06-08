@@ -104,6 +104,10 @@ $.fn.flipster = function(options) {
         // [number]
         // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
 
+        click: true,
+        // [true|false]
+        // Clicking an item switches to that item
+
         keyboard: true,
         // [true|false]
         // Enable left/right arrow navigation
@@ -458,14 +462,17 @@ $.fn.flipster = function(options) {
                 .each(function(){
                     var item = $(this);
                     if ( !item.children('.' + classes.itemContent).length ) { item.wrapInner('<div class="' + classes.itemContent + '" />'); }
-                })
-                // Navigate directly to an item by clicking
-                .on('click.flipster touchend.flipster', function(e) {
+                });
+
+            // Navigate directly to an item by clicking
+            if ( settings.click ) {
+                _items.on('click.flipster touchend.flipster', function(e) {
                     if ( !_startDrag ) {
                         if ( !$(this).hasClass(classes.itemCurrent) ) { e.preventDefault(); }
                         jump(this);
                     }
                 });
+            }
 
             // Insert navigation if enabled.
             buildButtons();
@@ -597,7 +604,8 @@ $.fn.flipster = function(options) {
             self.addClass([
                     classes.main,
                     ( transformSupport ? 'flipster--transform' : ' flipster--no-transform' ),
-                    ( settings.style ? 'flipster--'+settings.style : '' )
+                    ( settings.style ? 'flipster--'+settings.style : '' ),
+                    ( settings.click ? 'flipster--click' : '' )
                 ].join(' '));
 
             // Set the starting item
