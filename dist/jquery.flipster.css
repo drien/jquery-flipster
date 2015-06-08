@@ -1,4 +1,4 @@
-/*! jquery.flipster, built 2015-05-20 */
+/*! jQuery.Flipster, v1.0.0 (built 2015-06-08) */
 /* @group Flipster Essential Styles */
 .flipster {
   display: block;
@@ -29,8 +29,8 @@
   word-spacing: normal;
   vertical-align: bottom;
 }
-.flipster__item--past,
-.flipster__item--future {
+.flipster--click .flipster__item--past,
+.flipster--click .flipster__item--future {
   cursor: pointer;
 }
 .flipster__item img {
@@ -39,31 +39,35 @@
 /* @end */
 
 /* @group Flipster Previous & Next Buttons */
-.flipto-prev,
-.flipto-next {
+.flipster__button {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  height: 1em;
-  line-height: 1;
-  z-index: 999;
+  top: 50%;
   display: block;
-  padding: 10px;
-  background-color: #232221;
-  color: #FFF;
-  transition: background-color 300ms ease;
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  z-index: 999;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 500ms ease;
 }
-.flipto-prev:hover,
-.flipto-next:hover {
-  background-color: #FFF;
-  color: #232221;
+.flipster__button svg {
+  width: 3em;
+  stroke: currentColor;
+  fill: transparent;
+  stroke-width: 3;
+  stroke-linecap: round;
 }
-.flipto-prev {
-  left: 0;
+.flipster__button:hover,
+.flipster__button:focus {
+  opacity: 1;
 }
-.flipto-next {
-  right: 0;
+.flipster__button--prev {
+  left: 1em;
+}
+.flipster__button--next {
+  right: 1em;
 }
 /* @end */
 
@@ -147,7 +151,7 @@
 .flipster--carousel .flipster__container,
 .flipster--carousel .flipster__item,
 .flipster--carousel .flipster__item__content {
-  transition: all 400ms ease-in-out;
+  transition: all 350ms ease-in-out;
   transition-timing-function: cubic-bezier(0.56, 0.12, 0.12, 0.98);
 }
 .flipster--carousel .flipster__item {
@@ -214,7 +218,7 @@
 .flipster--coverflow .flipster__container,
 .flipster--coverflow .flipster__item,
 .flipster--coverflow .flipster__item__content {
-  transition: all 400ms ease-in-out;
+  transition: all 350ms ease-in-out;
   transition-timing-function: cubic-bezier(0.56, 0.12, 0.12, 0.98);
 }
 .flipster--coverflow .flipster__item {
@@ -232,11 +236,11 @@
   display: block;
 }
 .flipster--coverflow .flipster__item--past .flipster__item__content {
-  transform-origin: 0% 100%;
+  transform-origin: 0% 50%;
   transform: scale(0.75) rotateY(55deg);
 }
 .flipster--coverflow .flipster__item--future .flipster__item__content {
-  transform-origin: 100% 100%;
+  transform-origin: 100% 50%;
   transform: scale(0.75) rotateY(-55deg);
 }
 .flipster--coverflow .flip-current .flipster__item__content {
@@ -259,5 +263,63 @@
 }
 .flipster--flat .flipster__item--future .flipster__item__content {
   transform: scale(0.75);
+}
+/* @end */
+
+/* @group Flipster Wheel Theme */
+.flipster--wheel .flipster__container,
+.flipster--wheel .flipster__item__content {
+  transition: all 400ms ease-in-out;
+  transition-timing-function: cubic-bezier(0.56, 0.12, 0.12, 0.98);
+}
+.flipster--wheel .flipster__container {
+  padding-bottom: 20%;
+}
+.flipster--wheel .flipster__item__content {
+  transform-origin: 50% 100%;
+}
+.flipster--wheel .flipster__item--past .flipster__item__content {
+  transform-origin: 100% 100%;
+}
+.flipster--wheel .flipster__item--future .flipster__item__content {
+  transform-origin: 0% 100%;
+}
+.flipster--wheel .flipster__item__content img:only-child {
+  display: block;
+}
+.flipster--wheel .flipster__item--past .flipster__item__content {
+  opacity: 0;
+  transform: rotateZ(-80deg) translate(-170%, 110%);
+}
+.flipster--wheel .flipster__item--future .flipster__item__content {
+  opacity: 0;
+  transform: rotateZ(80deg) translate(170%, 110%);
+}
+.flipster--wheel .flipster__item--past-3 .flipster__item__content {
+  opacity: 1;
+  transform: rotateZ(-60deg) translate(-75%, 75%);
+}
+.flipster--wheel .flipster__item--future-3 .flipster__item__content {
+  opacity: 1;
+  transform: rotateZ(60deg) translate(75%, 75%);
+}
+.flipster--wheel .flipster__item--past-2 .flipster__item__content {
+  opacity: 1;
+  transform: rotateZ(-40deg) translate(-20%, 30%);
+}
+.flipster--wheel .flipster__item--future-2 .flipster__item__content {
+  opacity: 1;
+  transform: rotateZ(40deg) translate(20%, 30%);
+}
+.flipster--wheel .flipster__item--past-1 .flipster__item__content {
+  opacity: 1;
+  transform: rotateZ(-20deg);
+}
+.flipster--wheel .flipster__item--future-1 .flipster__item__content {
+  opacity: 1;
+  transform: rotateZ(20deg);
+}
+.flipster--wheel .flip-current .flipster__item__content {
+  transform: rotateX(0deg);
 }
 /* @end */
