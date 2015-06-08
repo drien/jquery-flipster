@@ -196,21 +196,7 @@ $.fn.flipster = function(options) {
 
             if ( settings.buttons === 'custom' || !svgSupport ) { return text; }
 
-            var svg = document.createElementNS( svgNS, 'svg');
-            var arrow = document.createElementNS( svgNS, 'polyline');
-            var title = document.createElementNS( svgNS, 'title');
-
-            svg.setAttribute('viewBox','0 0 13 20');
-            svg.setAttribute('aria-labelledby','title');
-            title.textContent = text;
-            arrow.setAttribute('points','10,3 3,10 10,17');
-
-            if ( dir === 'next' ) { arrow.setAttribute('transform','rotate(180 7,10)'); }
-
-            svg.appendChild(title);
-            svg.appendChild(arrow);
-
-            return svg;
+            return '<svg viewBox="0 0 13 20" xmlns="' + svgNS + '" aria-labelledby="title"><title>'+text+'</title><polyline points="10,3 3,10 10,17"' + (dir === 'next' ? ' transform="rotate(180 7,10)"' : '' ) + '/></svg>';
         }
 
         function buildButton(dir){
