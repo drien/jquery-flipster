@@ -69,17 +69,51 @@ h2 { font-size: 22px; }
   padding: 1em;
 }
 
+.main-header__nav {
+  border-top: solid 1px #ccc;
+  margin: 1em -1em;
+}
+
+.main-header__nav a {
+  display: block;
+  padding: 0.5em 1em;
+  border-bottom: solid 1px #ddd;
+}
+
+.main-header__nav a:hover,
+.main-header__nav a:focus {
+  color: #eee;
+  background: #da0d25;
+}
+
 .intro {
-  padding: 2em;
+  padding: 4em 2em;
 }
 
 .demo {
-  padding: 4em 0;
+  padding: 6em 2em;
 }
 
 .demo h2 {
   text-align: center;
-  font-size: 18px;
+  font-size: 22px;
+  margin-bottom: 1em;
+}
+
+.demo .flipster {
+  margin: 0 -2em;
+}
+
+.code {
+  display: block;
+  background: #eee;
+  padding: 1em;
+  border-radius: 1em;
+  margin: 2em auto;
+  max-width: 30em;
+  font-size: 0.8em;
+  width: fit-content;
+  white-space: pre-wrap;
 }
 
 .button {

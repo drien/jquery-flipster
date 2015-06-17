@@ -8,7 +8,7 @@ Flipster is a CSS3 3D transform-based jQuery plugin built to replicate the famil
 - **Lightweight**: Javascript and CSS are only 5kb gzipped (13kb uncompressed) combined. Only dependency is jQuery.
 - **Touch/Scrollwheel/Trackpad/Keyboard Friendly** Swipe on touch devices, scroll via trackpad or mousewheel, and use your arrow keys to fly through items!
 - **Flexible:** Flip an image gallery or any HTML content. Links and dynamic content work great!
-- **Customizable:** Three built in styles (coverflow, carousel and flat) and plenty of options to configure Flipster the way you want.
+- **Customizable:** Four built in styles (coverflow, carousel, wheel and flat) with plenty of options to configure Flipster the way you want.
 
 Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 
@@ -16,7 +16,8 @@ Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 - [x] Chrome (latest)
 - [x] Safari & iOS Safari (latest)
 - [x] Firefox (latest)
-- [x] IE 10
+- [x] IE 10+ full support
+- [x] IE 8-9 limited support
 
 
 Basic Usage
