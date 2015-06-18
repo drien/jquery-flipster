@@ -39,7 +39,7 @@
 
             support = false;
             return false;
-        }
+        };
     }());
 
     var svgNS = 'http://www.w3.org/2000/svg';
@@ -49,9 +49,9 @@
             if ( support !== undefined ) { return support; }
             var div = document.createElement('div');
             div.innerHTML = '<svg/>';
-            support = ( div.firstChild && div.firstChild.namespaceURI == svgNS );
+            support = ( div.firstChild && div.firstChild.namespaceURI === svgNS );
             return support;
-        }
+        };
     }());
 
 $.fn.flipster = function(options) {
@@ -174,7 +174,8 @@ $.fn.flipster = function(options) {
         itemContent: 'flipster__item__content'
     };
 
-    var classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)','g');
+    var classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)','g'),
+        whiteSpaceRemover = new RegExp('\\s\\s+','g');
 
     return this.each(function() {
 
@@ -331,7 +332,7 @@ $.fn.flipster = function(options) {
                 var item = $(this);
 
                 item.attr('class',function(i, c){
-                    return c && c.replace(classRemover, '').trim();
+                    return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ');
                 });
 
                 var width = item.outerWidth();
@@ -376,7 +377,7 @@ $.fn.flipster = function(options) {
 
                 item.css('z-index', zIndex )
                   .attr('class',function(i, c){
-                    return c && c.replace(classRemover, '').trim() + newClass;
+                    return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ') + newClass;
                   });
             });
 
