@@ -200,7 +200,7 @@ $.fn.flipster = function(options) {
 
             if ( settings.buttons === 'custom' || !svgSupport ) { return text; }
 
-            return '<svg viewBox="0 0 13 20" xmlns="' + svgNS + '" aria-labelledby="title"><title>'+text+'</title><polyline points="10,3 3,10 10,17"' + (dir === 'next' ? ' transform="rotate(180 7,10)"' : '' ) + '/></svg>';
+            return '<svg viewBox="0 0 13 20" xmlns="' + svgNS + '" aria-labelledby="title"><title>'+text+'</title><polyline points="10,3 3,10 10,17"' + (dir === 'next' ? ' transform="rotate(180 6.5,10)"' : '' ) + '/></svg>';
         }
 
         function buildButton(dir){
