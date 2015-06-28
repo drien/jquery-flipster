@@ -114,7 +114,8 @@ $('.my-flipster').flipster({
     // If not false, Flipster will build an unordered list of the items
     // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
 
-    navButtons: false,
+    navButtons: false, // v0.4
+    buttons: false, // v1.0
     // [true|false]
     // If true, Flipster will insert Previous / Next buttons
 
