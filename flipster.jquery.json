@@ -7,7 +7,7 @@
         "slider",
         "carousel"
     ],
-    "version": "0.3.3",
+    "version": "1.0.0",
     "author": {
         "name": "Adrien Delessert",
         "url": "http://a.drien.com",
@@ -18,6 +18,11 @@
         "name": "Adrien Delessert",
         "url": "http://a.drien.com",
         "email":"a@drien.com"
+        },
+       {
+        "name": "Stephen Shaw",
+        "url": "http://brokensquare.com",
+        "email":"stephen@brokensquare.com"
         }
     ],
     "licenses": [

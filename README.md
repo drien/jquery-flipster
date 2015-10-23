@@ -1,212 +1,215 @@
 jQuery.Flipster
 ===============
-![libscore](http://img.shields.io/badge/libscore-40-brightgreen.svg?style=flat-square)
+[![](http://api.libscore.com/badge/$.fn.flipster.svg)](http://libscore.com/#$.fn.flipster)
 
-jQuery Flipster is a CSS3 3D transform-based jQuery plugin that replicates the familiar 'cover flow' effect and now features a 'carousel' effect! It's responsive, so it will automatically center itself and scale down to fit the area provided. It likes to be playfully touched on mobile browsers. It degrades (vaguely) gracefully, falling back to being just as flat and boring as the browsers that don't support 3D transforms. Its only dependency is jQuery and it sets up in seconds. It's pretty rad.
+Flipster is a CSS3 3D transform-based jQuery plugin built to replicate the familiar 'cover flow' effect, but also supports a variety of styles. Not only is it gorgeous to look at, Flipster is also:
 
-At this point you're probably saying 'ZOMG JQUERY FLIPSTER WHERE HAVE U BEEN ALL MY LIFE???'. I would be if I were you. So your project needs some sweet, sweet coverflow loving. You've come to the right place.
-
-The slider can be operated with arrow keys, clicks, side to side scrolling or by touch on mobile devices. Wrapping the image elements in anchor tags also works to enable linking out from the current element.
+- **Responsive**: From desktop to mobile, Flipster automatically centers and scales to fit the area provided.
+- **Lightweight**: Javascript and CSS combined are only 5kb gzipped (13kb uncompressed). Only dependency is jQuery.
+- **Touch/Scrollwheel/Trackpad/Keyboard Friendly** Swipe on touch devices, scroll via trackpad or mousewheel, and use your arrow keys to fly through items!
+- **Flexible:** Flip an image gallery or any HTML content. Links and dynamic content work great!
+- **Customizable:** Four built in styles (coverflow, carousel, wheel and flat) with plenty of options to configure Flipster the way you want.
 
 Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 
-**Tested in:**
+## Browser Support
 - [x] Chrome (latest)
-- [x] Safari & Mobile Safari (latest)
-- [x] Firefox (latest) _(no mousewheel, no box reflections)_
-- [x] IE 10 _(no mousewheel, no box reflections)_
-
-**Latest Version Untested in:**
-- [ ] IE 8 & 9 _(no 3D transforms, 'compatibility mode')_
-- [ ] IE <= 7
-- [ ] Android browsers
-- [ ] Opera
+- [x] Safari & iOS Safari (latest)
+- [x] Firefox (latest)
+- [x] IE 10+ full support
+- [x] IE 8-9 limited support
 
 
 Basic Usage
 ---------------
-Include the CSS (ideally in the header)
-````html
-<link rel="stylesheet" href="css/flipster.css">
-````
 
-Set up your image list like so:
-````html
-<div class="flipster">
-	<ul>
-		<li><img src="" alt="" /></li>
-		...
-	</ul>
+**Step 1**: Include Flipster's CSS, typically in the `<head>`:
+```html
+<link rel="stylesheet" href="css/flipster.min.css">
+```
+*Tip: Use the un-minified `flipster.css` or the LESS files in the `src/less` folder to make your own Flipster styles!*
+
+**Step 2**: Set up your content:
+```html
+<div class="my-flipster">
+  <ul>
+    <li><img src="" /></li>
+    <li><p>Plain ol' <abbr>HTML</abbr>!</p></li>
+    ...
+  </ul>
 </div>
-````
+```
 
-Include the Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag
-````html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/js/jquery-1.10.2.min.js"><\/script>')</script>
+*Tip: Set the `itemContainer` and `itemSelector` options to fit your markup. Flipster only requires an outer container and inner container; you aren't restricted to `<div>`, `<ul>`, and `<li>`s. *
+
+**Step 3**: Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag) and initialize Flipster on your element:
+```html
+<script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.flipster.js"></script>
-````
+<script>
+    $('.my-flipster').flipster();
+</script>
+```
 
-Initialize the script:
-````javascript
-$(function(){ $('.flipster').flipster(); });
-````
+**Step 4**: Start flippin'!
 
 
 Options
 ---------------
-- `itemContainer` Container for the items to flipsterfy. _Default is 'ul'_
-- `itemSelector` Children of itemContainer to flipsterfy. _Default is 'li'_
-- `style` Switch between 'coverflow' or 'carousel' display styles _Default is 'coverflow'_
-- `start` Set to a number to have Flipster start centered on that item, or set to _'center'_ to start in the middle
-- `enableKeyboard` If true, the left and right arrow keys will navigate through the list. _Default is 'true'_
-- `enableMousewheel` If true, the mousewheel will scroll through the list. _Default is 'true'_
-- `enableTouch` If true, touch swipes will scroll through the list. _Default is 'true'_
-- `enableNav` If true, Flipster will insert an unordered list of the items' categories and titles to allow for direct navigation and give you a visual walk through of the items. _Default is 'false'_
-- `enableNavButtons` If true, Flipster will insert "Previous" and "Next" links to go left or right in the list. _Default is 'false'_
 
+Configure your options when first initializing Flipster. Default values and descriptions are shown below.
+```javascript  
+$('.my-flipster').flipster({
+    itemContainer: 'ul',
+    // [string|object]
+    // Selector for the container of the flippin' items.
 
-Callbacks
----------------
-- `onItemSwitch` Called whenever an item is switched
+    itemSelector: 'li',
+    // [string|object]
+    // Selector for children of `itemContainer` to flip
 
+    start: 'center',
+    // ['center'|number]
+    // Zero based index of the starting item, or use 'center' to start in the middle
 
-Advanced Usage
----------------
+    fadeIn: 400,
+    // [milliseconds]
+    // Speed of the fade in animation after items have been setup
 
-### Parameters
+    loop: false,
+    // [true|false]
+    // Loop around when the start or end is reached
 
-If you want to change options, add the parameters when initializing the script. Default values are shown below
-````javascript
-$(function(){ 
-	$('.flipster').flipster({
-		itemContainer:		'ul', // Container for the flippin' items.
-		itemSelector:		'li', // Selector for children of itemContainer to flip
-		style:				'coverflow', // Switch between 'coverflow' or 'carousel' display styles
-		start:				'center', // Starting item. Set to 0 to start at the first, 'center' to start in the middle or the index of the item you want to start with.
-		
-		enableKeyboard:		true, // Enable left/right arrow navigation
-		enableMousewheel:	true, // Enable scrollwheel navigation (up = left, down = right)
-		enableTouch:		true, // Enable swipe navigation for touch devices
-		
-		enableNav:			false, // If true, flipster will insert an unordered list of the slides
-		enableNavButtons:	false, // If true, flipster will insert Previous / Next buttons
-		
-		onItemSwitch:		function(){}, // Callback function when items are switches
-	}
+    autoplay: false,
+    // [false|milliseconds]
+    // If a positive number, Flipster will automatically advance to next item after that number of milliseconds
+
+    pauseOnHover: true,
+    // [true|false]
+    // If true, autoplay advancement will pause when Flipster is hovered
+
+    style: 'coverflow',
+    // [coverflow|carousel|flat|...]
+    // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
+    // Create your own theme in CSS and use this setting to have Flipster add the custom class
+
+    spacing: -0.6,
+    // [number]
+    // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
+
+    click: true,
+    // [true|false]
+    // Clicking an item switches to that item
+
+    keyboard: true,
+    // [true|false]
+    // Enable left/right arrow navigation
+
+    scrollwheel: true,
+    // [true|false]
+    // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
+
+    touch: true,
+    // [true|false]
+    // Enable swipe navigation for touch devices
+
+    nav: false,
+    // [true|false|'before'|'after']
+    // If not false, Flipster will build an unordered list of the items
+    // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
+
+    buttons: false,
+    // [true|false|'custom']
+    // If true, Flipster will insert Previous / Next buttons with SVG arrows
+    // If 'custom', Flipster will not insert the arrows and will instead use the values of `buttonPrev` and `buttonNext`
+
+    buttonPrev: 'Previous',
+    // [text|html]
+    // Changes the text for the Previous button
+
+    buttonNext: 'Next',
+    // [text|html]
+    // Changes the text for the Next button
+
+    onItemSwitch: false
+    // [function]
+    // Callback function when items are switched
+    // Arguments received: [currentItem, previousItem]
 });
-````
+```
 
-### Methods
-
-Once an element is initialized with the coverflow, you can call the `jump` method to move it left or right:
-
-````javascript
-$('#flipster').flipster(); //initialize the carousel
-$('#flipster').flipster('jump', 'left');
-````
-
-### Navigation ###
-
-Flipster can build an unordered list of links to the slides, which can come in handy for some implementations. Include the `id` and `title` attribute on each item and set `enableNav: true` in the Javascript parameters.
-
-An item list like:
-````html
-<div class="flipster">
-	<ul class="flip-items">
-		<li id="Item-1" title="Item 1 Title">
-			<img src="" alt="" />
-		</li>
-		<li id="Item-2" title="Item 2 Title">
-			<img src="" />
-		</li>
-		...
-  </ul>
-</div>
-````
-
-will output:
-````html
-<ul class="flipster-nav">
-<li class="flip-nav-item no-category"><a href="#Item-1" class="flip-nav-item-link">Item 1 Title</a></li>
-<li class="flip-nav-item no-category"><a href="#Item-2" class="flip-nav-item-link">Item 2 Title</a></li>...
-</ul>
-````
-in the container.
-
-#### Categories ####
-
-The navigation list can also group items into categories. Include the `data-flip-category` along with the `id` and `title` attributes with `enableNav: true` in the Javascript parameters.
-
-An item list like:
-````html
-<div class="flipster">
-	<ul class="flip-items">
-		<li id="Item-1" title="Item 1 Title" data-flip-category="Category 1">
-			<img src="" alt="" />
-		</li>
-		<li id="Item-2" title="Item 2 Title" data-flip-category="Category 1">
-			<img src="" />
-		</li>
-		<li id="Item-3" title="Item 3 Title" data-flip-category="Category 2">
-			<img src="" />
-		</li>
-		<li id="Item-4" title="Item 4 Title" data-flip-category="Category 2">
-			<img src="" />
-		</li>
-		<li id="Item-5" title="Item 5 Title">
-			<img src="" />
-		</li>
-  </ul>
-</div>
-````
-will output:
-````html
-<ul class="flipster-nav">
-	<li class="flip-nav-category">
-		<a href="#" class="flip-nav-category-link" data-flip-category="Category 1">Category 1</a>
-		<ul class="flip-nav-items">
-			<li class="flip-nav-item"><a href="#Item-1" class="flip-nav-item-link">Item 1</a></li>
-			<li class="flip-nav-item"><a href="#Item-2" class="flip-nav-item-link">Item 2</a></li>
-		</ul>
-	</li>
-	<li class="flip-nav-category">
-		<a href="#" class="flip-nav-category-link" data-flip-category="Category 2">Category 2</a>
-		<ul class="flip-nav-items">
-			<li class="flip-nav-item"><a href="#Item-3" class="flip-nav-item-link">Item 3</a></li>
-			<li class="flip-nav-item"><a href="#Item-4" class="flip-nav-item-link">Item 4</a></li>
-		</ul>
-	</li>
-	<li class="flip-nav-item no-category">
-		<a href="#Item-5" class="flip-nav-item-link">Item 5 Title</a>
-	</li>
-</ul>
-````
-in the container.
-
-
-To Do
+Methods
 ---------------
-- [x] Coverflow Style
-- [x] Carousel Style
-- [x] Better Demos
-- [ ] Compatibility Testing (IE8/9...)
-- [ ] Flat style
-- [ ] Option for number of items to display while in Carousel view
+
+Once an element has been initialized with Flipster, you can call methods to control it:
+
+```javascript
+var myFlipster = $('.my-flipster').flipster(); // It's best to store the element as a variable for easy reference.
+
+myFlipster.flipster('next'); // Next item
+myFlipster.flipster('prev'); // Previous item
+myFlipster.flipster('jump', 0); // Jump to a specific index
+myFlipster.flipster('jump', $('.my-item')); // Jump to a specific item
+myFlipster.flipster('play'); // Resume autoplay
+myFlipster.flipster('play', 5000); // Set autoplay duration
+myFlipster.flipster('pause'); // Pause the autoplay
+myFlipster.flipster('index'); // If items are added or removed, you can tell Flipster to reindex 
+```
+
+Navigation
+---------------
+
+Set `nav: true` in the options and Flipster can build an unordered list of links to each item to let users jump around. 
+
+The navigation list will use each item's `data-flip-title` attribute as the text. If an item does not have a `data-flip-title`, Flipster will try to grab the `title` attribute, or will default to the item's index.
+
+```html
+<div class="my-flipster">
+    <ul>
+        <li data-flip-title="Item 1 Title">...</li>
+        <li data-flip-title="Item 2 Title">...</li>
+        ...
+    </ul>
+</div>
+```
+
+***Tip:** Flipster 
+
+## Categories
+
+Include `data-flip-category` attributes on your items, and the navigation list will group items into categories, allowing for basic filtering and quicker navigation.
+
+```html
+<div class="my-flipster">
+    <ul>
+        <li data-flip-title="Item 1 Title" data-flip-category="Category 1">...</li>
+        <li data-flip-title="Item 2 Title" data-flip-category="Category 1">...</li>
+        <li data-flip-title="Item 3 Title" data-flip-category="Category 2">...</li>
+        <li data-flip-title="Item 4 Title" data-flip-category="Category 2">...</li>
+        <li data-flip-title="Item 5 Title">...</li>
+    </ul>
+</div>
+```
 
 
 Contributing
 ---------------
-If you can make this better, don't be shy! I'll be happy to merge pull requests as long as they keep the project lightweight, simple to set up and free of dependencies beyond jQuery.
+If you run into a problem or have an idea, [make an issue](https://github.com/drien/jquery-flipster/issues) on Github.
 
-If you do choose to contribute, please run `grunt` to generate minified files for distribution before making a pull request!
+See room for improvement? Don't be shy! Fork this repo and I'll be happy to merge pull requests provided they keep Flipster lightweight, simple, and free of dependencies beyond jQuery. Make sure that you run [`grunt`](http://gruntjs.com) to generate minified files for distribution before making a pull request!
 
-Also, if you run into a problem or have an idea, feel free to make an issue on the github project and I'll get on it when I can!
-
-Special thanks to @shshaw for major additions in version 0.3!
 
 Version History
 ---------------
+- 1.0.0 - Oct 23 2015
+    - Special thanks to [@shshaw](http://twitter.com/shshaw)</a> for major additions leading to version 1.0!
+    - Massive rewrite for performance optimization and simplification
+    - *Some option names have changed*; be sure to check the documentation to update your code
+    - Better scrollwheel, keyboard and touch events
+    - [BEM syntax](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/) for all Flipster classes
+    - Added `autoplay` option to automatically advance through items; `pauseOnHover` option will prevent items from switching automatically while hovered
+    - Added `fadeIn` option for controlling duration of fade-in animation after Flipster has been setup
+    
 - 0.3.4 - July 23 2014
     - Some additional options available
     - Cleaned up code and normalized whitespace
@@ -217,10 +220,10 @@ Version History
     - A number of bug fixes.
 
 - 0.3.1 - July 18 2013
-    - Better demos ( See http://brokensquare.com/Code/jquery-flipster/demo/ )
+    - Better demos ( See http://brokensquare.com/Code/jquery-Flipster/demo/ )
 
 - 0.3.0 - July 17 2013
-    - @shshaw forked from @drien's [jQuery.Flipster](https://github.com/drien/jquery-flipster)
+    - @shshaw forked from @drien's [jQuery.Flipster](https://github.com/drien/jquery-Flipster)
     - Added new Carousel style! Shows 5 items at a time in a looping carousel
     - Added `itemContainer`, `itemSelector`, `style`, and `start` options for basic configuration
     - Added `enableKeyboard`, `enableMousewheel`, and `enableTouch` options to enable/disable features
@@ -235,7 +238,7 @@ Version History
     - A few minor code improvements.
     - Added minified versions of the js and css files.
 
-- 0.1.3 - March 25 2013 
+- 0.1.3 - March 25 2013
     - Strong men also cry, strong men also cry.
 
 - 0.1.0 - March 25 2013
@@ -269,4 +272,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-

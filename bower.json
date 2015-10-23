@@ -1,9 +1,10 @@
 {
   "name": "jquery-flipster",
-  "version": "0.3.5",
+  "version": "1.0.0",
   "homepage": "https://github.com/drien/jquery-flipster",
   "authors": [
-    "Adrien Delessert <a@drien.com>"
+    "Adrien Delessert <a@drien.com>",
+    "Stephen Shaw <stephen@brokensquare.com"
   ],
   "description": "Responsive coverflow-style carousel plugin for jQuery",
   "main": [

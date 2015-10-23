@@ -1,0 +1,87 @@
+/* @group Flipster Navigation */
+
+@accent: #232221;
+@border-width: 1px;
+
+.flipster__nav,
+.flipster__nav__item {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+}
+
+.flipster__nav {
+		display: block;
+		margin: 0 0 4em;
+		text-align: center;
+		position: relative;
+}
+
+.flipster__nav__item  {
+		display: inline-block;
+		margin: 0 0.25em;
+}
+
+.flipster__nav__link {
+		display: block;
+    color: inherit;
+		padding: 0.5em 1em;
+
+		position: relative;
+		overflow: hidden;
+    transition: all 250ms ease-out;
+    transition-timing-function: cubic-bezier(.56,.12,.12,.98);
+
+		&::after {
+  			content: '';
+  			display: block;
+  			background: @accent;
+  			position: absolute;
+  			top: 0;
+  			left: 0;
+  			width: 100%;
+  			height: 100%;
+  			z-index: -1;
+  			transform: translateY(100%) translateY(-0.25em);
+        transition: inherit;
+		}
+
+    .flipster__nav__item--current > &,
+		&:hover,
+		&:focus {
+  			color: #FFF;
+
+    	  &::after {
+      	    transform: translateY(0);
+    	  }
+    }
+}
+
+.flipster__nav__child {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		margin-top: -@border-width;
+		padding: 0.5em;
+		background: #4e4441;
+		z-index: 1;
+}
+
+.flipster__nav__child .flipster__nav__link {
+    color: #FFF;
+
+    &::after { background: #FFF; }
+}
+
+.flipster__nav__child .flipster__nav__item--current > .flipster__nav__link,
+.flipster__nav__child .flipster__nav__link:hover,
+.flipster__nav__child .flipster__nav__link:focus {
+		color: @accent;
+}
+
+.flipster__nav__item--current .flipster__nav__child { display: block; }
+
+
+	/* @end */

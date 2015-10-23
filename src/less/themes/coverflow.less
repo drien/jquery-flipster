@@ -1,0 +1,38 @@
+/* @group Flipster Coverflow Theme */
+
+.flipster--coverflow {
+
+    .flipster__container,
+    .flipster__item,
+    .flipster__item__content {
+          transition: all 350ms ease-in-out;
+          transition-timing-function: cubic-bezier(.56,.12,.12,.98);
+    }
+
+    .flipster__item { perspective: 800px; }
+
+    .flipster__container { padding-bottom: 5%; }
+
+    .flipster__item__content {
+        transform-origin: 50% 100%;
+        box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
+        -webkit-box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
+    }
+
+    .flipster__item__content img:only-child { display: block; }
+
+    .flipster__item--past .flipster__item__content {
+        transform-origin: 0% 50%;
+        transform: scale(0.75) rotateY(55deg);
+    }
+
+    .flipster__item--future .flipster__item__content {
+        transform-origin: 100% 50%;
+        transform: scale(0.75) rotateY(-55deg);
+    }
+
+    .flip-current .flipster__item__content { transform: rotateY(0deg); }
+
+}
+
+/* @end */
