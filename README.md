@@ -76,7 +76,7 @@ $('.my-flipster').flipster({
     // [milliseconds]
     // Speed of the fade in animation after items have been setup
 
-    loop: true,
+    loop: false,
     // [true|false]
     // Loop around when the start or end is reached
 
@@ -97,6 +97,10 @@ $('.my-flipster').flipster({
     // [number]
     // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
 
+    click: true,
+    // [true|false]
+    // Clicking an item switches to that item
+
     keyboard: true,
     // [true|false]
     // Enable left/right arrow navigation
@@ -114,15 +118,16 @@ $('.my-flipster').flipster({
     // If not false, Flipster will build an unordered list of the items
     // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
 
-    navButtons: false,
-    // [true|false]
-    // If true, Flipster will insert Previous / Next buttons
+    buttons: false,
+    // [true|false|'custom']
+    // If true, Flipster will insert Previous / Next buttons with SVG arrows
+    // If 'custom', Flipster will not insert the arrows and will instead use the values of `buttonPrev` and `buttonNext`
 
-    prevText: 'Previous',
+    buttonPrev: 'Previous',
     // [text|html]
     // Changes the text for the Previous button
 
-    nextText: 'Next',
+    buttonNext: 'Next',
     // [text|html]
     // Changes the text for the Next button
 
@@ -194,12 +199,10 @@ If you run into a problem or have an idea, [make an issue](https://github.com/dr
 See room for improvement? Don't be shy! Fork this repo and I'll be happy to merge pull requests provided they keep Flipster lightweight, simple, and free of dependencies beyond jQuery. Make sure that you run [`grunt`](http://gruntjs.com) to generate minified files for distribution before making a pull request!
 
 
-*Special thanks to (@shshaw)[http://twitter.com/shshaw]</a> for major additions leading to version 1.0!*
-
-
 Version History
 ---------------
-- 1.0.0 - May 2015
+- 1.0.0 - Oct 23 2015
+    - Special thanks to [@shshaw](http://twitter.com/shshaw)</a> for major additions leading to version 1.0!
     - Massive rewrite for performance optimization and simplification
     - *Some option names have changed*; be sure to check the documentation to update your code
     - Better scrollwheel, keyboard and touch events
