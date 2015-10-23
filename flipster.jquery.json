@@ -18,6 +18,11 @@
         "name": "Adrien Delessert",
         "url": "http://a.drien.com",
         "email":"a@drien.com"
+        },
+       {
+        "name": "Stephen Shaw",
+        "url": "http://brokensquare.com",
+        "email":"stephen@brokensquare.com"
         }
     ],
     "licenses": [
