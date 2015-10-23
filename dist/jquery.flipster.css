@@ -269,6 +269,9 @@
 /* @end */
 
 /* @group Flipster Wheel Theme */
+.flipster--wheel {
+  overflow: hidden;
+}
 .flipster--wheel .flipster__container,
 .flipster--wheel .flipster__item__content {
   transition: all 400ms ease-in-out;
