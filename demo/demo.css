@@ -86,6 +86,17 @@ h2 { font-size: 22px; }
   background: #da0d25;
 }
 
+@media (max-width: 800px) {
+  body { padding: 0; }
+
+  .main-header {
+    position: relative;
+    width: 100%;
+  }
+
+  .main-header__nav a { display: inline-block; border: none; }
+}
+
 .intro {
   padding: 4em 2em;
 }
