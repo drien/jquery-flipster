@@ -1,5 +1,8 @@
 /* jshint browser: true, jquery: true, devel: true */
 /* global window, jQuery */
+
+
+/* Convert to scroll? http://jsperf.com/scroll-vs-css-transform/19 */
 (function($, window, undefined) {
 'use strict';
 
@@ -20,39 +23,37 @@
 
     // Check for browser CSS support and cache the result for subsequent calls.
     var checkStyleSupport = (function() {
-        var support;
-        return function(prop) {
-            if ( support !== undefined ) { return support; }
+            var support = {};
+            return function(prop) {
+                if ( support[prop] !== undefined ) { return support[prop]; }
 
-            var div = document.createElement('div'),
-                style = div.style,
-                ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
-                prefixes = ["webkit", "moz", "ms", "o"],
-                props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' ');
+                var div = document.createElement('div'),
+                    style = div.style,
+                    ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
+                    prefixes = ["webkit", "moz", "ms", "o"],
+                    props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' ');
 
-            for ( var i in props ) {
-                if ( props[i] in style ) {
-                    support = props[i];
-                    return props[i];
+                for ( var i in props ) {
+                    if ( props[i] in style ) {
+                        return support[prop] = props[i];
+                    }
                 }
-            }
 
-            support = false;
-            return false;
-        };
-    }());
+                return support[prop] = false;
+            };
+        }());
 
-    var svgNS = 'http://www.w3.org/2000/svg';
-    var svgSupport = (function() {
-        var support;
-        return function() {
-            if ( support !== undefined ) { return support; }
-            var div = document.createElement('div');
-            div.innerHTML = '<svg/>';
-            support = ( div.firstChild && div.firstChild.namespaceURI === svgNS );
-            return support;
-        };
-    }());
+    var svgNS = 'http://www.w3.org/2000/svg',
+        svgSupport = (function() {
+            var support;
+            return function() {
+                if ( support !== undefined ) { return support; }
+                var div = document.createElement('div');
+                div.innerHTML = '<svg/>';
+                support = ( div.firstChild && div.firstChild.namespaceURI === svgNS );
+                return support;
+            };
+        }());
 
 $.fn.flipster = function(options) {
     var isMethodCall = (typeof options === 'string' ? true : false);
@@ -67,134 +68,134 @@ $.fn.flipster = function(options) {
     }
 
     var defaults = {
-        itemContainer: 'ul',
-        // [string|object]
-        // Selector for the container of the flippin' items.
+            itemContainer: 'ul',
+            // [string|object]
+            // Selector for the container of the flippin' items.
 
-        itemSelector: 'li',
-        // [string|object]
-        // Selector for children of `itemContainer` to flip
+            itemSelector: 'li',
+            // [string|object]
+            // Selector for children of `itemContainer` to flip
 
-        start: 'center',
-        // ['center'|number]
-        // Zero based index of the starting item, or use 'center' to start in the middle
+            start: 'center',
+            // ['center'|number]
+            // Zero based index of the starting item, or use 'center' to start in the middle
 
-        fadeIn: 400,
-        // [milliseconds]
-        // Speed of the fade in animation after items have been setup
+            fadeIn: 400,
+            // [milliseconds]
+            // Speed of the fade in animation after items have been setup
 
-        loop: false,
-        // [true|false]
-        // Loop around when the start or end is reached
+            loop: false,
+            // [true|false]
+            // Loop around when the start or end is reached
 
-        autoplay: false,
-        // [false|milliseconds]
-        // If a positive number, Flipster will automatically advance to next item after that number of milliseconds
+            autoplay: false,
+            // [false|milliseconds]
+            // If a positive number, Flipster will automatically advance to next item after that number of milliseconds
 
-        pauseOnHover: true,
-        // [true|false]
-        // If true, autoplay advancement will pause when Flipster is hovered
+            pauseOnHover: true,
+            // [true|false]
+            // If true, autoplay advancement will pause when Flipster is hovered
 
-        style: 'coverflow',
-        // [coverflow|carousel|flat|...]
-        // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
-        // Create your own theme in CSS and use this setting to have Flipster add the custom class
+            style: 'coverflow',
+            // [coverflow|carousel|flat|...]
+            // Adds a class (e.g. flipster--coverflow) to the flipster element to switch between display styles
+            // Create your own theme in CSS and use this setting to have Flipster add the custom class
 
-        spacing: -0.6,
-        // [number]
-        // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
+            spacing: -0.6,
+            // [number]
+            // Space between items relative to each item's width. 0 for no spacing, negative values to overlap
 
-        click: true,
-        // [true|false]
-        // Clicking an item switches to that item
+            click: true,
+            // [true|false]
+            // Clicking an item switches to that item
 
-        keyboard: true,
-        // [true|false]
-        // Enable left/right arrow navigation
+            keyboard: true,
+            // [true|false]
+            // Enable left/right arrow navigation
 
-        scrollwheel: true,
-        // [true|false]
-        // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
+            scrollwheel: true,
+            // [true|false]
+            // Enable mousewheel/trackpad navigation; up/left = previous, down/right = next
 
-        touch: true,
-        // [true|false]
-        // Enable swipe navigation for touch devices
+            touch: true,
+            // [true|false]
+            // Enable swipe navigation for touch devices
 
-        nav: false,
-        // [true|false|'before'|'after']
-        // If not false, Flipster will build an unordered list of the items
-        // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
+            nav: false,
+            // [true|false|'before'|'after']
+            // If not false, Flipster will build an unordered list of the items
+            // Values true or 'before' will insert the navigation before the items, 'after' will append the navigation after the items
 
-        buttons: false,
-        // [true|false|'custom']
-        // If true, Flipster will insert Previous / Next buttons with SVG arrows
-        // If 'custom', Flipster will not insert the arrows and will instead use the values of `buttonPrev` and `buttonNext`
+            buttons: false,
+            // [true|false|'custom']
+            // If true, Flipster will insert Previous / Next buttons with SVG arrows
+            // If 'custom', Flipster will not insert the arrows and will instead use the values of `buttonPrev` and `buttonNext`
 
-        buttonPrev: 'Previous',
-        // [text|html]
-        // Changes the text for the Previous button
+            buttonPrev: 'Previous',
+            // [text|html]
+            // Changes the text for the Previous button
 
-        buttonNext: 'Next',
-        // [text|html]
-        // Changes the text for the Next button
+            buttonNext: 'Next',
+            // [text|html]
+            // Changes the text for the Next button
 
-        onItemSwitch: false
-        // [function]
-        // Callback function when items are switched
-        // Arguments received: [currentItem, previousItem]
-    };
+            onItemSwitch: false
+            // [function]
+            // Callback function when items are switched
+            // Arguments received: [currentItem, previousItem]
+        },
 
-    var settings = $.extend({}, defaults, options);
+        settings = $.extend({}, defaults, options),
 
-    var $window = $(window);
+        $window = $(window),
 
-    var transformSupport = checkStyleSupport('transform');
+        transformSupport = checkStyleSupport('transform'),
 
-    var classes = {
-        main: 'flipster',
-        active: 'flipster--active',
-        container: 'flipster__container',
+        classes = {
+            main: 'flipster',
+            active: 'flipster--active',
+            container: 'flipster__container',
 
-        nav: 'flipster__nav',
-        navChild: 'flipster__nav__child',
-        navItem: 'flipster__nav__item',
-        navLink: 'flipster__nav__link',
-        navCurrent: 'flipster__nav__item--current',
-        navCategory: 'flipster__nav__item--category',
-        navCategoryLink: 'flipster__nav__link--category',
+            nav: 'flipster__nav',
+            navChild: 'flipster__nav__child',
+            navItem: 'flipster__nav__item',
+            navLink: 'flipster__nav__link',
+            navCurrent: 'flipster__nav__item--current',
+            navCategory: 'flipster__nav__item--category',
+            navCategoryLink: 'flipster__nav__link--category',
 
-        button: 'flipster__button',
-        buttonPrev: 'flipster__button--prev',
-        buttonNext: 'flipster__button--next',
+            button: 'flipster__button',
+            buttonPrev: 'flipster__button--prev',
+            buttonNext: 'flipster__button--next',
 
-        item: 'flipster__item',
-        itemCurrent: 'flipster__item--current',
-        itemPast: 'flipster__item--past',
-        itemFuture: 'flipster__item--future',
-        itemContent: 'flipster__item__content'
-    };
+            item: 'flipster__item',
+            itemCurrent: 'flipster__item--current',
+            itemPast: 'flipster__item--past',
+            itemFuture: 'flipster__item--future',
+            itemContent: 'flipster__item__content'
+        },
 
-    var classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)','g'),
+        classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)','g'),
         whiteSpaceRemover = new RegExp('\\s\\s+','g');
 
     return this.each(function() {
 
-        var self = $(this);
-        var methods;
+        var self = $(this),
+            methods,
 
-        var _container;
-        var _containerWidth;
-        var _items;
-        var _itemOffsets = [];
-        var _currentIndex = 0;
-        var _currentItem;
+            _container,
+            _containerWidth,
+            _items,
+            _itemOffsets = [],
+            _currentIndex = 0,
+            _currentItem,
 
-        var _nav;
-        var _navItems;
-        var _navLinks;
+            _nav,
+            _navItems,
+            _navLinks,
 
-        var _playing = false;
-        var _startDrag = false;
+            _playing = false,
+            _startDrag = false;
 
         function buildButtonContent(dir) {
             var text = ( dir === 'next' ? settings.buttonNext : settings.buttonPrev );
@@ -224,20 +225,20 @@ $.fn.flipster = function(options) {
         }
 
         function buildNav() {
+            var navCategories = {};
+
             if ( !settings.nav || _items.length <= 1 ) { return; }
 
             if ( _nav ) { _nav.remove(); }
-
-            var navCategories = {};
 
             _nav = $('<ul class="' + classes.nav + '" role="navigation" />');
             _navLinks = $('');
 
             _items.each(function(i){
-                var item = $(this);
-                var category = item.data('flip-category');
-                var itemTitle = item.data('flip-title') || item.attr('title') || i;
-                var navLink = $('<a href="#" class="' + classes.navLink + '">' + itemTitle + '</a>')
+                var item = $(this),
+                    category = item.data('flip-category'),
+                    itemTitle = item.data('flip-title') || item.attr('title') || i,
+                    navLink = $('<a href="#" class="' + classes.navLink + '">' + itemTitle + '</a>')
                         .data('index',i);
 
                 _navLinks = _navLinks.add(navLink);
@@ -313,8 +314,9 @@ $.fn.flipster = function(options) {
         }
 
         function calculateBiggestItemHeight() {
-            var biggestHeight = 0;
-            var itemHeight;
+            var biggestHeight = 0,
+                itemHeight;
+
             _items.each(function() {
                 itemHeight = $(this).height();
                 if ( itemHeight > biggestHeight ) { biggestHeight = itemHeight; }
@@ -329,14 +331,15 @@ $.fn.flipster = function(options) {
             _container.height(calculateBiggestItemHeight());
 
             _items.each(function(i){
-                var item = $(this);
+                var item = $(this),
+                    width,
+                    left;
 
                 item.attr('class',function(i, c){
                     return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ');
                 });
 
-                var width = item.outerWidth();
-                var left;
+                width = item.outerWidth();
 
                 if ( settings.spacing !== 0 ) {
                   item.css('margin-right', ( width * settings.spacing) + 'px');
@@ -353,10 +356,8 @@ $.fn.flipster = function(options) {
         }
 
         function center() {
-            var total = _items.length;
-            var item;
-            var newClass;
-            var zIndex;
+            var total = _items.length,
+                item, newClass, zIndex;
 
             _items.each(function(i){
                 item = $(this);
@@ -503,12 +504,11 @@ $.fn.flipster = function(options) {
 
         function wheelEvents(elem) {
             if ( settings.scrollwheel ) {
-                var _wheelInside = false;
-                var _actionThrottle = 0;
-                var _throttleTimeout = 0;
-                var _delta = 0;
-                var _dir;
-                var _lastDir;
+                var _wheelInside = false,
+                    _actionThrottle = 0,
+                    _throttleTimeout = 0,
+                    _delta = 0,
+                    _dir, _lastDir;
 
                 elem
                     .on('mousewheel.flipster wheel.flipster', function(){ _wheelInside = true; })
@@ -556,9 +556,9 @@ $.fn.flipster = function(options) {
 
         function touchEvents(elem) {
             if ( settings.touch ) {
-                var _startDragY = false;
-                var _touchJump = throttle(jump,300);
-                var x, y, offsetY, offsetX;
+                var _startDragY = false,
+                    _touchJump = throttle(jump,300),
+                    x, y, offsetY, offsetX;
 
                 elem.on({
                   'touchstart.flipster' : function(e){
