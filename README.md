@@ -45,7 +45,7 @@ Basic Usage
 **Step 3**: Include Flipster's Javascript after jQuery (ideally at the bottom of the page before the `</body>` tag) and initialize Flipster on your element:
 ```html
 <script src="/js/jquery.min.js"></script>
-<script src="/js/jquery.flipster.js"></script>
+<script src="/js/jquery.flipster.min.js"></script>
 <script>
     $('.my-flipster').flipster();
 </script>
