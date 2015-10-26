@@ -1,65 +1,82 @@
 module.exports = function(grunt) {
 
-  var globalConfig = {
+    grunt.initConfig({
+
+        pkg: grunt.file.readJSON('package.json'),
+
         today: grunt.template.today("yyyy-mm-dd"),
-        banner: '/*! jQuery.Flipster, v<%= pkg.version %> (built <%= globalConfig.today %>) */\n',
+
+        banner: '/*! jQuery.Flipster, v<%= pkg.version %> (built <%= today %>) */\n',
+
         autoprefix: new (require('less-plugin-autoprefix'))({browsers: ["last 3 versions", 'ie >= 9']}),
-      };
 
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-
-    globalConfig: globalConfig,
-
-    uglify: {
-      options: {
-        banner: globalConfig.banner,
-      },
-      dist: {
-        files: {
-          'dist/jquery.flipster.min.js': ['src/jquery.flipster.js']
-        }
-      }
-    },
-    less: {
-      full: {
-        options: {
-          banner: globalConfig.banner,
-          plugins: globalConfig.autoprefix
+        src: {
+            dir: 'src',
+            js: '<%= src.dir %>/jquery.flipster.js',
+            less: '<%= src.dir %>/**/*.less'
         },
-        files: {
-          'dist/jquery.flipster.css': ['src/less/jquery.flipster.less', 'src/less/*/*.less']
+
+        dist: {
+            dir: 'dist',
+            js: '<%= dist.dir %>/jquery.flipster.min.js',
+            css: '<%= dist.dir %>/jquery.flipster.css',
+            cssmin: '<%= dist.dir %>/jquery.flipster.min.css'
         }
-      },
-      minified: {
+
+    });
+
+
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.config('uglify',{
         options: {
-          banner: globalConfig.banner,
-          plugins: globalConfig.autoprefix,
-          compress: true
+            banner: '<%= banner %>',
         },
-        files: {
-          'dist/jquery.flipster.min.css': ['src/less/jquery.flipster.less', 'src/less/*/*.less']
+        dist: {
+            files: {
+                '<%= dist.js %>': ['<%= src.js %>']
+            }
         }
-      }
-    },
-    watch: {
-      scripts: {
-        files: 'src/jquery.flipster.js',
-        tasks: ['uglify'],
-        options: { debounceDelay: 250 },
-      },
-      less: {
-        files: ['src/less/**/*.less'],
-        tasks: ['less'],
-        options: { debounceDelay: 250 },
-      },
-    },
-  });
+    });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['uglify', 'less']);
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.config('less',{
+        full: {
+            options: {
+                banner: '<%= banner %>',
+                plugins: '<%= autoprefix %>'
+            },
+            files: {
+                '<%= dist.css %>': ['<%= src.less %>']
+            }
+        },
+        minified: {
+            options: {
+                banner: '<%= banner %>',
+                plugins: '<%= autoprefix %>',
+                compress: true
+            },
+            files: {
+                '<%= dist.cssmin %>': ['<%= src.less %>']
+            }
+        }
+    });
+
+
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.config('watch',{
+        options: { debounceDelay: 250 },
+        scripts: {
+            files: '<%= src.js %>',
+            tasks: ['uglify']
+        },
+        less: {
+            files: '<%= src.less %>',
+            tasks: ['less']
+        },
+    });
+
+
+    grunt.registerTask('default', ['uglify', 'less']);
 
 };
