@@ -293,7 +293,7 @@ $.fn.flipster = function(options) {
 
                 _navLinks
                     .filter(function() {
-                        return ( $(this).data('index') === _currentIndex || $(this).data('category') === category );
+                        return ( $(this).data('index') === _currentIndex || ( category && $(this).data('category') === category ));
                     })
                         .parent()
                         .addClass(classes.navCurrent);

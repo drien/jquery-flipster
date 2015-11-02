@@ -201,6 +201,9 @@ See room for improvement? Don't be shy! Fork this repo and I'll be happy to merg
 
 Version History
 ---------------
+- 1.0.1 - Nov 1 2015
+    - Fixed issue #63 where the active nav class was added to all nav items.
+    
 - 1.0.0 - Oct 23 2015
     - Special thanks to [@shshaw](http://twitter.com/shshaw)</a> for major additions leading to version 1.0!
     - Massive rewrite for performance optimization and simplification
