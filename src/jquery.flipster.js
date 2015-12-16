@@ -74,8 +74,9 @@
             // Speed of the fade in animation after items have been setup
 
             loop: false,
-            // [true|false]
+            // [true|false|number]
             // Loop around when the start or end is reached
+            // If number, this is the number of items that will be shown when the beginning or end is reached
 
             autoplay: false,
             // [false|milliseconds]
@@ -358,38 +359,53 @@
 
             function center() {
                 var total = _items.length,
-                    item, newClass, zIndex;
-
-                _items.each(function(i){
-                    item = $(this);
-                    newClass = ' ';
-
-                    if ( i === _currentIndex ) {
-                        newClass += classes.itemCurrent;
-                        zIndex = (total + 1);
-                    } else if ( i < _currentIndex ) {
-                        newClass += classes.itemPast + ' ' +
-                            classes.itemPast + '-' + (_currentIndex - i);
-                        zIndex = i;
-                    } else {
-                        newClass += classes.itemFuture + ' ' +
-                            classes.itemFuture + '-' + ( i - _currentIndex );
-                        zIndex = (total - i);
-                    }
-
-                    item.css('z-index', zIndex )
-                      .attr('class',function(i, c){
-                        return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ') + newClass;
-                      });
-                });
+                    loopCount = ( settings.loop !== true && settings.loop > 0 ? settings.loop : false ),
+                    item, newClass, zIndex, past, offset;
 
                 if ( _currentIndex >= 0 ) {
+
+                    _items.each(function(i) {
+                        item = $(this);
+                        newClass = ' ';
+
+                        if ( i === _currentIndex ) {
+                            newClass += classes.itemCurrent;
+                            zIndex = (total + 2);
+                        } else {
+                            past = ( i < _currentIndex ? true : false );
+                            offset = ( past ? _currentIndex - i : i - _currentIndex );
+
+                            if ( loopCount ) {
+                                if ( _currentIndex <= loopCount && i > _currentIndex + loopCount ) {
+                                    past = true;
+                                    offset = (total + _currentIndex) - i;
+                                } else if ( _currentIndex >= total - loopCount && i < _currentIndex - loopCount ) {
+                                    past = false;
+                                    offset = (total - _currentIndex) + i;
+                                }
+                            }
+
+                            newClass += (past ?
+                                classes.itemPast + ' ' + classes.itemPast + '-' + offset :
+                                classes.itemFuture + ' ' + classes.itemFuture + '-' + offset
+                            );
+
+                            zIndex = total - offset;
+                        }
+
+                        item
+                            .css('z-index', zIndex * 2)
+                            .attr('class', function(i, c) {
+                                return c && c.replace(classRemover, '').replace(whiteSpaceRemover, ' ') + newClass;
+                            });
+                    });
+
                     if ( !_containerWidth || _itemOffsets[_currentIndex] === undefined ) { resize(true); }
 
                     if ( transformSupport ) {
                         _container.css('transform', 'translateX(' + _itemOffsets[_currentIndex] + 'px)');
                     } else {
-                        _container.css({ 'left': _itemOffsets[_currentIndex] + 'px' });
+                        _container.css('left', _itemOffsets[_currentIndex] + 'px' );
                     }
                 }
 
