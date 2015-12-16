@@ -173,7 +173,6 @@ The navigation list will use each item's `data-flip-title` attribute as the text
 </div>
 ```
 
-***Tip:** Flipster 
 
 ## Categories
 
