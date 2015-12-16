@@ -1,47 +1,44 @@
 /* jshint browser: true, jquery: true, devel: true */
 /* global window, jQuery */
 
-
-/* Convert to scroll? http://jsperf.com/scroll-vs-css-transform/19 */
 (function($, window, undefined) {
-'use strict';
+    'use strict';
 
     function throttle(func, delay) {
-      var timer = null;
+        var timer = null;
 
-      return function() {
-        var context = this, args = arguments;
+        return function() {
+            var context = this,
+                args = arguments;
 
-        if (timer === null) {
-            timer = setTimeout(function () {
-                func.apply(context, args);
-                timer = null;
-            }, delay);
-        }
-      };
+            if ( timer === null ) {
+                timer = setTimeout(function() {
+                    func.apply(context, args);
+                    timer = null;
+                }, delay);
+            }
+        };
     }
 
     // Check for browser CSS support and cache the result for subsequent calls.
     var checkStyleSupport = (function() {
-            var support = {};
-            return function(prop) {
-                if ( support[prop] !== undefined ) { return support[prop]; }
+        var support = {};
+        return function(prop) {
+            if ( support[prop] !== undefined ) { return support[prop]; }
 
-                var div = document.createElement('div'),
-                    style = div.style,
-                    ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
-                    prefixes = ["webkit", "moz", "ms", "o"],
-                    props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' ');
+            var div = document.createElement('div'),
+                style = div.style,
+                ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
+                prefixes = ["webkit", "moz", "ms", "o"],
+                props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' ');
 
-                for ( var i in props ) {
-                    if ( props[i] in style ) {
-                        return support[prop] = props[i];
-                    }
-                }
+            for (var i in props) {
+                if ( props[i] in style ) { return support[prop] = props[i]; }
+            }
 
-                return support[prop] = false;
-            };
-        }());
+            return support[prop] = false;
+        };
+    }());
 
     var svgNS = 'http://www.w3.org/2000/svg',
         svgSupport = (function() {
@@ -55,19 +52,11 @@
             };
         }());
 
-$.fn.flipster = function(options) {
-    var isMethodCall = (typeof options === 'string' ? true : false);
+    var $window = $(window),
 
-    if ( isMethodCall ) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        return this.each(function(){
-            var methods = $(this).data('methods');
-            if ( methods[options] ) { return methods[options].apply(this, args); }
-            else { return this; }
-        });
-    }
+        transformSupport = checkStyleSupport('transform'),
 
-    var defaults = {
+        defaults = {
             itemContainer: 'ul',
             // [string|object]
             // Selector for the container of the flippin' items.
@@ -145,12 +134,6 @@ $.fn.flipster = function(options) {
             // Arguments received: [currentItem, previousItem]
         },
 
-        settings = $.extend({}, defaults, options),
-
-        $window = $(window),
-
-        transformSupport = checkStyleSupport('transform'),
-
         classes = {
             main: 'flipster',
             active: 'flipster--active',
@@ -175,500 +158,518 @@ $.fn.flipster = function(options) {
             itemContent: 'flipster__item__content'
         },
 
-        classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)','g'),
-        whiteSpaceRemover = new RegExp('\\s\\s+','g');
+        classRemover = new RegExp('\\b(' + classes.itemCurrent + '|' + classes.itemPast + '|' + classes.itemFuture + ')(.*?)(\\s|$)', 'g'),
+        whiteSpaceRemover = new RegExp('\\s\\s+', 'g');
 
-    return this.each(function() {
+    $.fn.flipster = function(options) {
+        var isMethodCall = (typeof options === 'string' ? true : false);
 
-        var self = $(this),
-            methods,
-
-            _container,
-            _containerWidth,
-            _items,
-            _itemOffsets = [],
-            _currentIndex = 0,
-            _currentItem,
-
-            _nav,
-            _navItems,
-            _navLinks,
-
-            _playing = false,
-            _startDrag = false;
-
-        function buildButtonContent(dir) {
-            var text = ( dir === 'next' ? settings.buttonNext : settings.buttonPrev );
-
-            if ( settings.buttons === 'custom' || !svgSupport ) { return text; }
-
-            return '<svg viewBox="0 0 13 20" xmlns="' + svgNS + '" aria-labelledby="title"><title>'+text+'</title><polyline points="10,3 3,10 10,17"' + (dir === 'next' ? ' transform="rotate(180 6.5,10)"' : '' ) + '/></svg>';
+        if ( isMethodCall ) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return this.each(function() {
+                var methods = $(this).data('methods');
+                if ( methods[options] ) {
+                    return methods[options].apply(this, args);
+                } else {
+                    return this;
+                }
+            });
         }
 
-        function buildButton(dir){
-          dir = dir || 'next';
+        var settings = $.extend({}, defaults, options);
 
-          return $('<button class="' + classes.button + ' ' + ( dir === 'next' ? classes.buttonNext : classes.buttonPrev ) + '" role="button" />')
-                  .html( buildButtonContent(dir) )
-                  .on('click', function(e) {
-                      jump(dir);
-                      e.preventDefault();
-                  });
+        return this.each(function() {
 
-        }
+            var self = $(this),
+                methods,
 
-        function buildButtons() {
-            if ( settings.buttons && _items.length > 1 ) {
-                self.find('.' + classes.button).remove();
-                self.append( buildButton('prev'), buildButton('next') );
+                _container,
+                _containerWidth,
+
+                _items,
+                _itemOffsets = [],
+                _currentItem,
+                _currentIndex = 0,
+
+                _nav,
+                _navItems,
+                _navLinks,
+
+                _playing = false,
+                _startDrag = false;
+
+            function buildButtonContent(dir) {
+                var text = ( dir === 'next' ? settings.buttonNext : settings.buttonPrev );
+
+                if ( settings.buttons === 'custom' || !svgSupport ) { return text; }
+
+                return '<svg viewBox="0 0 13 20" xmlns="' + svgNS + '" aria-labelledby="title"><title>' + text + '</title><polyline points="10,3 3,10 10,17"' + (dir === 'next' ? ' transform="rotate(180 6.5,10)"' : '') + '/></svg>';
             }
-        }
 
-        function buildNav() {
-            var navCategories = {};
+            function buildButton(dir) {
+                dir = dir || 'next';
 
-            if ( !settings.nav || _items.length <= 1 ) { return; }
+                return $('<button class="' + classes.button + ' ' + ( dir === 'next' ? classes.buttonNext : classes.buttonPrev ) + '" role="button" />')
+                    .html(buildButtonContent(dir))
+                    .on('click', function(e) {
+                        jump(dir);
+                        e.preventDefault();
+                    });
 
-            if ( _nav ) { _nav.remove(); }
+            }
 
-            _nav = $('<ul class="' + classes.nav + '" role="navigation" />');
-            _navLinks = $('');
+            function buildButtons() {
+                if ( settings.buttons && _items.length > 1 ) {
+                    self.find('.' + classes.button).remove();
+                    self.append(buildButton('prev'), buildButton('next'));
+                }
+            }
 
-            _items.each(function(i){
-                var item = $(this),
-                    category = item.data('flip-category'),
-                    itemTitle = item.data('flip-title') || item.attr('title') || i,
-                    navLink = $('<a href="#" class="' + classes.navLink + '">' + itemTitle + '</a>')
-                        .data('index',i);
+            function buildNav() {
+                var navCategories = {};
 
-                _navLinks = _navLinks.add(navLink);
+                if ( !settings.nav || _items.length <= 1 ) { return; }
 
-                if ( category ) {
+                if ( _nav ) { _nav.remove(); }
 
-                    if ( !navCategories[category] ) {
+                _nav = $('<ul class="' + classes.nav + '" role="navigation" />');
+                _navLinks = $('');
 
-                        var categoryItem = $('<li class="' + classes.navItem + ' ' + classes.navCategory + '">');
-                        var categoryLink = $('<a href="#" class="' + classes.navLink + ' ' +  classes.navCategoryLink + '" data-flip-category="' + category + '">' + category + '</a>')
-                                .data('category',category)
-                                .data('index',i);
+                _items.each(function(i) {
+                    var item = $(this),
+                        category = item.data('flip-category'),
+                        itemTitle = item.data('flip-title') || item.attr('title') || i,
+                        navLink = $('<a href="#" class="' + classes.navLink + '">' + itemTitle + '</a>')
+                        .data('index', i);
 
-                        navCategories[category] = $('<ul class="' + classes.navChild + '" />');
+                    _navLinks = _navLinks.add(navLink);
 
-                        _navLinks = _navLinks.add(categoryLink);
+                    if ( category ) {
 
-                        categoryItem
-                            .append(categoryLink, navCategories[category])
-                            .appendTo(_nav);
+                        if ( !navCategories[category] ) {
+
+                            var categoryItem = $('<li class="' + classes.navItem + ' ' + classes.navCategory + '">');
+                            var categoryLink = $('<a href="#" class="' + classes.navLink + ' ' + classes.navCategoryLink + '" data-flip-category="' + category + '">' + category + '</a>')
+                                    .data('category', category)
+                                    .data('index', i);
+
+                            navCategories[category] = $('<ul class="' + classes.navChild + '" />');
+
+                            _navLinks = _navLinks.add(categoryLink);
+
+                            categoryItem
+                                .append(categoryLink, navCategories[category])
+                                .appendTo(_nav);
+                        }
+
+                        navCategories[category].append(navLink);
+                    } else {
+                        _nav.append(navLink);
                     }
 
-                    navCategories[category].append(navLink);
-                } else {
-                    _nav.append(navLink);
-                }
+                    navLink.wrap('<li class="' + classes.navItem + '">');
 
-                navLink.wrap('<li class="' + classes.navItem + '">');
+                });
 
-            });
+                _nav.on('click', 'a', function(e) {
+                    var index = $(this).data('index');
+                    if ( index >= 0 ) {
+                        jump(index);
+                        e.preventDefault();
+                    }
+                });
 
-            _nav.on('click','a',function(e){
-                var index = $(this).data('index');
-                if ( index >= 0 ) {
-                    jump( index );
-                    e.preventDefault();
-                }
-            });
+                if ( settings.nav === 'after' ) { self.append(_nav); }
+                else { self.prepend(_nav); }
 
-            if ( settings.nav === 'after' ) { self.append(_nav); }
-            else { self.prepend(_nav); }
+                _navItems = _nav.find('.' + classes.navItem);
+            }
 
-            _navItems = _nav.find('.' + classes.navItem);
-        }
+            function updateNav() {
+                if ( settings.nav ) {
 
-        function updateNav() {
-            if ( settings.nav ) {
+                    var category = _currentItem.data('flip-category');
 
-                var category = _currentItem.data('flip-category');
+                    _navItems.removeClass(classes.navCurrent);
 
-                _navItems.removeClass(classes.navCurrent);
-
-                _navLinks
-                    .filter(function() {
-                        return ( $(this).data('index') === _currentIndex || ( category && $(this).data('category') === category ));
-                    })
+                    _navLinks
+                        .filter(function() {
+                            return ($(this).data('index') === _currentIndex || (category && $(this).data('category') === category));
+                        })
                         .parent()
                         .addClass(classes.navCurrent);
 
+                }
             }
-        }
 
-        function noTransition() {
-            self.css('transition','none');
-            _container.css('transition','none');
-            _items.css('transition','none');
-        }
+            function noTransition() {
+                self.css('transition', 'none');
+                _container.css('transition', 'none');
+                _items.css('transition', 'none');
+            }
 
-        function resetTransition() {
-            self.css('transition','');
-            _container.css('transition','');
-            _items.css('transition','');
-        }
+            function resetTransition() {
+                self.css('transition', '');
+                _container.css('transition', '');
+                _items.css('transition', '');
+            }
 
-        function calculateBiggestItemHeight() {
-            var biggestHeight = 0,
-                itemHeight;
+            function calculateBiggestItemHeight() {
+                var biggestHeight = 0,
+                    itemHeight;
 
-            _items.each(function() {
-                itemHeight = $(this).height();
-                if ( itemHeight > biggestHeight ) { biggestHeight = itemHeight; }
-            });
-            return biggestHeight;
-        }
-
-        function resize(skipTransition) {
-            if ( skipTransition ) { noTransition(); }
-
-            _containerWidth = _container.width();
-            _container.height(calculateBiggestItemHeight());
-
-            _items.each(function(i){
-                var item = $(this),
-                    width,
-                    left;
-
-                item.attr('class',function(i, c){
-                    return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ');
+                _items.each(function() {
+                    itemHeight = $(this).height();
+                    if ( itemHeight > biggestHeight ) { biggestHeight = itemHeight; }
                 });
-
-                width = item.outerWidth();
-
-                if ( settings.spacing !== 0 ) {
-                  item.css('margin-right', ( width * settings.spacing) + 'px');
-                }
-
-                left = item.position().left;
-                _itemOffsets[i] = -1 * ((left + (width / 2)) - (_containerWidth / 2));
-
-                if ( i === _items.length - 1 ) {
-                    center();
-                    if ( skipTransition ) { setTimeout(resetTransition,1); }
-                }
-            });
-        }
-
-        function center() {
-            var total = _items.length,
-                item, newClass, zIndex;
-
-            _items.each(function(i){
-                item = $(this);
-                newClass = ' ';
-
-                if ( i === _currentIndex ) {
-                    newClass += classes.itemCurrent;
-                    zIndex = (total + 1);
-                } else if ( i < _currentIndex ) {
-                    newClass += classes.itemPast + ' ' +
-                        classes.itemPast + '-' + (_currentIndex - i);
-                    zIndex = i;
-                } else {
-                    newClass += classes.itemFuture + ' ' +
-                        classes.itemFuture + '-' + ( i - _currentIndex );
-                    zIndex = (total - i);
-                }
-
-                item.css('z-index', zIndex )
-                  .attr('class',function(i, c){
-                    return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ') + newClass;
-                  });
-            });
-
-            if ( _currentIndex >= 0 ) {
-                if ( !_containerWidth || _itemOffsets[_currentIndex] === undefined ) { resize(true); }
-
-                if ( transformSupport ) {
-                    _container.css('transform', 'translateX(' + _itemOffsets[_currentIndex] + 'px)');
-                } else {
-                    _container.css({ 'left': _itemOffsets[_currentIndex] + 'px' });
-                }
+                return biggestHeight;
             }
 
-            updateNav();
-        }
+            function resize(skipTransition) {
+                if ( skipTransition ) { noTransition(); }
 
-        function jump(to) {
-            var _previous = _currentIndex;
+                _containerWidth = _container.width();
+                _container.height(calculateBiggestItemHeight());
 
-            if ( _items.length <= 1 ) { return; }
+                _items.each(function(i) {
+                    var item = $(this),
+                        width,
+                        left;
 
-            if ( to === 'prev' ) {
-                if ( _currentIndex > 0 ) { _currentIndex--; }
-                else if ( settings.loop ) { _currentIndex = _items.length - 1; }
-            } else if ( to === 'next' ) {
-                if ( _currentIndex < _items.length - 1 ) { _currentIndex++; }
-                else if ( settings.loop ) { _currentIndex = 0; }
-            } else if ( typeof to === 'number' ) {
-                _currentIndex = to;
-            } else if ( to !== undefined ) {
-                _currentIndex = _items.index(to); // if object is sent, get its index
-            }
+                    item.attr('class', function(i, c) {
+                        return c && c.replace(classRemover, '').replace(whiteSpaceRemover, ' ');
+                    });
 
-            _currentItem = _items.eq(_currentIndex);
+                    width = item.outerWidth();
 
-            if ( _currentIndex !== _previous && settings.onItemSwitch ) { settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]); }
+                    if ( settings.spacing !== 0 ) {
+                        item.css('margin-right', ( width * settings.spacing ) + 'px');
+                    }
 
-            center();
+                    left = item.position().left;
+                    _itemOffsets[i] = -1 * ((left + (width / 2)) - (_containerWidth / 2));
 
-            return self;
-        }
-
-        function play(interval) {
-            settings.autoplay = interval || settings.autoplay;
-
-            clearInterval(_playing);
-
-            _playing = setInterval(function(){
-                var prev = _currentIndex;
-                jump('next');
-                if ( prev === _currentIndex && !settings.loop ) { clearInterval(_playing); }
-            }, settings.autoplay);
-
-            return self;
-        }
-
-        function pause() {
-            clearInterval(_playing);
-            if ( settings.autoplay ) { _playing = -1; }
-
-            return self;
-        }
-
-        function show() {
-            resize(true);
-            self.hide()
-                .css('visibility','')
-                .addClass(classes.active)
-                .fadeIn(settings.fadeIn);
-        }
-
-        function index() {
-
-            _container = self.find(settings.itemContainer).addClass(classes.container);
-
-            _items = _container.find(settings.itemSelector);
-
-            if ( _items.length <= 1 ) { return; }
-
-            _items
-                .addClass(classes.item)
-                // Wrap inner content
-                .each(function(){
-                    var item = $(this);
-                    if ( !item.children('.' + classes.itemContent).length ) { item.wrapInner('<div class="' + classes.itemContent + '" />'); }
-                });
-
-            // Navigate directly to an item by clicking
-            if ( settings.click ) {
-                _items.on('click.flipster touchend.flipster', function(e) {
-                    if ( !_startDrag ) {
-                        if ( !$(this).hasClass(classes.itemCurrent) ) { e.preventDefault(); }
-                        jump(this);
+                    if ( i === _items.length - 1 ) {
+                        center();
+                        if ( skipTransition ) { setTimeout(resetTransition, 1); }
                     }
                 });
             }
 
-            // Insert navigation if enabled.
-            buildButtons();
-            buildNav();
+            function center() {
+                var total = _items.length,
+                    item, newClass, zIndex;
 
-            if ( _currentIndex >= 0 ) { jump(_currentIndex); }
+                _items.each(function(i){
+                    item = $(this);
+                    newClass = ' ';
 
-            return self;
-        }
-
-
-        function keyboardEvents(elem) {
-            if ( settings.keyboard ) {
-                elem[0].tabIndex = 0;
-                elem.on('keydown.flipster', throttle(function(e){
-                    var code = e.which;
-                    if ( code === 37 ) {
-                        jump('prev');
-                        e.preventDefault();
-                    } else if ( code === 39 ) {
-                        jump('next');
-                        e.preventDefault();
+                    if ( i === _currentIndex ) {
+                        newClass += classes.itemCurrent;
+                        zIndex = (total + 1);
+                    } else if ( i < _currentIndex ) {
+                        newClass += classes.itemPast + ' ' +
+                            classes.itemPast + '-' + (_currentIndex - i);
+                        zIndex = i;
+                    } else {
+                        newClass += classes.itemFuture + ' ' +
+                            classes.itemFuture + '-' + ( i - _currentIndex );
+                        zIndex = (total - i);
                     }
-                },250,true));
+
+                    item.css('z-index', zIndex )
+                      .attr('class',function(i, c){
+                        return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ') + newClass;
+                      });
+                });
+
+                if ( _currentIndex >= 0 ) {
+                    if ( !_containerWidth || _itemOffsets[_currentIndex] === undefined ) { resize(true); }
+
+                    if ( transformSupport ) {
+                        _container.css('transform', 'translateX(' + _itemOffsets[_currentIndex] + 'px)');
+                    } else {
+                        _container.css({ 'left': _itemOffsets[_currentIndex] + 'px' });
+                    }
+                }
+
+                updateNav();
             }
-        }
 
-        function wheelEvents(elem) {
-            if ( settings.scrollwheel ) {
-                var _wheelInside = false,
-                    _actionThrottle = 0,
-                    _throttleTimeout = 0,
-                    _delta = 0,
-                    _dir, _lastDir;
+            function jump(to) {
+                var _previous = _currentIndex;
 
-                elem
-                    .on('mousewheel.flipster wheel.flipster', function(){ _wheelInside = true; })
-                    .on('mousewheel.flipster wheel.flipster', throttle(function(e){
+                if ( _items.length <= 1 ) { return; }
 
-                        // Reset after a period without scrolling.
-                        clearTimeout(_throttleTimeout);
-                        _throttleTimeout = setTimeout(function(){
-                            _actionThrottle = 0;
+                if ( to === 'prev' ) {
+                    if ( _currentIndex > 0 ) { _currentIndex--; }
+                    else if ( settings.loop ) { _currentIndex = _items.length - 1; }
+                } else if ( to === 'next' ) {
+                    if ( _currentIndex < _items.length - 1 ) { _currentIndex++; }
+                    else if ( settings.loop ) { _currentIndex = 0; }
+                } else if ( typeof to === 'number' ) { _currentIndex = to;
+                } else if ( to !== undefined ) {
+                    // if object is sent, get its index
+                    _currentIndex = _items.index(to);
+                }
+
+                _currentItem = _items.eq(_currentIndex);
+
+                if ( _currentIndex !== _previous && settings.onItemSwitch ) {
+                    settings.onItemSwitch.call(self, _items[_currentIndex], _items[_previous]);
+                }
+
+                center();
+
+                return self;
+            }
+
+            function play(interval) {
+                settings.autoplay = interval || settings.autoplay;
+
+                clearInterval(_playing);
+
+                _playing = setInterval(function() {
+                    var prev = _currentIndex;
+                    jump('next');
+                    if ( prev === _currentIndex && !settings.loop ) { clearInterval(_playing); }
+                }, settings.autoplay);
+
+                return self;
+            }
+
+            function pause() {
+                clearInterval(_playing);
+                if ( settings.autoplay ) { _playing = -1; }
+
+                return self;
+            }
+
+            function show() {
+                resize(true);
+                self.hide()
+                    .css('visibility', '')
+                    .addClass(classes.active)
+                    .fadeIn(settings.fadeIn);
+            }
+
+            function index() {
+
+                _container = self.find(settings.itemContainer).addClass(classes.container);
+
+                _items = _container.find(settings.itemSelector);
+
+                if ( _items.length <= 1 ) { return; }
+
+                _items
+                    .addClass(classes.item)
+                    // Wrap inner content
+                    .each(function() {
+                        var item = $(this);
+                        if ( !item.children('.' + classes.itemContent ).length) {
+                            item.wrapInner('<div class="' + classes.itemContent + '" />');
+                        }
+                    });
+
+                // Navigate directly to an item by clicking
+                if ( settings.click ) {
+                    _items.on('click.flipster touchend.flipster', function(e) {
+                        if ( !_startDrag ) {
+                            if ( !$(this).hasClass(classes.itemCurrent) ) { e.preventDefault(); }
+                            jump(this);
+                        }
+                    });
+                }
+
+                // Insert navigation if enabled.
+                buildButtons();
+                buildNav();
+
+                if ( _currentIndex >= 0 ) { jump(_currentIndex); }
+
+                return self;
+            }
+
+            function keyboardEvents(elem) {
+                if ( settings.keyboard ) {
+                    elem[0].tabIndex = 0;
+                    elem.on('keydown.flipster', throttle(function(e) {
+                        var code = e.which;
+                        if ( code === 37 || code === 39 ) {
+                            jump( code === 37 ? 'prev' : 'next' );
+                            e.preventDefault();
+                        }
+                    }, 250, true));
+                }
+            }
+
+            function wheelEvents(elem) {
+                if ( settings.scrollwheel ) {
+                    var _wheelInside = false,
+                        _actionThrottle = 0,
+                        _throttleTimeout = 0,
+                        _delta = 0,
+                        _dir, _lastDir;
+
+                    elem
+                        .on('mousewheel.flipster wheel.flipster', function() { _wheelInside = true; })
+                        .on('mousewheel.flipster wheel.flipster', throttle(function(e) {
+
+                            // Reset after a period without scrolling.
+                            clearTimeout(_throttleTimeout);
+                            _throttleTimeout = setTimeout(function() {
+                                _actionThrottle = 0;
+                                _delta = 0;
+                            }, 300);
+
+                            e = e.originalEvent;
+
+                            // Add to delta (+=) so that continuous small events can still get past the speed limit, and quick direction reversals get cancelled out
+                            _delta += (e.wheelDelta || (e.deltaY + e.deltaX) * -1); // Invert numbers for Firefox
+
+                            // Don't trigger unless the scroll is decent speed.
+                            if ( Math.abs(_delta) < 25 ) { return; }
+
+                            _actionThrottle++;
+
+                            _dir = (_delta > 0 ? 'prev' : 'next');
+
+                            // Reset throttle if direction changed.
+                            if ( _lastDir !== _dir ) { _actionThrottle = 0; }
+                            _lastDir = _dir;
+
+                            // Regular scroll wheels trigger less events, so they don't need to be throttled. Trackpads trigger many events (inertia), so only trigger jump every three times to slow things down.
+                            if ( _actionThrottle < 6 || _actionThrottle % 3 === 0 ) { jump(_dir); }
+
                             _delta = 0;
-                        }, 300);
 
-                        e = e.originalEvent;
+                        }, 50));
 
-                        // Add to delta (+=) so that continuous small events can still get past the speed limit, and quick direction reversals get cancelled out
-                        _delta += ( e.wheelDelta || ( e.deltaY + e.deltaX ) * -1 ); // Invert numbers for Firefox
-
-                        // Don't trigger unless the scroll is decent speed.
-                        if ( Math.abs(_delta) < 25 ) { return; }
-
-                        _actionThrottle++;
-
-                        _dir = ( _delta > 0 ? 'prev' : 'next' );
-
-                        // Reset throttle if direction changed.
-                        if ( _lastDir !== _dir ) { _actionThrottle = 0; }
-                        _lastDir = _dir;
-
-                        // Regular scroll wheels trigger less events, so they don't need to be throttled. Trackpads trigger many events (inertia), so only trigger jump every three times to slow things down.
-                        if ( _actionThrottle < 6 || _actionThrottle % 3 === 0 ) { jump(_dir); }
-
-                        _delta = 0;
-
-                    },50));
-
-                // Disable mousewheel on window if event began in elem.
-                $window.on('mousewheel.flipster wheel.flipster',function(e){
-                    if ( _wheelInside ) {
-                        e.preventDefault();
-                        _wheelInside = false;
-                    }
-                });
-            }
-        }
-
-        function touchEvents(elem) {
-            if ( settings.touch ) {
-                var _startDragY = false,
-                    _touchJump = throttle(jump,300),
-                    x, y, offsetY, offsetX;
-
-                elem.on({
-                  'touchstart.flipster' : function(e){
-                          e = e.originalEvent;
-                          _startDrag = ( e.touches ? e.touches[0].clientX : e.clientX );
-                          _startDragY = ( e.touches ? e.touches[0].clientY : e.clientY );
-                          //e.preventDefault();
-                      },
-
-                  'touchmove.flipster' : throttle(function(e){
-                          if ( _startDrag !== false ) {
-                              e = e.originalEvent;
-
-                              x = ( e.touches ? e.touches[0].clientX : e.clientX );
-                              y = ( e.touches ? e.touches[0].clientY : e.clientY );
-                              offsetY = y - _startDragY;
-                              offsetX = x - _startDrag;
-
-                              if ( Math.abs(offsetY) < 100 && Math.abs(offsetX) >= 30 ) {
-                                  _touchJump((offsetX < 0 ? 'next' : 'prev'));
-                                  _startDrag = x;
-                                  e.preventDefault();
-                              }
-
-                          }
-                      },100),
-
-                  'touchend.flipster touchcancel.flipster ' : function(){ _startDrag = false; }
-                });
-            }
-        }
-
-        function init() {
-
-            self.css('visibility','hidden');
-
-            index();
-
-            if ( _items.length <= 1 ) {
-                self.css('visibility','');
-                return;
+                    // Disable mousewheel on window if event began in elem.
+                    $window.on('mousewheel.flipster wheel.flipster', function(e) {
+                        if ( _wheelInside ) {
+                            e.preventDefault();
+                            _wheelInside = false;
+                        }
+                    });
+                }
             }
 
-            self.addClass([
+            function touchEvents(elem) {
+                if ( settings.touch ) {
+                    var _startDragY = false,
+                        _touchJump = throttle(jump, 300),
+                        x, y, offsetY, offsetX;
+
+                    elem.on({
+                        'touchstart.flipster': function(e) {
+                            e = e.originalEvent;
+                            _startDrag = (e.touches ? e.touches[0].clientX : e.clientX);
+                            _startDragY = (e.touches ? e.touches[0].clientY : e.clientY);
+                            //e.preventDefault();
+                        },
+
+                        'touchmove.flipster': throttle(function(e) {
+                            if ( _startDrag !== false ) {
+                                e = e.originalEvent;
+
+                                x = (e.touches ? e.touches[0].clientX : e.clientX);
+                                y = (e.touches ? e.touches[0].clientY : e.clientY);
+                                offsetY = y - _startDragY;
+                                offsetX = x - _startDrag;
+
+                                if ( Math.abs(offsetY) < 100 && Math.abs(offsetX) >= 30 ) {
+                                    _touchJump((offsetX < 0 ? 'next' : 'prev'));
+                                    _startDrag = x;
+                                    e.preventDefault();
+                                }
+
+                            }
+                        }, 100),
+
+                        'touchend.flipster touchcancel.flipster ': function() { _startDrag = false; }
+                    });
+                }
+            }
+
+            function init() {
+
+                var style;
+
+                self.css('visibility', 'hidden');
+
+                index();
+
+                if ( _items.length <= 1 ) {
+                    self.css('visibility', '');
+                    return;
+                }
+
+                style = (settings.style ? 'flipster--' + settings.style.split(' ').join(' flipster--') : false);
+
+                self.addClass([
                     classes.main,
-                    ( transformSupport ? 'flipster--transform' : ' flipster--no-transform' ),
-                    ( settings.style ? 'flipster--'+settings.style : '' ),
-                    ( settings.click ? 'flipster--click' : '' )
+                    (transformSupport ? 'flipster--transform' : ' flipster--no-transform'),
+                    style, // 'flipster--'+settings.style : '' ),
+                    (settings.click ? 'flipster--click' : '')
                 ].join(' '));
 
-            // Set the starting item
-            if ( settings.start ) {
-                // Find the middle item if start = center
-                if ( settings.start === 'center' ) {
-                    _currentIndex = Math.floor( _items.length / 2 );
-                } else {
-                    _currentIndex = settings.start;
+                // Set the starting item
+                if ( settings.start ) {
+                    // Find the middle item if start = center
+                    _currentIndex = ( settings.start === 'center' ? Math.floor(_items.length / 2) : settings.start );
                 }
+
+                jump(_currentIndex);
+
+                var images = self.find('img');
+
+                if ( images.length ) {
+                    var imagesLoaded = 0;
+
+                    // Resize after all images have loaded.
+                    images.on('load', function() {
+                        imagesLoaded++;
+                        if ( imagesLoaded >= images.length ) { show(); }
+                    });
+
+                    // Fallback to show Flipster while images load in case it takes a while.
+                    setTimeout(show, 750);
+                } else {
+                    show();
+                }
+
+                // Attach event bindings.
+                $window.on('resize.flipster', throttle(resize, 400));
+
+                if ( settings.autoplay ) { play(); }
+
+                if ( settings.pauseOnHover ) {
+                    _container
+                        .on('mouseenter.flipster', pause)
+                        .on('mouseleave.flipster', function() {
+                            if ( _playing === -1 ) { play(); }
+                        });
+                }
+
+                keyboardEvents(self);
+                wheelEvents(_container);
+                touchEvents(_container);
             }
 
-            jump(_currentIndex);
+            // public methods
+            methods = {
+                jump: jump,
+                next: function() { return jump('next'); },
+                prev: function() { return jump('prev'); },
+                play: play,
+                pause: pause,
+                index: index
+            };
+            self.data('methods', methods);
 
-            var images = self.find('img');
-
-            if ( images.length ) {
-                var imagesLoaded = 0;
-
-                // Resize after all images have loaded.
-                images.on('load',function(){
-                    imagesLoaded++;
-                    if ( imagesLoaded >= images.length ) { show(); }
-                });
-
-                // Fallback to show Flipster while images load in case it takes a while.
-                setTimeout(show,750);
-            } else {
-                show();
-            }
-
-            // Attach event bindings.
-            $window.on('resize.flipster', throttle(resize,400));
-
-            if ( settings.autoplay ) { play(); }
-
-            if ( settings.pauseOnHover ) {
-              _container
-                  .on('mouseenter.flipster', pause)
-                  .on('mouseleave.flipster', function(){
-                      if ( _playing === -1 ) { play(); }
-                  });
-            }
-
-            keyboardEvents(self);
-            wheelEvents(_container);
-            touchEvents(_container);
-        }
-
-        // public methods
-        methods = {
-            jump: jump,
-            next: function(){ return jump('next'); },
-            prev: function(){ return jump('prev'); },
-            play: play,
-            pause: pause,
-            index: index
-        };
-        self.data('methods', methods);
-
-        // Initialize if flipster is not already active.
-        if ( !self.hasClass(classes.active) ) { init(); }
-    });
-};
+            // Initialize if flipster is not already active.
+            if ( !self.hasClass(classes.active) ) { init(); }
+        });
+    };
 })(jQuery, window);
