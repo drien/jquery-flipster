@@ -1,0 +1,36 @@
+/* @group Flipster Wheel Theme */
+
+.flipster--wheel {
+    overflow: hidden;
+
+    .flipster__container,
+    .flipster__item__content {
+          transition: all 400ms ease-in-out;
+          transition-timing-function: cubic-bezier(.56,.12,.12,.98);
+    }
+
+    .flipster__container { padding-bottom: 20%; }
+
+    .flipster__item__content { transform-origin: 50% 100%; }
+    .flipster__item--past .flipster__item__content { transform-origin: 100% 100%; }
+    .flipster__item--future .flipster__item__content { transform-origin: 0% 100%; }
+
+    .flipster__item__content img:only-child { display: block; }
+
+    .flipster__item--past .flipster__item__content { opacity: 0; transform: rotateZ(-80deg) translate(-170%,110%); }
+    .flipster__item--future .flipster__item__content { opacity: 0; transform: rotateZ(80deg) translate(170%,110%); }
+
+    .flipster__item--past-3 .flipster__item__content { opacity: 1; transform: rotateZ(-60deg) translate(-70%,75%); }
+    .flipster__item--future-3 .flipster__item__content { opacity: 1; transform: rotateZ(60deg) translate(70%,75%); }
+
+    .flipster__item--past-2 .flipster__item__content { opacity: 1; transform: rotateZ(-40deg) translate(-17%,30%); }
+    .flipster__item--future-2 .flipster__item__content { opacity: 1; transform: rotateZ(40deg) translate(17%,30%); }
+
+    .flipster__item--past-1 .flipster__item__content { opacity: 1; transform: rotateZ(-20deg); }
+    .flipster__item--future-1 .flipster__item__content { opacity: 1; transform: rotateZ(20deg); }
+
+    .flip-current .flipster__item__content { transform: rotateX(0deg); }
+
+}
+
+/* @end */

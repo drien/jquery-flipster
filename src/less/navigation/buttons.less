@@ -1,0 +1,38 @@
+/* @group Flipster Previous & Next Buttons */
+
+.flipster__button {
+  position: absolute;
+  top: 50%;
+  display: block;
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  z-index: 999;
+  cursor: pointer;
+  font-size: 15px;
+  opacity: 0.5;
+  transition: opacity 500ms ease;
+  margin: -1em 2em;
+
+  svg {
+    width: 2em;
+    stroke: currentColor;
+    fill: transparent;
+    stroke-width: 3;
+    stroke-linecap: round;
+    //stroke-dasharray: 20,20,5,5,5,5;
+    //stroke-dashoffset: 0 20;
+    //transition: stroke-dashoffset 200ms ease-in;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+}
+
+.flipster__button--prev { left: 0; }
+.flipster__button--next { right: 0; }
+
+/* @end */

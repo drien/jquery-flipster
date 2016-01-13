@@ -1,73 +1,283 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!doctype html>
+<html class="no-js">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Flipster Demo</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=550, initial-scale=1">
-    
-    <link rel="stylesheet" href="css/demo.css">
-    <link rel="stylesheet" href="../src/css/jquery.flipster.css">
-    <link rel="stylesheet" href="css/flipsternavtabs.css">
+
+    <link rel="stylesheet" href="demo.css">
+    <link rel="stylesheet" href="../dist/jquery.flipster.min.css">
+
+    <script src="jquery.min.js"></script>
+    <script src="../dist/jquery.flipster.min.js"></script>
 </head>
 <body>
-<header id="Main-Header">
-	<h1>Flipster Demos </h1>
+<header class="main-header">
+    <h1>jQuery Flipster</h1>
+    <iframe src="https://ghbtns.com/github-btn.html?user=drien&repo=jquery-flipster&type=star&count=true" frameborder="0" scrolling="0" width="90px" height="20px"></iframe>
+    <a href="http://libscore.com/#$.fn.flipster" target="_blank"><img src="http://api.libscore.com/badge/$.fn.flipster.svg"></a>
+
+    <nav class="main-header__nav" role="navigation">
+        <a href="#demo-default">Default Settings (Coverflow)</a>
+        <a href="#demo-carousel">Carousel</a>
+        <a href="#demo-wheel">Wheel</a>
+        <a href="#demo-flat">Flat</a>
+    </nav>
 </header>
-<div id="Main-Content">
-	<div class="Container">
-<!-- Flipster List -->	
-		<div class="flipster">
-		  <ul>
-		  	<li>
-		  		<a href="demo.html" class="Button Block">
-		  			<h1>All Features</h1>
-		  			<p>Showcase of all available features in both the Coverflow and Carousel styles</p>
-		  		</a>
-		  	</li>
-	  		<li>
-	  			<a href="demo2.html" class="Button Block">
-		  			<h1>Basic Setup</h1>
-		  			<p>The bare minimum code needed to implement Flipster</p>
-	  			</a>
-	  		</li>
-	  		<li>
-	  			<a href="demo3.html" class="Button Block">
-		  			<h1>Carousel</h1>
-		  			<p>Roundabout carousel style!</p>
-		  		</a>
-	  		</li>
-	  		<li>
-	  			<a href="demo4.html" class="Button Block">
-		  			<h1>Coverflow with Tab Navigation</h1>
-		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
-	  			</a>
-	  		</li>
-	  		<li>
-	  			<a href="demo5.html" class="Button Block">
-		  			<h1>Carousel with Tab Navigation</h1>
-		  			<p>Example of tab navigation using the <code>enableNav</code> option</p>
-		  		</a>
-	  		</li>
-		  </ul>
-		</div>
-<!-- End Flipster List -->
 
-	</div>
-</div>
+<article id="intro" class="intro">
+    <p>jQuery Flipster is a CSS3 3D transform-based jQuery plugin built to replicate the familiar 'cover flow' effect, but also supports a variety of styles. Not only is it gorgeous to look at, Flipster is also:</p>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="../src/js/jquery.flipster.js"></script>
+    <ul>
+        <li><strong>Responsive</strong> Automatically centers and scales to fit the area provided.</li>
+        <li><strong>Touch Friendly</strong> Swipe between items on touch devices without interrupting scroll.</li>
+        <li><strong>Lightweight</strong> Javascript and CSS combined are only 5kb gzipped (13kb without gzip). Only dependency is jQuery.</li>
+        <li><strong>Customizable</strong> Four built in styles (coverflow, carousel, wheel and flat) with plenty of options to configure Flipster the way you want</li>
+    </ul>
+
+    <p>But don't take our word for it. Check out the demos below, or <a href="https://github.com/drien/jquery-flipster">download from GitHub</a> to try it yourself.</p>
+</article>
+
+<article id="demo-default" class="demo">
+
+    <h2>Default Settings (Coverflow)</h2>
+
+    <div id="coverflow">
+        <ul class="flip-items">
+            <li data-flip-title="Red">
+                <img src="img/text1.gif">
+            </li>
+            <li data-flip-title="Razzmatazz" data-flip-category="Purples">
+                <img src="img/text2.gif">
+             </li>
+            <li data-flip-title="Deep Lilac" data-flip-category="Purples">
+                <img src="img/text3.gif">
+            </li>
+            <li data-flip-title="Daisy Bush" data-flip-category="Purples">
+                <img src="img/text4.gif">
+            </li>
+            <li data-flip-title="Cerulean Blue" data-flip-category="Blues">
+                <img src="img/text5.gif">
+            </li>
+            <li data-flip-title="Dodger Blue" data-flip-category="Blues">
+                <img src="img/text6.gif">
+            </li>
+            <li data-flip-title="Cyan" data-flip-category="Blues">
+                <img src="img/text7.gif">
+            </li>
+            <li data-flip-title="Robin's Egg" data-flip-category="Blues">
+                <img src="img/text8.gif">
+            </li>
+            <li data-flip-title="Deep Sea" data-flip-category="Greens">
+                <img src="img/text9.gif">
+            </li>
+            <li data-flip-title="Apple" data-flip-category="Greens">
+                <img src="img/text10.gif">
+            </li>
+        </ul>
+    </div>
+
 <script>
-<!--
-
-	$(function(){ $(".flipster").flipster({ style: 'carousel', start: 0 }); });
-
--->
+    var coverflow = $("#coverflow").flipster();
 </script>
+
+<pre class="code">$("#coverflow").flipster();</pre>
+
+</article>
+
+<article id="demo-carousel" class="demo">
+
+    <h2>Flipster Carousel</h2>
+
+    <div id="carousel">
+        <ul class="flip-items">
+            <li data-flip-title="Red">
+                <img src="img/text1.gif">
+            </li>
+            <li data-flip-title="Razzmatazz" data-flip-category="Purples">
+                <img src="img/text2.gif">
+             </li>
+            <li data-flip-title="Deep Lilac" data-flip-category="Purples">
+                <img src="img/text3.gif">
+            </li>
+            <li data-flip-title="Daisy Bush" data-flip-category="Purples">
+                <img src="img/text4.gif">
+            </li>
+            <li data-flip-title="Cerulean Blue" data-flip-category="Blues">
+                <img src="img/text5.gif">
+            </li>
+            <li data-flip-title="Dodger Blue" data-flip-category="Blues">
+                <img src="img/text6.gif">
+            </li>
+            <li data-flip-title="Cyan" data-flip-category="Blues">
+                <img src="img/text7.gif">
+            </li>
+            <li data-flip-title="Robin's Egg" data-flip-category="Blues">
+                <img src="img/text8.gif">
+            </li>
+            <li data-flip-title="Deep Sea" data-flip-category="Greens">
+                <img src="img/text9.gif">
+            </li>
+            <li data-flip-title="Apple" data-flip-category="Greens">
+                <img src="img/text10.gif">
+            </li>
+            <li data-flip-title="Pistachio" data-flip-category="Greens">
+                <img src="img/text11.gif">
+            </li>
+            <li data-flip-title="Pear" data-flip-category="Greens">
+                <img src="img/text12.gif">
+            </li>
+            <li data-flip-title="Bright Sun" data-flip-category="Yellows">
+                <img src="img/text13.gif">
+            </li>
+            <li data-flip-title="Mikado" data-flip-category="Yellows">
+                <img src="img/text14.gif">
+            </li>
+        </ul>
+    </div>
+
+<script>
+    var carousel = $("#carousel").flipster({
+        style: 'carousel',
+        spacing: -0.5,
+        nav: true,
+        buttons:   true,
+    });
+</script>
+
+<pre class="code">$("#carousel").flipster({
+    style: 'carousel',
+    spacing: -0.5,
+    nav: true,
+    buttons: true,
+});</pre>
+
+</article>
+
+
+<article id="demo-wheel" class="demo">
+
+    <h2>Flipster Wheel</h2>
+
+    <div id="wheel">
+        <ul>
+            <li data-flip-title="Red">
+                <img src="img/text1.gif">
+            </li>
+            <li data-flip-title="Razzmatazz" data-flip-category="Purples">
+                <img src="img/text2.gif">
+             </li>
+            <li data-flip-title="Deep Lilac" data-flip-category="Purples">
+                <img src="img/text3.gif">
+            </li>
+            <li data-flip-title="Daisy Bush" data-flip-category="Purples">
+                <img src="img/text4.gif">
+            </li>
+            <li data-flip-title="Cerulean Blue" data-flip-category="Blues">
+                <img src="img/text5.gif">
+            </li>
+            <li data-flip-title="Dodger Blue" data-flip-category="Blues">
+                <img src="img/text6.gif">
+            </li>
+            <li data-flip-title="Cyan" data-flip-category="Blues">
+                <img src="img/text7.gif">
+            </li>
+            <li data-flip-title="Robin's Egg" data-flip-category="Blues">
+                <img src="img/text8.gif">
+            </li>
+            <li data-flip-title="Deep Sea" data-flip-category="Greens">
+                <img src="img/text9.gif">
+            </li>
+            <li data-flip-title="Apple" data-flip-category="Greens">
+                <img src="img/text10.gif">
+            </li>
+            <li data-flip-title="Pistachio" data-flip-category="Greens">
+                <img src="img/text11.gif">
+            </li>
+            <li data-flip-title="Pear" data-flip-category="Greens">
+                <img src="img/text12.gif">
+            </li>
+            <li data-flip-title="Bright Sun" data-flip-category="Yellows">
+                <img src="img/text13.gif">
+            </li>
+            <li data-flip-title="Mikado" data-flip-category="Yellows">
+                <img src="img/text14.gif">
+            </li>
+        </ul>
+    </div>
+
+<script>
+    var wheel = $("#wheel").flipster({
+        style: 'wheel',
+        spacing: 0
+    });
+</script>
+
+<pre class="code">$("#wheel").flipster({
+    style: 'wheel',
+    spacing: 0
+});</pre>
+</article>
+
+
+<article id="demo-flat" class="demo">
+
+    <h2>Flipster Flat</h2>
+
+    <div id="flat">
+        <ul>
+            <li data-flip-title="Red">
+                <img src="img/text1.gif">
+            </li>
+            <li data-flip-title="Razzmatazz" data-flip-category="Purples">
+                <img src="img/text2.gif">
+             </li>
+            <li data-flip-title="Deep Lilac" data-flip-category="Purples">
+                <img src="img/text3.gif">
+            </li>
+            <li data-flip-title="Daisy Bush" data-flip-category="Purples">
+                <img src="img/text4.gif">
+            </li>
+            <li data-flip-title="Cerulean Blue" data-flip-category="Blues">
+                <img src="img/text5.gif">
+            </li>
+            <li data-flip-title="Dodger Blue" data-flip-category="Blues">
+                <img src="img/text6.gif">
+            </li>
+            <li data-flip-title="Cyan" data-flip-category="Blues">
+                <img src="img/text7.gif">
+            </li>
+            <li data-flip-title="Robin's Egg" data-flip-category="Blues">
+                <img src="img/text8.gif">
+            </li>
+            <li data-flip-title="Deep Sea" data-flip-category="Greens">
+                <img src="img/text9.gif">
+            </li>
+            <li data-flip-title="Apple" data-flip-category="Greens">
+                <img src="img/text10.gif">
+            </li>
+        </ul>
+    </div>
+
+<script>
+    var flat = $("#flat").flipster({
+        style: 'flat',
+        spacing: -0.25
+    });
+</script>
+
+<pre class="code">$("#flat").flipster({
+    style: 'flat',
+    spacing: -0.25
+});</pre>
+
+</article>
+
+<a href="https://github.com/drien/jquery-flipster/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+
+
 </body>
 </html>

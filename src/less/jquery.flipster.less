@@ -1,0 +1,42 @@
+/* @group Flipster Essential Styles */
+
+.flipster {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: visible;
+    position: relative;
+}
+
+.flipster:focus { outline: none; }
+
+.flipster__container,
+.flipster__item {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+}
+
+.flipster__container {
+    display: block;
+    white-space: nowrap;
+    word-spacing: -0.25em;
+    transform-origin: 50% 50%;
+    backface-visibility: hidden;
+}
+
+.flipster__item {
+    display: inline-block;
+    white-space: normal;
+    word-spacing: normal;
+    vertical-align: bottom;
+}
+
+.flipster--click {
+    .flipster__item--past,
+    .flipster__item--future { cursor: pointer; }
+}
+
+.flipster__item img { max-width: 100%; }
+
+/* @end */

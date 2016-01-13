@@ -1,0 +1,15 @@
+/* @group Flat */
+
+.flipster--flat {
+    .flipster__container,
+    .flipster__item,
+    .flipster__item__content { transition: all 400ms ease-in-out; }
+
+    .flipster__item--past,
+    .flipster__item--future { opacity: 0.5; }
+
+    .flipster__item--past .flipster__item__content { transform: scale(0.75); }
+    .flipster__item--future .flipster__item__content { transform: scale(0.75); }
+}
+
+/* @end */
