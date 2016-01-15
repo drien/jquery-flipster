@@ -326,8 +326,12 @@
             }
 
             function resize(skipTransition) {
-                if ( skipTransition ) { noTransition(); }
+                // don't update elements if _container is hidden
+                if (_container.is(':hidden')) {
+                    return false;
+                };
 
+                if ( skipTransition ) { noTransition(); }
                 _containerWidth = _container.width();
                 _container.height(calculateBiggestItemHeight());
 
