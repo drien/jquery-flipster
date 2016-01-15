@@ -387,7 +387,11 @@
                     if ( !_containerWidth || _itemOffsets[_currentIndex] === undefined ) { resize(true); }
 
                     if ( transformSupport ) {
-                        _container.css('transform', 'translateX(' + _itemOffsets[_currentIndex] + 'px)');
+                        _container.css({
+                            'transform': 'translateX(' + _itemOffsets[_currentIndex] + 'px)',
+                            '-webkit-transform': 'translateX(' + _itemOffsets[_currentIndex] + 'px)',
+                            '-ms-transform': 'translateX(' + _itemOffsets[_currentIndex] + 'px)'
+                        });
                     } else {
                         _container.css({ 'left': _itemOffsets[_currentIndex] + 'px' });
                     }
