@@ -203,6 +203,9 @@ Version History
 ---------------
 
 
+- 1.1.2 - Mar 3 2016
+    - Bower & package.json fixes
+    
 - 1.1.1 - Mar 3 2016
     - Fix for maximum callstack errors when not visible. #74 #79
 
