@@ -201,6 +201,14 @@ See room for improvement? Don't be shy! Fork this repo and I'll be happy to merg
 
 Version History
 ---------------
+
+
+- 1.1.1 - Mar 3 2016
+    - Fix for maximum callstack errors when not visible. #74 #79
+
+- 1.1.0 - Mar 3 2016
+    - `stop` method added for issues like #75 
+
 - 1.0.1 - Nov 1 2015
     - Fixed issue #63 where the active nav class was added to all nav items.
     
