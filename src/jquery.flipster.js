@@ -327,8 +327,12 @@
             }
 
             function resize(skipTransition) {
-                if ( skipTransition ) { noTransition(); }
+                // don't update elements if _container is hidden
+                if (_container.is(':hidden')) {
+                    return false;
+                };
 
+                if ( skipTransition ) { noTransition(); }
                 _containerWidth = _container.width();
                 _container.height(calculateBiggestItemHeight());
 
@@ -397,7 +401,11 @@
                     if ( !_containerWidth || _itemOffsets[_currentIndex] === undefined ) { resize(true); }
 
                     if ( transformSupport ) {
-                        _container.css('transform', 'translateX(' + _itemOffsets[_currentIndex] + 'px)');
+                        _container.css({
+                            'transform': 'translateX(' + _itemOffsets[_currentIndex] + 'px)',
+                            '-webkit-transform': 'translateX(' + _itemOffsets[_currentIndex] + 'px)',
+                            '-ms-transform': 'translateX(' + _itemOffsets[_currentIndex] + 'px)'
+                        });
                     } else {
                         _container.css({ 'left': _itemOffsets[_currentIndex] + 'px' });
                     }
