@@ -185,6 +185,7 @@
 
                 _container,
                 _containerWidth,
+                _resizeInterval,
 
                 _items,
                 _itemOffsets = [],
@@ -330,6 +331,15 @@
 
                 _containerWidth = _container.width();
                 _container.height(calculateBiggestItemHeight());
+
+                // Prevent maximum callstack error. #79 #74
+                if ( !_containerWidth ) {
+                    _resizeInterval = _resizeInterval || setInterval(function(){ resize(skipTransition); },500);
+                    return;
+                } else if ( _resizeInterval ) {
+                    clearInterval(_resizeInterval);
+                    _resizeInterval = false;
+                }
 
                 _items.each(function(i) {
                     var item = $(this),
