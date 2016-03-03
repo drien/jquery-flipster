@@ -1,6 +1,33 @@
 {
   "name": "jquery.flipster",
   "version": "1.1.1",
+  "homepage": "https://github.com/drien/jquery-flipster",
+  "description": "Responsive coverflow-style carousel plugin for jQuery",
+  "main": [
+    "dist/jquery.flipster.min.js",
+    "dist/jquery.flipster.min.css"
+  ],
+  "author": "Adrien Delessert <a@drien.com>",
+  "contributors": [
+    "Adrien Delessert <a@drien.com>",
+    "Stephen Shaw <stephen@brokensquare.com>"
+  ],
+  "keywords": [
+    "coverflow",
+    "jquery",
+    "carousel",
+    "flipster",
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drien/jquery-flipster.git"
+  },
+  "bugs": {
+    "url": "https://github.com/drien/jquery-flipster/issues"
+  },
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-less": "~1.0.1",
