@@ -438,10 +438,15 @@
                 return self;
             }
 
-            function pause() {
+            function stop(){
                 clearInterval(_playing);
-                if ( settings.autoplay ) { _playing = -1; }
+                _playing = 0;
+                return self;
+            }
 
+            function pause(forced) {
+                stop();
+                if ( settings.autoplay && forced ) { _playing = -1; }
                 return self;
             }
 
@@ -646,7 +651,10 @@
 
                 if ( settings.pauseOnHover ) {
                     _container
-                        .on('mouseenter.flipster', pause)
+                        .on('mouseenter.flipster', function(){
+                            if (_playing) { pause(true); }
+                            else { stop() }
+                        })
                         .on('mouseleave.flipster', function() {
                             if ( _playing === -1 ) { play(); }
                         });
@@ -663,6 +671,7 @@
                 next: function() { return jump('next'); },
                 prev: function() { return jump('prev'); },
                 play: play,
+                stop: stop,
                 pause: pause,
                 index: index
             };

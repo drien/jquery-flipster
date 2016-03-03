@@ -152,7 +152,8 @@ myFlipster.flipster('jump', 0); // Jump to a specific index
 myFlipster.flipster('jump', $('.my-item')); // Jump to a specific item
 myFlipster.flipster('play'); // Resume autoplay
 myFlipster.flipster('play', 5000); // Set autoplay duration
-myFlipster.flipster('pause'); // Pause the autoplay
+myFlipster.flipster('pause'); // Pause the autoplay until next jump
+myFlipster.flipster('stop'); // Stop the autoplay entirely
 myFlipster.flipster('index'); // If items are added or removed, you can tell Flipster to reindex 
 ```
 
