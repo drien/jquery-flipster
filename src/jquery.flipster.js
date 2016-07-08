@@ -241,7 +241,7 @@
                         category = item.data('flip-category'),
                         itemTitle = item.data('flip-title') || item.attr('title') || i,
                         navLink = $('<a href="#" class="' + classes.navLink + '">' + itemTitle + '</a>')
-                        .data('index', i);
+                            .data('index', i);
 
                     _navLinks = _navLinks.add(navLink);
 
@@ -251,8 +251,8 @@
 
                             var categoryItem = $('<li class="' + classes.navItem + ' ' + classes.navCategory + '">');
                             var categoryLink = $('<a href="#" class="' + classes.navLink + ' ' + classes.navCategoryLink + '" data-flip-category="' + category + '">' + category + '</a>')
-                                    .data('category', category)
-                                    .data('index', i);
+                                .data('category', category)
+                                .data('index', i);
 
                             navCategories[category] = $('<ul class="' + classes.navChild + '" />');
 
@@ -352,7 +352,7 @@
 
                     width = item.outerWidth();
 
-                    if ( settings.spacing !== 0 ) {
+                    if ( settings.spacing !== 0 && _items.length > 1 ) {
                         item.css('margin-right', ( width * settings.spacing ) + 'px');
                     }
 
@@ -388,9 +388,9 @@
                     }
 
                     item.css('z-index', zIndex )
-                      .attr('class',function(i, c){
-                        return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ') + newClass;
-                      });
+                        .attr('class',function(i, c){
+                            return c && c.replace(classRemover, '').replace(whiteSpaceRemover,' ') + newClass;
+                        });
                 });
 
                 if ( _currentIndex >= 0 ) {
@@ -473,8 +473,6 @@
                 _container = self.find(settings.itemContainer).addClass(classes.container);
 
                 _items = _container.find(settings.itemSelector);
-
-                if ( _items.length <= 1 ) { return; }
 
                 _items
                     .addClass(classes.item)
@@ -614,11 +612,6 @@
                 self.css('visibility', 'hidden');
 
                 index();
-
-                if ( _items.length <= 1 ) {
-                    self.css('visibility', '');
-                    return;
-                }
 
                 style = (settings.style ? 'flipster--' + settings.style.split(' ').join(' flipster--') : false);
 
