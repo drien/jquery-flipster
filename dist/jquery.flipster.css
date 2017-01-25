@@ -231,8 +231,6 @@
 }
 .flipster--coverflow .flipster__item__content {
   transform-origin: 50% 100%;
-  box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
-  -webkit-box-reflect: below 0 -webkit-gradient(linear, left bottom, left top, color-stop(0.05, rgba(255, 255, 255, 0.12)), color-stop(0.2, transparent));
 }
 .flipster--coverflow .flipster__item__content img:only-child {
   display: block;
