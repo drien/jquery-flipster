@@ -29,8 +29,10 @@
 
 		position: relative;
 		overflow: hidden;
+    -webkit-transition: all 250ms ease-out;
     transition: all 250ms ease-out;
-    transition-timing-function: cubic-bezier(.56,.12,.12,.98);
+    -webkit-transition-timing-function: cubic-bezier(.56,.12,.12,.98);
+            transition-timing-function: cubic-bezier(.56,.12,.12,.98);
 
 		&::after {
   			content: '';
@@ -42,7 +44,9 @@
   			width: 100%;
   			height: 100%;
   			z-index: -1;
-  			transform: translateY(100%) translateY(-0.25em);
+  			-webkit-transform: translateY(100%) translateY(-0.25em);
+  			        transform: translateY(100%) translateY(-0.25em);
+        -webkit-transition: inherit;
         transition: inherit;
 		}
 
@@ -52,7 +56,8 @@
   			color: #FFF;
 
     	  &::after {
-      	    transform: translateY(0);
+      	    -webkit-transform: translateY(0);
+      	            transform: translateY(0);
     	  }
     }
 }
