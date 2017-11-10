@@ -367,24 +367,32 @@
             }
 
             function center() {
-                var total = _items.length,
-                    item, newClass, zIndex;
+                var total = _items.length;
+                var item;
+                var newClass;
+                var zIndex;
 
-                _items.each(function(i){
+                _items.each(function (i) {
                     item = $(this);
                     newClass = ' ';
 
-                    if ( i === _currentIndex ) {
+                    if (i === _currentIndex)
+                    {
                         newClass += classes.itemCurrent;
                         zIndex = (total + 1);
-                    } else if ( i < _currentIndex ) {
+                    }
+                    else if (i < _currentIndex)
+                    {
                         newClass += classes.itemPast + ' ' +
                             classes.itemPast + '-' + (_currentIndex - i);
-                        zIndex = i;
-                    } else {
+                        zIndex = total - (_currentIndex - i);
+                    }
+                    else
+                    {
                         newClass += classes.itemFuture + ' ' +
-                            classes.itemFuture + '-' + ( i - _currentIndex );
-                        zIndex = (total - i);
+                            classes.itemFuture + '-' + (i - _currentIndex);
+                        
+                        zIndex = total -  (i - _currentIndex);
                     }
 
                     item.css('z-index', zIndex )
@@ -411,16 +419,21 @@
 
                 if ( _items.length <= 1 ) { return; }
 
-                if ( to === 'prev' ) {
+                if (to === 'prev') {
                     if ( _currentIndex > 0 ) { _currentIndex--; }
                     else if ( settings.loop ) { _currentIndex = _items.length - 1; }
-                } else if ( to === 'next' ) {
+                } else if (to === 'next') {
                     if ( _currentIndex < _items.length - 1 ) { _currentIndex++; }
                     else if ( settings.loop ) { _currentIndex = 0; }
-                } else if ( typeof to === 'number' ) { _currentIndex = to;
+                } else if (typeof to === 'number') {
+                    _currentIndex = to;
                 } else if ( to !== undefined ) {
                     // if object is sent, get its index
                     _currentIndex = _items.index(to);
+                    if (settings.loop && _previous != _currentIndex) {
+                        if (_previous == (_items.length - 1) && _currentIndex != (_items.length - 2)) _currentIndex = 0;
+                        if (_previous == 0 && _currentIndex != 1) _currentIndex = (_items.length - 1);
+                    }
                 }
 
                 _currentItem = _items.eq(_currentIndex);
@@ -488,7 +501,7 @@
 
                 // Navigate directly to an item by clicking
                 if ( settings.click ) {
-                    _items.on('click.flipster touchend.flipster', function(e) {
+                    _items.on('click.flipster touchend.flipster', function (e) {
                         if ( !_startDrag ) {
                             if ( !$(this).hasClass(classes.itemCurrent) ) { e.preventDefault(); }
                             jump(this);
@@ -573,38 +586,41 @@
             }
 
             function touchEvents(elem) {
-                if ( settings.touch ) {
-                    var _startDragY = false,
-                        _touchJump = throttle(jump, 300),
-                        x, y, offsetY, offsetX;
+                if (settings.touch) {
+                    var _startDragX, _startDragY, x, y, offsetY, offsetX;
 
                     elem.on({
-                        'touchstart.flipster': function(e) {
+                        'touchstart.flipster': function (e) {
+                            // e.preventDefault();
                             e = e.originalEvent;
-                            _startDrag = (e.touches ? e.touches[0].clientX : e.clientX);
+                            _startDragX = (e.touches ? e.touches[0].clientX : e.clientX);
                             _startDragY = (e.touches ? e.touches[0].clientY : e.clientY);
-                            //e.preventDefault();
                         },
 
-                        'touchmove.flipster': throttle(function(e) {
-                            if ( _startDrag !== false ) {
-                                e = e.originalEvent;
-
-                                x = (e.touches ? e.touches[0].clientX : e.clientX);
-                                y = (e.touches ? e.touches[0].clientY : e.clientY);
-                                offsetY = y - _startDragY;
-                                offsetX = x - _startDrag;
-
-                                if ( Math.abs(offsetY) < 100 && Math.abs(offsetX) >= 30 ) {
-                                    _touchJump((offsetX < 0 ? 'next' : 'prev'));
-                                    _startDrag = x;
-                                    e.preventDefault();
-                                }
-
+                        'touchmove.flipster': function (e) {
+                            // e.preventDefault();
+                            e = e.originalEvent;
+                            x = (e.touches ? e.touches[0].clientX : e.clientX);
+                            y = (e.touches ? e.touches[0].clientY : e.clientY);
+                            offsetX = x - _startDragX;
+                            offsetY = y - _startDragY;
+                            if (Math.abs(offsetX) > 30 && Math.abs(offsetY) < 100) {
+                                e.preventDefault();
                             }
-                        }, 100),
+                        },
 
-                        'touchend.flipster touchcancel.flipster ': function() { _startDrag = false; }
+                        'touchend.flipster touchcancel.flipster ': function () {
+                            offsetX = x - _startDragX;
+                            offsetY = y - _startDragY;
+                            if (Math.abs(offsetX) > 30 && Math.abs(offsetY) < 100) {
+                                if (offsetX > 0) {
+                                    jump('prev');
+                                }
+                                else {
+                                    jump('next');
+                                }
+                            }
+                        }
                     });
                 }
             }
