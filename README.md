@@ -202,6 +202,8 @@ See room for improvement? Don't be shy! Fork this repo and I'll be happy to merg
 Version History
 ---------------
 
+- 1.1.3 - Nov 10 2017
+    - Improvements to touch swiping on mobile devices, thanks to @fjmusick
 
 - 1.1.2 - Mar 3 2016
     - Bower & package.json fixes
