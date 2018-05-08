@@ -43,7 +43,6 @@
                 <element signature="e#17784#19191#0" expanded="false" />
                 <element signature="e#19235#19700#0" expanded="false" />
                 <element signature="e#19741#22343#0" expanded="false" />
-                <element signature="e#22384#23765#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -170,6 +169,14 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../.git/config">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="6" column="55" lean-forward="false" selection-start-line="6" selection-start-column="55" selection-end-line="6" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/jquery.flipster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="792">
@@ -194,7 +201,34 @@
             <element signature="e#17784#19191#0" expanded="false" />
             <element signature="e#19235#19700#0" expanded="false" />
             <element signature="e#19741#22343#0" expanded="false" />
-            <element signature="e#22384#23765#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jquery.flipster.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#6985#7442#0" expanded="false" />
+            <element signature="e#7482#7889#0" expanded="false" />
+            <element signature="e#7927#8158#0" expanded="false" />
+            <element signature="e#8192#10654#0" expanded="false" />
+            <element signature="e#10689#11221#0" expanded="false" />
+            <element signature="e#11259#11426#0" expanded="false" />
+            <element signature="e#11467#11622#0" expanded="false" />
+            <element signature="e#11674#12040#0" expanded="false" />
+            <element signature="e#12086#13694#0" expanded="false" />
+            <element signature="e#13726#15348#0" expanded="false" />
+            <element signature="e#15380#16657#0" expanded="false" />
+            <element signature="e#16695#17161#0" expanded="false" />
+            <element signature="e#17191#17306#0" expanded="false" />
+            <element signature="e#17343#17515#0" expanded="false" />
+            <element signature="e#17545#17753#0" expanded="false" />
+            <element signature="e#17784#19191#0" expanded="false" />
+            <element signature="e#19235#19700#0" expanded="false" />
+            <element signature="e#19741#22343#0" expanded="false" />
           </folding>
         </state>
       </provider>
