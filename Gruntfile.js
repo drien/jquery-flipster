@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         full: {
             options: {
                 banner: '<%= banner %>',
-                plugins: '<%= autoprefix %>'
+                plugins: ['<%= autoprefix %>']
             },
             files: {
                 '<%= dist.css %>': ['<%= src.less %>']
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         minified: {
             options: {
                 banner: '<%= banner %>',
-                plugins: '<%= autoprefix %>',
+                plugins: ['<%= autoprefix %>'],
                 compress: true
             },
             files: {
