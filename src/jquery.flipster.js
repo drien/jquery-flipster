@@ -576,12 +576,27 @@
                         }, 50));
 
                     // Disable mousewheel on window if event began in elem.
-                    $window.on('mousewheel.flipster wheel.flipster', function(e) {
-                        if ( _wheelInside ) {
-                            e.preventDefault();
-                            _wheelInside = false;
-                        }
-                    });
+                    var supportsPassive = false;
+                    try {
+                      window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+                        get: function () { supportsPassive = true; }
+                      }));
+                    } catch(e) {}
+                    var preventScroll = function (e) {
+                      if ( _wheelInside ) {
+                        e.preventDefault();
+                        _wheelInside = false;
+                      }
+                    }
+                    var wheelOpt = supportsPassive ? { passive: false } : false;
+                    window.addEventListener(
+                      'mousewheel',
+                      preventScroll,
+                      wheelOpt);
+                    window.addEventListener(
+                      'wheel',
+                      preventScroll,
+                      wheelOpt);
                 }
             }
 
