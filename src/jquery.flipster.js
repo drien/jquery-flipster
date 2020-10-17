@@ -576,7 +576,7 @@
                         }, 50));
 
                     // Disable mousewheel on window if event began in elem.
-                    $window.on('mousewheel.flipster wheel.flipster', function(e) {
+                    elem.on('mousewheel.flipster wheel.flipster', function(e) {
                         if ( _wheelInside ) {
                             e.preventDefault();
                             _wheelInside = false;
