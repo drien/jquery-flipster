@@ -153,13 +153,13 @@ myFlipster.flipster('play'); // Resume autoplay
 myFlipster.flipster('play', 5000); // Set autoplay duration
 myFlipster.flipster('pause'); // Pause the autoplay until next jump
 myFlipster.flipster('stop'); // Stop the autoplay entirely
-myFlipster.flipster('index'); // If items are added or removed, you can tell Flipster to reindex 
+myFlipster.flipster('index'); // If items are added or removed, you can tell Flipster to reindex
 ```
 
 Navigation
 ---------------
 
-Set `nav: true` in the options and Flipster can build an unordered list of links to each item to let users jump around. 
+Set `nav: true` in the options and Flipster can build an unordered list of links to each item to let users jump around.
 
 The navigation list will use each item's `data-flip-title` attribute as the text. If an item does not have a `data-flip-title`, Flipster will try to grab the `title` attribute, or will default to the item's index.
 
@@ -201,21 +201,24 @@ See room for improvement? Don't be shy! Fork this repo and I'll be happy to merg
 Version History
 ---------------
 
+- 1.1.5 - Oct 17 2020
+    - Fix issue with event handling in latest browsers, thanks to @marcodafonseca and @Peadey
+
 - 1.1.3 - Nov 10 2017
     - Improvements to touch swiping on mobile devices, thanks to @fjmusick
 
 - 1.1.2 - Mar 3 2016
     - Bower & package.json fixes
-    
+
 - 1.1.1 - Mar 3 2016
     - Fix for maximum callstack errors when not visible. #74 #79
 
 - 1.1.0 - Mar 3 2016
-    - `stop` method added for issues like #75 
+    - `stop` method added for issues like #75
 
 - 1.0.1 - Nov 1 2015
     - Fixed issue #63 where the active nav class was added to all nav items.
-    
+
 - 1.0.0 - Oct 23 2015
     - Special thanks to [@shshaw](http://twitter.com/shshaw)</a> for major additions leading to version 1.0!
     - Massive rewrite for performance optimization and simplification
@@ -224,7 +227,7 @@ Version History
     - [BEM syntax](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/) for all Flipster classes
     - Added `autoplay` option to automatically advance through items; `pauseOnHover` option will prevent items from switching automatically while hovered
     - Added `fadeIn` option for controlling duration of fade-in animation after Flipster has been setup
-    
+
 - 0.3.4 - July 23 2014
     - Some additional options available
     - Cleaned up code and normalized whitespace
