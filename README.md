@@ -1,6 +1,8 @@
 jQuery.Flipster
 ===============
 
+**2024 Update: I no longer use jQuery and this library won't be getting any new feature development, but it still works! If it's useful to you that's great! Feel free to submit issues if you encounter major bugs. I'm declaring issue bankruptcy as of January 2024 for a clean slate.**
+
 Flipster is a CSS3 3D transform-based jQuery plugin built to replicate the familiar 'cover flow' effect, but also supports a variety of styles. Not only is it gorgeous to look at, Flipster is also:
 
 - **Responsive**: From desktop to mobile, Flipster automatically centers and scales to fit the area provided.
@@ -17,6 +19,13 @@ Live demo: http://brokensquare.com/Code/jquery-flipster/demo/
 - [x] Firefox (latest)
 - [x] IE 10+ full support
 - [x] IE 8-9 limited support
+
+Installation
+---------------
+
+Include the relevant files from /dist/ in your project, or:
+
+`npm install jquery.flipster`
 
 
 Basic Usage
@@ -201,6 +210,9 @@ See room for improvement? Don't be shy! Fork this repo and I'll be happy to merg
 Version History
 ---------------
 
+- 1.1.6 - Jan 17 2024
+    - Update npm dependencies and rebuild dist files
+
 - 1.1.5 - Oct 17 2020
     - Fix issue with event handling in latest browsers, thanks to @marcodafonseca and @Peadey
 
@@ -271,7 +283,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2013-2019 Adrien Delessert
+Copyright (c) 2013-2024 Adrien Delessert
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
