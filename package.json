@@ -1,6 +1,6 @@
 {
   "name": "jquery.flipster",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "homepage": "https://github.com/drien/jquery-flipster",
   "description": "Responsive coverflow-style carousel plugin for jQuery",
   "main": "./dist/jquery.flipster.min.js",
@@ -29,10 +29,10 @@
     "url": "https://github.com/drien/jquery-flipster/issues"
   },
   "devDependencies": {
-    "grunt": "~1.0.3",
+    "grunt": "^1.6.1",
     "grunt-contrib-less": "~2.0.0",
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "~1.1.0",
-    "less-plugin-autoprefix": "~2.0.0"
+    "less-plugin-autoprefix": "^1.4.1"
   }
 }
